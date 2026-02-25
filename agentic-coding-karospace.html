@@ -1,0 +1,1629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building KaroSpace with AI Agents</title>
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=jet-brains-mono@400&f[]=satoshi@400,500,700,900&display=swap">
+
+    <style>
+        /* ===========================================
+           CSS CUSTOM PROPERTIES (THEME)
+           Terminal Flux: Developer-focused with ambient depth
+           Change these to restyle the entire presentation
+           =========================================== */
+        :root {
+            /* Colors */
+            --bg: #0c1117;
+            --bg-alt: #0f1620;
+            --surface: #161b22;
+            --surface-hover: #1c2129;
+            --border: #30363d;
+            --text: #e6edf3;
+            --text-muted: #8b949e;
+            --text-dim: #484f58;
+            --accent: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-purple: #d2a8ff;
+            --accent-orange: #f0883e;
+            --accent-red: #f85149;
+            --accent-yellow: #e3b341;
+            --glow-blue: rgba(88, 166, 255, 0.15);
+            --glow-green: rgba(63, 185, 80, 0.15);
+            --glow-purple: rgba(210, 168, 255, 0.12);
+
+            /* Typography — all clamp() for responsive scaling */
+            --font-display: 'Satoshi', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --title-size: clamp(2.25rem, 6.5vw, 5rem);
+            --h2-size: clamp(1.75rem, 4.5vw, 3.5rem);
+            --h3-size: clamp(1.2rem, 2.8vw, 1.75rem);
+            --body-size: clamp(0.9rem, 1.7vw, 1.2rem);
+            --small-size: clamp(0.8rem, 1.3vw, 1rem);
+            --mono-size: clamp(0.75rem, 1.3vw, 0.95rem);
+
+            /* Spacing */
+            --slide-padding: clamp(1.5rem, 5vw, 5rem);
+            --content-gap: clamp(0.75rem, 2vw, 2rem);
+            --element-gap: clamp(0.4rem, 1vw, 0.75rem);
+
+            /* Animation */
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --duration: 0.7s;
+        }
+
+        /* ===========================================
+           BASE STYLES
+           =========================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-snap-type: y mandatory;
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: var(--font-display);
+            background: var(--bg);
+            color: var(--text);
+            height: 100%;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===========================================
+           SLIDE CONTAINER
+           Each slide = exactly one viewport. No scroll.
+           =========================================== */
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: var(--slide-padding);
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-height: 100%;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===========================================
+           BACKGROUNDS & DECORATIONS
+           =========================================== */
+
+        /* Grid pattern overlay */
+        .grid-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(88, 166, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(88, 166, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+            pointer-events: none;
+        }
+
+        /* Ambient orbs */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none;
+        }
+        .orb-blue {
+            background: radial-gradient(circle, rgba(88, 166, 255, 0.18), transparent);
+        }
+        .orb-green {
+            background: radial-gradient(circle, rgba(63, 185, 80, 0.14), transparent);
+        }
+        .orb-purple {
+            background: radial-gradient(circle, rgba(210, 168, 255, 0.12), transparent);
+        }
+        .orb-orange {
+            background: radial-gradient(circle, rgba(240, 136, 62, 0.12), transparent);
+        }
+
+        /* Alt background for variety */
+        .slide-alt {
+            background: var(--bg-alt);
+        }
+
+        /* ===========================================
+           TYPOGRAPHY
+           =========================================== */
+        h1 {
+            font-family: var(--font-display);
+            font-weight: 900;
+            font-size: var(--title-size);
+            line-height: 1.08;
+            letter-spacing: -0.03em;
+        }
+
+        h2 {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: var(--h2-size);
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+        }
+
+        h3 {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: var(--h3-size);
+            line-height: 1.3;
+        }
+
+        p, li {
+            font-size: var(--body-size);
+            line-height: 1.6;
+            color: var(--text-muted);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--accent), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gradient-green {
+            background: linear-gradient(135deg, var(--accent-green), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ===========================================
+           COMPONENTS
+           =========================================== */
+
+        /* Tag / Label */
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 0.9rem;
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-family: var(--font-mono);
+            font-size: var(--small-size);
+            color: var(--accent-green);
+            background: rgba(63, 185, 80, 0.06);
+            letter-spacing: 0.05em;
+            margin-bottom: var(--content-gap);
+        }
+
+        .tag::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Section tag (different color variants) */
+        .tag-blue { color: var(--accent); background: rgba(88, 166, 255, 0.06); border-color: rgba(88, 166, 255, 0.2); }
+        .tag-blue::before { background: var(--accent); }
+        .tag-purple { color: var(--accent-purple); background: rgba(210, 168, 255, 0.06); border-color: rgba(210, 168, 255, 0.2); }
+        .tag-purple::before { background: var(--accent-purple); }
+        .tag-orange { color: var(--accent-orange); background: rgba(240, 136, 62, 0.06); border-color: rgba(240, 136, 62, 0.2); }
+        .tag-orange::before { background: var(--accent-orange); }
+
+        /* Card */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: clamp(0.75rem, 2vw, 1.5rem);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 30px var(--glow-blue);
+            transform: translateY(-2px);
+        }
+
+        .card h3 {
+            margin-bottom: var(--element-gap);
+        }
+
+        .card p {
+            font-size: var(--small-size);
+        }
+
+        /* Card grid */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+            gap: clamp(0.5rem, 1.5vw, 1rem);
+        }
+
+        .card-grid-2 {
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+        }
+
+        /* Tool badge */
+        .tool-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-family: var(--font-mono);
+            font-size: var(--small-size);
+            color: var(--text);
+            transition: all 0.3s ease;
+        }
+
+        .tool-badge:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 20px var(--glow-blue);
+        }
+
+        /* Bullet list */
+        .bullet-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: var(--element-gap);
+        }
+
+        .bullet-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            font-size: var(--body-size);
+        }
+
+        .bullet-list li::before {
+            content: '>';
+            font-family: var(--font-mono);
+            color: var(--accent);
+            font-weight: bold;
+            flex-shrink: 0;
+            margin-top: 0.1em;
+        }
+
+        /* Code block */
+        .code-block {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: clamp(0.75rem, 2vw, 1.25rem);
+            font-family: var(--font-mono);
+            font-size: var(--mono-size);
+            line-height: 1.7;
+            overflow: hidden;
+            max-height: min(50vh, 350px);
+        }
+
+        .code-block .comment { color: var(--text-dim); }
+        .code-block .keyword { color: var(--accent-purple); }
+        .code-block .string { color: var(--accent-green); }
+        .code-block .function { color: var(--accent); }
+        .code-block .number { color: var(--accent-orange); }
+
+        /* Comparison table */
+        .compare-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(0.5rem, 1.5vw, 1rem);
+        }
+
+        .compare-col {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: clamp(0.75rem, 2vw, 1.5rem);
+        }
+
+        .compare-col h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: var(--element-gap);
+            font-size: var(--h3-size);
+        }
+
+        .compare-col .bullet-list li {
+            font-size: var(--small-size);
+        }
+
+        /* Stat row */
+        .stat-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: clamp(0.5rem, 2vw, 1.5rem);
+            justify-content: center;
+        }
+
+        .stat {
+            text-align: center;
+            padding: clamp(0.5rem, 1.5vw, 1rem);
+        }
+
+        .stat-number {
+            font-family: var(--font-display);
+            font-weight: 900;
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            line-height: 1;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: var(--small-size);
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        /* Timeline */
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: var(--element-gap);
+            padding-left: clamp(1rem, 2vw, 2rem);
+            border-left: 2px solid var(--border);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: clamp(0.75rem, 1.5vw, 1.5rem);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: calc(-1 * clamp(0.75rem, 1.5vw, 1.5rem) - clamp(1rem, 2vw, 2rem) + 1px);
+            top: 0.5em;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: 2px solid var(--bg);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item h3 {
+            font-size: var(--body-size);
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.15rem;
+        }
+
+        .timeline-item p {
+            font-size: var(--small-size);
+        }
+
+        /* Tip box */
+        .tip-box {
+            background: rgba(88, 166, 255, 0.05);
+            border: 1px solid rgba(88, 166, 255, 0.15);
+            border-radius: 10px;
+            padding: clamp(0.75rem, 2vw, 1.25rem);
+            display: flex;
+            gap: 0.75rem;
+            align-items: flex-start;
+        }
+
+        .tip-box .tip-icon {
+            font-size: 1.2em;
+            flex-shrink: 0;
+        }
+
+        .tip-box p {
+            font-size: var(--small-size);
+        }
+
+        /* Quote */
+        .quote {
+            font-family: var(--font-display);
+            font-weight: 500;
+            font-size: clamp(1rem, 2.5vw, 1.75rem);
+            font-style: italic;
+            color: var(--text);
+            line-height: 1.5;
+            padding-left: clamp(1rem, 2vw, 1.5rem);
+            border-left: 3px solid var(--accent);
+            max-width: 700px;
+        }
+
+        /* Cursor blink */
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 0.9em;
+            background: var(--accent);
+            margin-left: 3px;
+            animation: blink 1s step-end infinite;
+            vertical-align: text-bottom;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Subtitle */
+        .subtitle {
+            font-size: clamp(0.85rem, 1.6vw, 1.1rem);
+            color: var(--text-muted);
+            line-height: 1.5;
+            max-width: 600px;
+        }
+
+        /* Section divider slide */
+        .section-slide {
+            text-align: center;
+            align-items: center;
+        }
+
+        .section-slide .slide-content {
+            align-items: center;
+        }
+
+        .section-number {
+            font-family: var(--font-mono);
+            font-size: var(--small-size);
+            color: var(--text-dim);
+            letter-spacing: 0.15em;
+        }
+
+        /* ===========================================
+           ANIMATIONS
+           Triggered via .visible class on scroll
+           =========================================== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(25px);
+            transition: opacity var(--duration) var(--ease-out-expo),
+                        transform var(--duration) var(--ease-out-expo);
+        }
+
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: opacity var(--duration) var(--ease-out-expo),
+                        transform var(--duration) var(--ease-out-expo);
+        }
+
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity var(--duration) var(--ease-out-expo),
+                        transform var(--duration) var(--ease-out-expo);
+        }
+
+        .slide.visible .reveal,
+        .slide.visible .reveal-left,
+        .slide.visible .reveal-scale {
+            opacity: 1;
+            transform: translateY(0) translateX(0) scale(1);
+        }
+
+        /* Stagger children */
+        .stagger > :nth-child(1) { transition-delay: 0.05s; }
+        .stagger > :nth-child(2) { transition-delay: 0.12s; }
+        .stagger > :nth-child(3) { transition-delay: 0.19s; }
+        .stagger > :nth-child(4) { transition-delay: 0.26s; }
+        .stagger > :nth-child(5) { transition-delay: 0.33s; }
+        .stagger > :nth-child(6) { transition-delay: 0.40s; }
+
+        .d1 { transition-delay: 0.1s !important; }
+        .d2 { transition-delay: 0.2s !important; }
+        .d3 { transition-delay: 0.3s !important; }
+        .d4 { transition-delay: 0.4s !important; }
+        .d5 { transition-delay: 0.5s !important; }
+
+        /* ===========================================
+           PROGRESS BAR
+           =========================================== */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-purple));
+            z-index: 100;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px var(--glow-blue);
+        }
+
+        /* ===========================================
+           NAV DOTS
+           =========================================== */
+        .nav-dots {
+            position: fixed;
+            right: clamp(0.75rem, 2vw, 1.5rem);
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 50;
+        }
+
+        .nav-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--text-dim);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 0;
+        }
+
+        .nav-dot.active {
+            background: var(--accent);
+            box-shadow: 0 0 8px var(--glow-blue);
+            transform: scale(1.3);
+        }
+
+        .nav-dot:hover {
+            background: var(--text-muted);
+        }
+
+        /* ===========================================
+           SLIDE COUNTER
+           =========================================== */
+        .slide-counter {
+            position: fixed;
+            bottom: clamp(1rem, 2vh, 1.5rem);
+            right: clamp(1rem, 2vw, 2rem);
+            font-family: var(--font-mono);
+            font-size: var(--small-size);
+            color: var(--text-dim);
+            z-index: 50;
+        }
+
+        /* ===========================================
+           KEYBOARD HINT
+           =========================================== */
+        .keyboard-hint {
+            position: fixed;
+            bottom: clamp(1rem, 2vh, 1.5rem);
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--text-dim);
+            z-index: 50;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        .keyboard-hint.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .keyboard-hint kbd {
+            display: inline-block;
+            padding: 0.15rem 0.4rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            background: var(--surface);
+            font-family: var(--font-mono);
+            font-size: inherit;
+        }
+
+        /* ===========================================
+           RESPONSIVE BREAKPOINTS
+           =========================================== */
+        @media (max-height: 700px) {
+            :root {
+                --slide-padding: clamp(1rem, 3vw, 2.5rem);
+                --content-gap: clamp(0.5rem, 1.5vw, 1rem);
+                --title-size: clamp(1.5rem, 5vw, 3rem);
+                --h2-size: clamp(1.25rem, 3.5vw, 2rem);
+            }
+        }
+
+        @media (max-height: 600px) {
+            :root {
+                --slide-padding: clamp(0.75rem, 2.5vw, 1.5rem);
+                --content-gap: clamp(0.4rem, 1vw, 0.75rem);
+                --title-size: clamp(1.25rem, 4vw, 2.5rem);
+                --body-size: clamp(0.7rem, 1.2vw, 0.9rem);
+            }
+            .nav-dots, .keyboard-hint { display: none; }
+        }
+
+        @media (max-height: 500px) {
+            :root {
+                --slide-padding: clamp(0.5rem, 2vw, 1rem);
+                --title-size: clamp(1rem, 3.5vw, 1.75rem);
+                --h2-size: clamp(0.9rem, 2.5vw, 1.5rem);
+                --body-size: clamp(0.65rem, 1vw, 0.8rem);
+            }
+        }
+
+        @media (max-width: 768px) {
+            :root {
+                --title-size: clamp(1.5rem, 8vw, 3rem);
+            }
+            .compare-grid { grid-template-columns: 1fr; }
+            .stat-row { flex-direction: column; align-items: center; }
+        }
+
+        @media (max-width: 600px) {
+            .nav-dots { display: none; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.2s !important;
+            }
+            html { scroll-behavior: auto; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Progress bar -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- Navigation dots -->
+<nav class="nav-dots" id="navDots"></nav>
+
+<!-- Slide counter -->
+<div class="slide-counter" id="slideCounter">01 / 27</div>
+
+<!-- Keyboard hint -->
+<div class="keyboard-hint" id="keyboardHint">
+    <kbd>&larr;</kbd> <kbd>&rarr;</kbd> or <kbd>Space</kbd> to navigate
+</div>
+
+
+<!-- ==========================================
+     SLIDE 1: TITLE
+     ========================================== -->
+<section class="slide grid-bg" data-slide="1">
+    <div class="orb orb-blue" style="width:400px;height:400px;top:-10%;left:-5%;"></div>
+    <div class="orb orb-green" style="width:300px;height:300px;bottom:-10%;right:-5%;"></div>
+    <div class="orb orb-purple" style="width:250px;height:250px;top:30%;right:20%;"></div>
+
+    <div class="slide-content" style="align-items:center; text-align:center;">
+        <div class="tag reveal">AGENTIC CODING</div>
+        <h1 class="reveal d1">Building KaroSpace<br>with <span class="gradient-text">AI Agents</span><span class="cursor"></span></h1>
+        <p class="subtitle reveal d2" style="text-align:center;">How Claude Code and Codex transformed spatial transcriptomics tools from concept to 15,000+ lines of production code</p>
+        <div style="display:flex; gap:clamp(0.5rem,2vw,1rem); margin-top:var(--content-gap);" class="reveal d3">
+            <div class="tool-badge"><span style="color:var(--accent);">&gt;_</span> Claude Code</div>
+            <div class="tool-badge"><span style="color:var(--accent-green);">&gt;_</span> Codex</div>
+        </div>
+        <p class="reveal d4" style="font-size:var(--small-size); color:var(--text-dim); margin-top:var(--content-gap);">Chris Langseth &middot; <span style="color:var(--accent);">Karolinska Institutet</span></p>
+    </div>
+</section>
+
+
+<!-- ==========================================
+     SLIDE 2: ABOUT ME
+     ========================================== -->
+<section class="slide slide-alt" data-slide="2">
+    <div class="orb orb-blue" style="width:300px;height:300px;top:10%;right:-5%;"></div>
+
+    <div class="slide-content">
+        <div class="tag tag-blue reveal">ABOUT ME</div>
+        <h2 class="reveal d1">Chris Langseth</h2>
+        <p class="subtitle reveal d2" style="margin-bottom:var(--content-gap);">Karolinska Institutet, Stockholm</p>
+
+        <ul class="bullet-list reveal d3 stagger">
+            <li>Working with spatial transcriptomics data analysis</li>
+            <li>Building tools to make complex data accessible</li>
+            <li>Early adopter of AI-assisted development workflows</li>
+            <li>Believer in: the best tool is the one that ships</li>
+        </ul>
+    </div>
+</section>
+
+
+<!-- ==========================================
+     SLIDE 3: THE PROBLEM
+     ========================================== -->
+<section class="slide grid-bg" data-slide="3">
+    <div class="orb orb-orange" style="width:350px;height:350px;bottom:0;left:-5%;"></div>
+
+    <div class="slide-content">
+        <div class="tag tag-orange reveal">THE CHALLENGE</div>
+        <h2 class="reveal d1">Spatial Transcriptomics Data<br>is <span class="gradient-text">Hard to Share</span></h2>
+        <p class="subtitle reveal d2" style="margin-bottom:var(--content-gap);">Researchers generate rich spatial data — but viewing it requires specialized tools, Python environments, and technical setup.</p>
+
+        <div class="card-grid reveal d3 stagger">
+            <div class="card">
+                <h3 style="color:var(--accent-red);">Problem</h3>
+                <p>Collaborators can't easily explore your data without installing Python, scanpy, and running Jupyter notebooks</p>
+            </div>
+            <div class="card">
+                <h3 style="color:var(--accent-red);">Problem</h3>
+                <p>Static images lose the ability to zoom, filter, compare sections, or explore gene expression interactively</p>
+            </div>
+            <div class="card">
+                <h3 style="color:var(--accent-green);">Goal</h3>
+                <p>A single HTML file anyone can open — no install, no server, full interactivity</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ==========================================
+     SLIDE 4: WHAT IS KAROSPACE
+     ========================================== -->
+<section class="slide slide-alt" data-slide="4">
+    <div class="orb orb-green" style="width:350px;height:350px;top:-5%;left:20%;"></div>
+
+    <div class="slide-content" style="align-items:center; text-align:center;">
+        <div class="tag reveal">INTRODUCING</div>
+        <h2 class="reveal d1" style="font-size:var(--title-size);">Karo<span class="gradient-green">Space</span></h2>
+        <p class="subtitle reveal d2" style="text-align:center; margin-bottom:var(--content-gap);">An interactive HTML viewer for spatial transcriptomics data. Open an h5ad file, get a self-contained HTML you can share with anyone.</p>
+
+        <div class="stat-row reveal d3">
+            <div class="stat">
+                <div class="stat-number" style="color:var(--accent);">15K+</div>
+                <div class="stat-label">Lines of Code</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number" style="color:var(--accent-green);">2</div>
+                <div class="stat-label">Projects</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number" style="color:var(--accent-purple);">0</div>
+                <div class="stat-label">Dependencies for Viewer</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number" style="color:var(--accent-orange);">1</div>
+                <div class="stat-label">HTML File Output</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ==========================================
+     SLIDE 5: KAROSPACE FEATURES I
+     ========================================== -->
+<section class="slide grid-bg" data-slide="5">
+    <div class="slide-content">
+        <div class="tag tag-blue reveal">FEATURES</div>
+        <h2 class="reveal d1">Grid View & Navigation</h2>
+        <p class="subtitle reveal d2" style="margin-bottom:var(--content-gap);">All tissue sections at a glance, with smart filtering and theming.</p>
+
+        <div class="card-grid reveal d3 stagger">
+            <div class="card">
+                <h3>Multi-Section Grid</h3>
+                <p>Responsive layout that adapts to any number of tissue sections</p>
+            </div>
+            <div class="card">
+                <h3>Filter Chips</h3>
+                <p>Metadata-based filtering to show only the sections you care about</p>
+            </div>
+            <div class="card">
+                <h3>Category Legend</h3>
+                <p>Toggle, hide, or spotlight cell categories across all sections</p>
+            </div>
+            <div class="card">
+                <h3>Dark / Light Theme</h3>
+                <p>Full theme toggle for presentation in any environment</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ==========================================
+     SLIDE 6: KAROSPACE FEATURES II
+     ========================================== -->
+<section class="slide slide-alt" data-slide="6">
+    <div class="orb orb-purple" style="width:300px;height:300px;bottom:5%;right:0;"></div>
+
+    <div class="slide-content">
+        <div class="tag tag-blue reveal">FEATURES</div>
+        <h2 class="reveal d1">Deep Exploration</h2>
+        <p class="subtitle reveal d2" style="margin-bottom:var(--content-gap);">Click any section to dive in with powerful analysis tools.</p>
+
+        <div class="card-grid reveal d3 stagger">
+            <div class="card">
+                <h3>Pan & Zoom</h3>
+                <p>Canvas-based rendering with smooth mouse wheel zoom and drag navigation</p>
+            </div>
+            <div class="card">
+                <h3>Split Compare</h3>
+                <p>A/B slider to compare two variables side-by-side on the same section</p>
+            </div>
+            <div class="card">
+                <h3>Gene Expression</h3>
+                <p>Overlay continuous gene expression data with adjustable scale controls</p>
+            </div>
+            <div class="card">
+                <h3>Lasso Selection</h3>
+                <p>Magic wand tool for selecting cells and exporting annotations as JSON</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ==========================================
+     SLIDE 7: KAROSPACE FEATURES III
+     ========================================== -->
+<section class="slide grid-bg" data-slide="7">
+    <div class="slide-content">
+        <div class="tag tag-blue reveal">FEATURES</div>
+        <h2 class="reveal d1">Insights & Analysis</h2>
+        <p class="subtitle reveal d2" style="margin-bottom:var(--content-gap);">Built-in analytics panels that work entirely in the browser.</p>
+
+        <div class="card-grid reveal d3 stagger">
+            <div class="card">
+                <h3>UMAP Panel</h3>
+                <p>Linked UMAP embedding with bi-directional selection between spatial and embedding views</p>
+            </div>
+            <div class="card">
+                <h3>Neighbor Analysis</h3>
+                <p>Composition stats, enrichment z-scores, and interaction browser for spatial neighborhoods</p>
+            </div>
+            <div class="card">
+                <h3>Gene Dotplots</h3>
+                <p>Per-category marker gene visualization and highly variable gene exploration</p>
+            </div>
+            <div class="card">
+                <h3>Stats Dashboard</h3>
+                <p>Aggregate summaries by metadata with interactive breakdowns</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ==========================================
+     SLIDE 8: KAROSPACEBUILDER
+     ========================================== -->
+<section class="slide slide-alt" data-slide="8">
+    <div class="orb orb-orange" style="width:350px;height:350px;top:5%;right:0;"></div>
+
+    <div class="slide-content">
+        <div class="tag tag-orange reveal">THE NEXT STEP</div>
+        <h2 class="reveal d1">Karo<span class="gradient-green">Space</span><span style="color:var(--accent-orange);">Builder</span></h2>
+        <p class="subtitle reveal d2" style="margin-bottom:var(--content-gap);">A desktop GUI so non-technical users can create KaroSpace viewers without writing code.</p>
+
+        <div class="card-grid reveal d3 stagger">
+            <div class="card">
+                <h3>No-Code GUI</h3>
+                <p>Point-and-click interface built with CustomTkinter — select an h5ad, configure, export</p>
+            </div>
+            <div class="card">
+                <h3>Searchable Dropdowns</h3>
+                <p>Auto-inspects your data to populate annotation columns, gene names, and coordinate fields</p>
+            </div>
+            <div class="card">
+                <h3>Cross-Platform Binaries</h3>
+                <p>PyInstaller builds for macOS (ARM + Intel), Windows, and Linux — no Python required</p>
+            </div>
+            <div class="card">
+                <h3>~5K Lines of Code</h3>
+                <p>3K-line GUI app + 1.3K export pipeline + CLI, gene selection, and schema modules</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ==========================================
+     SLIDE 9: THE SCALE — SECTION DIVIDER
+     ========================================== -->
+<section class="slide section-slide" data-slide="9">
+    <div class="orb orb-blue" style="width:500px;height:500px;top:20%;left:30%;opacity:0.7;"></div>
+    <div class="orb orb-green" style="width:300px;height:300px;bottom:20%;right:20%;"></div>
+
+    <div class="slide-content" style="align-items:center; text-align:center;">
+        <div class="section-number reveal">PART II</div>
+        <h1 class="reveal d1" style="margin-top:0.5rem;">Enter<br><span class="gradient-text">Agentic Coding</span></h1>
+        <p class="subtitle reveal d2" style="text-align:center; margin-top:var(--content-gap);">How I built all of this without writing most of the code by hand</p>
+    </div>
+</section>
+
+
+<!-- ==========================================
+     SLIDE 9: WHAT IS AGENTIC CODING
+     ========================================== -->
+<section class="slide slide-alt" data-slide="10">
+    <div class="slide-content">
+        <div class="tag tag-purple reveal">CONCEPT</div>
+        <h2 class="reveal d1">What is Agentic Coding?</h2>
+        <p class="subtitle reveal d2" style="margin-bottom:var(--content-gap);">A paradigm shift from "AI suggests lines" to "AI executes tasks."</p>
+
+        <div class="card-grid card-grid-2 reveal d3 stagger">
+            <div class="card" style="border-color:rgba(210,168,255,0.2);">
+                <h3 style="color:var(--text-muted);">Traditional AI Coding</h3>
+                <ul class="bullet-list" style="margin-top:var(--element-gap);">
+                    <li>Autocomplete in your editor</li>
+                    <li>Suggest the next few lines</li>
+                    <li>You drive, AI assists</li>
+                    <li>Context = current file</li>
+                </ul>
+            </div>
+            <div class="card" style="border-color:rgba(88,166,255,0.3); box-shadow:0 0 20px var(--glow-blue);">
+                <h3 style="color:var(--accent);">Agentic Coding</h3>
+                <ul class="bullet-list" style="margin-top:var(--element-gap);">
+                    <li>Full terminal + file system access</li>
+                    <li>Reads, writes, and runs code</li>
+                    <li>AI drives, you review</li>
+                    <li>Context = entire project</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ==========================================
+     SLIDE 10: CLAUDE CODE
+     ========================================== -->
+<section class="slide grid-bg" data-slide="11">
+    <div class="orb orb-blue" style="width:350px;height:350px;top:5%;right:5%;"></div>
+
+    <div class="slide-content">
+        <div class="tag tag-blue reveal">TOOL</div>
+        <h2 class="reveal d1"><span style="color:var(--accent);">&gt;_</span> Claude Code</h2>
+        <p class="subtitle reveal d2" style="margin-bottom:var(--content-gap);">Anthropic's CLI agent. Lives in your terminal, works across your entire project.</p>
+
+        <ul class="bullet-list reveal d3 stagger">
+            <li>Runs in your terminal — reads files, writes code, executes commands</li>
+            <li>Full project context through file search, grep, and directory traversal</li>
+            <li>Iterative: runs tests, sees errors, fixes them autonomously</li>
+            <li>Extended thinking for complex architectural decisions</li>
+            <li>Git-aware: understands branches, diffs, commit history</li>
+        </ul>
+    </div>
+</section>
+
+
+<!-- ==========================================
+     SLIDE 11: CODEX
+     ========================================== -->
+<section class="slide slide-alt" data-slide="12">
+    <div class="orb orb-green" style="width:350px;height:350px;bottom:0;left:5%;"></div>
+
+    <div class="slide-content">
+        <div class="tag reveal">TOOL</div>
+        <h2 class="reveal d1"><span style="color:var(--accent-green);">&gt;_</span> Codex</h2>
+        <p class="subtitle reveal d2" style="margin-bottom:var(--content-gap);">OpenAI's CLI agent. Sandboxed execution with network-isolated containers.</p>
+
+        <ul class="bullet-list reveal d3 stagger">
+            <li>Terminal-based agent with automatic sandboxing for safety</li>
+            <li>Reads your codebase, proposes and applies changes</li>
+            <li>Network-disabled by default — focused on local code tasks</li>
+            <li>Multi-file edits with unified diff review</li>
+            <li>Fast for focused, well-scoped implementation tasks</li>
+        </ul>
+    </div>
+</section>
+
+
+<!-- ==========================================
+     SLIDE 12: HEAD TO HEAD
+     ========================================== -->
+<section class="slide grid-bg" data-slide="13">
+    <div class="slide-content">
+        <div class="tag tag-orange reveal">COMPARISON</div>
+        <h2 class="reveal d1">Head-to-Head</h2>
+
+        <div class="compare-grid reveal d2">
+            <div class="compare-col" style="border-color:rgba(88,166,255,0.2);">
+                <h3><span style="color:var(--accent);">&gt;_</span> Claude Code</h3>
+                <ul class="bullet-list stagger">
+                    <li>Deep project understanding</li>
+                    <li>Excels at architecture</li>
+                    <li>Runs tests & self-corrects</li>
+                    <li>Strong at refactoring</li>
+                    <li>Extended thinking mode</li>
+                </ul>
+            </div>
+            <div class="compare-col" style="border-color:rgba(63,185,80,0.2);">
+                <h3><span style="color:var(--accent-green);">&gt;_</span> Codex</h3>
+                <ul class="bullet-list stagger">
+                    <li>Fast, focused execution</li>
+                    <li>Sandboxed by default</li>
+                    <li>Clean diff-based review</li>
+                    <li>Good at scoped changes</li>
+                    <li>Predictable behavior</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ==========================================
+     SLIDE 13: MY WORKFLOW — SECTION DIVIDER
+     ========================================== -->
+<section class="slide section-slide" data-slide="14">
+    <div class="orb orb-purple" style="width:400px;height:400px;top:30%;left:20%;"></div>
+    <div class="orb orb-orange" style="width:250px;height:250px;bottom:15%;right:25%;"></div>
+
+    <div class="slide-content" style="align-items:center; text-align:center;">
+        <div class="section-number reveal">PART III</div>
+        <h1 class="reveal d1" style="margin-top:0.5rem;">Building<br><span class="gradient-green">KaroSpace</span></h1>
+        <p class="subtitle reveal d2" style="text-align:center; margin-top:var(--content-gap);">The story of how AI agents built 15K+ LOC of scientific tools</p>
+    </div>
+</section>
+
+
+<!-- ==========================================
+     SLIDE 14: MY WORKFLOW
+     ========================================== -->
+<section class="slide slide-alt" data-slide="15">
+    <div class="slide-content">
+        <div class="tag tag-purple reveal">WORKFLOW</div>
+        <h2 class="reveal d1">How I Used Both Tools</h2>
+        <p class="subtitle reveal d2" style="margin-bottom:var(--content-gap);">Not "one or the other" — each tool has its sweet spot.</p>
+
+        <div class="card-grid card-grid-2 reveal d3 stagger">
+            <div class="card">
+                <h3 style="color:var(--accent);">Claude Code for...</h3>
+                <p>Architecture decisions, complex features, debugging multi-file issues, refactoring, writing the 7K-line exporter</p>
+            </div>
+            <div class="card">
+                <h3 style="color:var(--accent-green);">Codex for...</h3>
+                <p>Focused feature additions, isolated component work, quick implementations where the scope was clear</p>
+            </div>
+        </div>
+
+        <div class="tip-box reveal d4" style="margin-top:var(--content-gap);">
+            <span class="tip-icon" style="color:var(--accent);">*</span>
+            <p style="color:var(--text);">Key insight: Use the right tool for the right job. Architect with Claude Code, implement scoped tasks with either.</p>
+        </div>
+    </div>
+</section>
+
+
+<!-- ==========================================
+     SLIDE 15: PHASE 1 — ARCHITECTURE
+     ========================================== -->
+<section class="slide grid-bg" data-slide="16">
+    <div class="orb orb-blue" style="width:300px;height:300px;top:5%;left:0;"></div>
+
+    <div class="slide-content">
+        <div class="tag tag-blue reveal">PHASE 1</div>
+        <h2 class="reveal d1">Architecture & Scaffolding</h2>
+        <p class="subtitle reveal d2" style="margin-bottom:var(--content-gap);">Starting from scratch: defining the project structure and data pipeline.</p>
+
+        <div class="timeline reveal d3 stagger">
+            <div class="timeline-item">
+                <h3>Defined the data model</h3>
+                <p>h5ad in &rarr; SpatialDataset class &rarr; serialized JSON &rarr; embedded in HTML</p>
+            </div>
+            <div class="timeline-item">
+                <h3>Designed module boundaries</h3>
+                <p>data_loader.py | exporter.py | cli.py | gui.py | annotations.py</p>
+            </div>
+            <div class="timeline-item">
+                <h3>Chose canvas over SVG/DOM</h3>
+                <p>Canvas handles 100K+ cells without DOM overhead — critical for performance</p>
+            </div>
+            <div class="timeline-item">
+                <h3>Single-file output constraint</h3>
+                <p>All JS, CSS, and data embedded inline — zero external dependencies</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ==========================================
+     SLIDE 16: PHASE 2 — CORE ENGINE
+     ========================================== -->
+<section class="slide slide-alt" data-slide="17">
+    <div class="slide-content">
+        <div class="tag tag-blue reveal">PHASE 2</div>
+        <h2 class="reveal d1">The Core Rendering Engine</h2>
+        <p class="subtitle reveal d2" style="margin-bottom:var(--content-gap);">The exporter.py grew to 7,305 lines — the heart of KaroSpace.</p>
+
+        <div class="code-block reveal d3">
+            <span class="comment"># The exporter generates a self-contained HTML viewer</span><br>
+            <span class="keyword">class</span> <span class="function">KaroSpaceExporter</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="function">export</span>(<span class="keyword">self</span>, adata, output_path):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># 1. Process spatial coordinates</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># 2. Serialize cell metadata to JSON</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># 3. Generate canvas rendering JS</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># 4. Embed everything into single HTML</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># 5. Write to disk</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> <span class="string">f"</span>{output_path}<span class="string">.html"</span>
+        </div>
+
+        <div class="tip-box reveal d4" style="margin-top:var(--content-gap);">
+            <span class="tip-icon" style="color:var(--accent);">*</span>
+            <p style="color:var(--text);">This module alone is larger than many entire projects — and it was built iteratively with AI agents over many sessions.</p>
+        </div>
+    </div>
+</section>
+
+
+<!-- ==========================================
+     SLIDE 17: PHASE 3 — FEATURES
+     ========================================== -->
+<section class="slide grid-bg" data-slide="18">
+    <div class="orb orb-green" style="width:300px;height:300px;bottom:0;right:5%;"></div>
+
+    <div class="slide-content">
+        <div class="tag tag-blue reveal">PHASE 3</div>
+        <h2 class="reveal d1">Feature by Feature</h2>
+        <p class="subtitle reveal d2" style="margin-bottom:var(--content-gap);">Each feature was a conversation: describe what you want, review the result, iterate.</p>
+
+        <div class="card-grid reveal d3 stagger">
+            <div class="card">
+                <h3>Split Compare Slider</h3>
+                <p>Described the UX pattern, agent built the A/B slider with canvas compositing</p>
+            </div>
+            <div class="card">
+                <h3>UMAP Integration</h3>
+                <p>Bi-directional selection linking required careful state management</p>
+            </div>
+            <div class="card">
+                <h3>Neighbor Analysis</h3>
+                <p>Z-scores, enrichment stats, interaction browser — all computed in the browser</p>
+            </div>
+            <div class="card">
+                <h3>Annotation System</h3>
+                <p>Polygon drawing, labeling, and JSON export for downstream integration</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ==========================================
+     SLIDE 18: PHASE 4 — POLISH
+     ========================================== -->
+<section class="slide slide-alt" data-slide="19">
+    <div class="slide-content">
+        <div class="tag tag-blue reveal">PHASE 4</div>
+        <h2 class="reveal d1">Iteration & Polish</h2>
+        <p class="subtitle reveal d2" style="margin-bottom:var(--content-gap);">The last 20% takes 80% of the effort — even with AI.</p>
+
+        <ul class="bullet-list reveal d3 stagger">
+            <li>Performance optimization: rendering 100K+ cells smoothly on canvas</li>
+            <li>Edge cases: handling missing data, empty sections, malformed h5ad files</li>
+            <li>Responsive layout: the grid adapts from 1 section to 50+</li>
+            <li>Cross-browser testing and theme consistency</li>
+            <li>Building the CLI, GUI, and Python API interfaces</li>
+        </ul>
+    </div>
+</section>
+
+
+<!-- ==========================================
+     SLIDE 20: PHASE 5 — KAROSPACEBUILDER
+     ========================================== -->
+<section class="slide grid-bg" data-slide="20">
+    <div class="orb orb-orange" style="width:300px;height:300px;top:0;right:5%;"></div>
+
+    <div class="slide-content">
+        <div class="tag tag-orange reveal">PHASE 5</div>
+        <h2 class="reveal d1">Building KaroSpaceBuilder</h2>
+        <p class="subtitle reveal d2" style="margin-bottom:var(--content-gap);">A full desktop application — GUI, CLI, and cross-platform packaging.</p>
+
+        <div class="timeline reveal d3 stagger">
+            <div class="timeline-item">
+                <h3>GUI with CustomTkinter</h3>
+                <p>3,125-line app with searchable dropdowns, progress tracking, light/dark themes in Karolinska branding</p>
+            </div>
+            <div class="timeline-item">
+                <h3>Export pipeline</h3>
+                <p>Handles sparse matrices, memory-aware chunking, gene ranking (HVGs, top-mean), coordinate auto-detection</p>
+            </div>
+            <div class="timeline-item">
+                <h3>CLI for automation</h3>
+                <p>Full argument support mirroring the GUI — enables scripted batch exports</p>
+            </div>
+            <div class="timeline-item">
+                <h3>PyInstaller + GitHub Actions</h3>
+                <p>Cross-platform CI/CD builds for macOS ARM, macOS Intel, Windows, and Linux</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ==========================================
+     SLIDE 21: WHAT WORKED — SECTION DIVIDER
+     ========================================== -->
+<section class="slide section-slide" data-slide="21">
+    <div class="orb orb-green" style="width:400px;height:400px;top:25%;right:25%;"></div>
+
+    <div class="slide-content" style="align-items:center; text-align:center;">
+        <div class="section-number reveal">PART IV</div>
+        <h1 class="reveal d1" style="margin-top:0.5rem;">Lessons<br><span class="gradient-text">Learned</span></h1>
+        <p class="subtitle reveal d2" style="text-align:center; margin-top:var(--content-gap);">What worked, what didn't, and practical tips for your projects</p>
+    </div>
+</section>
+
+
+<!-- ==========================================
+     SLIDE 20: WHAT WORKED
+     ========================================== -->
+<section class="slide grid-bg" data-slide="22">
+    <div class="orb orb-green" style="width:300px;height:300px;top:0;left:0;"></div>
+
+    <div class="slide-content">
+        <div class="tag reveal">WINS</div>
+        <h2 class="reveal d1">What Worked Well</h2>
+
+        <ul class="bullet-list reveal d2 stagger">
+            <li><strong style="color:var(--text);">Rapid prototyping</strong> — Going from idea to working prototype in hours, not days</li>
+            <li><strong style="color:var(--text);">Fearless refactoring</strong> — "Restructure this 2000-line file into these modules" just works</li>
+            <li><strong style="color:var(--text);">Domain bridging</strong> — AI understood both Python/scanpy and browser JavaScript</li>
+            <li><strong style="color:var(--text);">Boilerplate elimination</strong> — Canvas rendering, event handling, UI state management</li>
+            <li><strong style="color:var(--text);">Learning accelerator</strong> — Used patterns and APIs I didn't know existed</li>
+        </ul>
+    </div>
+</section>
+
+
+<!-- ==========================================
+     SLIDE 21: WHAT DIDN'T WORK
+     ========================================== -->
+<section class="slide slide-alt" data-slide="23">
+    <div class="orb orb-orange" style="width:300px;height:300px;bottom:0;right:0;"></div>
+
+    <div class="slide-content">
+        <div class="tag tag-orange reveal">CHALLENGES</div>
+        <h2 class="reveal d1">What Didn't Work</h2>
+
+        <ul class="bullet-list reveal d2 stagger">
+            <li><strong style="color:var(--text);">Context limits</strong> — The 7K-line exporter sometimes exceeded context windows</li>
+            <li><strong style="color:var(--text);">Subtle regressions</strong> — Fixing one feature could silently break another</li>
+            <li><strong style="color:var(--text);">Over-engineering</strong> — AI sometimes adds unnecessary abstractions if unchecked</li>
+            <li><strong style="color:var(--text);">Domain-specific bugs</strong> — Spatial data edge cases required human domain knowledge</li>
+            <li><strong style="color:var(--text);">Testing gaps</strong> — Generated code often lacked comprehensive tests initially</li>
+        </ul>
+    </div>
+</section>
+
+
+<!-- ==========================================
+     SLIDE 22: PROMPTING STRATEGIES
+     ========================================== -->
+<section class="slide grid-bg" data-slide="24">
+    <div class="slide-content">
+        <div class="tag tag-purple reveal">TIPS</div>
+        <h2 class="reveal d1">Prompting Strategies</h2>
+        <p class="subtitle reveal d2" style="margin-bottom:var(--content-gap);">How you talk to the agent matters as much as which agent you use.</p>
+
+        <div class="card-grid reveal d3 stagger">
+            <div class="card">
+                <h3 style="color:var(--accent);">Be Specific</h3>
+                <p>"Add a split slider that composites two canvas layers with a draggable divider" beats "add compare mode"</p>
+            </div>
+            <div class="card">
+                <h3 style="color:var(--accent-green);">Show Examples</h3>
+                <p>Reference existing patterns in your code — "do it like the zoom handler in exporter.py line 3400"</p>
+            </div>
+            <div class="card">
+                <h3 style="color:var(--accent-purple);">Iterate Small</h3>
+                <p>One feature per conversation. Don't ask for 5 things at once — you'll get 5 mediocre things</p>
+            </div>
+            <div class="card">
+                <h3 style="color:var(--accent-orange);">Review Everything</h3>
+                <p>AI writes the first draft. You must understand it, test it, and own it. Never ship blindly.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ==========================================
+     SLIDE 23: WHEN TO USE WHICH
+     ========================================== -->
+<section class="slide slide-alt" data-slide="25">
+    <div class="slide-content">
+        <div class="tag tag-orange reveal">DECISION FRAMEWORK</div>
+        <h2 class="reveal d1">When to Use Which Tool</h2>
+
+        <div class="compare-grid reveal d2">
+            <div class="compare-col" style="border-color:rgba(88,166,255,0.2);">
+                <h3><span style="color:var(--accent);">Claude Code</span> when...</h3>
+                <ul class="bullet-list stagger">
+                    <li>Designing new architecture</li>
+                    <li>Multi-file refactoring</li>
+                    <li>Complex debugging</li>
+                    <li>You need the AI to explore</li>
+                    <li>Long iterative sessions</li>
+                </ul>
+            </div>
+            <div class="compare-col" style="border-color:rgba(63,185,80,0.2);">
+                <h3><span style="color:var(--accent-green);">Codex</span> when...</h3>
+                <ul class="bullet-list stagger">
+                    <li>Well-scoped implementations</li>
+                    <li>Adding isolated features</li>
+                    <li>Safety-critical changes</li>
+                    <li>You want clean diffs</li>
+                    <li>Quick, focused tasks</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ==========================================
+     SLIDE 24: KEY TAKEAWAYS
+     ========================================== -->
+<section class="slide grid-bg" data-slide="26">
+    <div class="orb orb-blue" style="width:400px;height:400px;top:10%;left:10%;"></div>
+    <div class="orb orb-purple" style="width:300px;height:300px;bottom:10%;right:10%;"></div>
+
+    <div class="slide-content" style="align-items:center; text-align:center;">
+        <div class="tag tag-purple reveal">TAKEAWAYS</div>
+        <h2 class="reveal d1" style="max-width:800px;">Key Takeaways</h2>
+
+        <div style="display:flex; flex-direction:column; gap:var(--element-gap); max-width:700px; text-align:left; margin-top:var(--content-gap);" class="reveal d2 stagger">
+            <div class="card" style="display:flex; gap:0.75rem; align-items:flex-start;">
+                <span style="color:var(--accent); font-family:var(--font-mono); font-weight:bold; flex-shrink:0;">01</span>
+                <p style="color:var(--text);"><strong>Agentic coding is real and production-ready.</strong> KaroSpace + KaroSpaceBuilder: 15K+ LOC, used daily.</p>
+            </div>
+            <div class="card" style="display:flex; gap:0.75rem; align-items:flex-start;">
+                <span style="color:var(--accent-green); font-family:var(--font-mono); font-weight:bold; flex-shrink:0;">02</span>
+                <p style="color:var(--text);"><strong>Use both tools.</strong> Claude Code for depth, Codex for speed. They complement each other.</p>
+            </div>
+            <div class="card" style="display:flex; gap:0.75rem; align-items:flex-start;">
+                <span style="color:var(--accent-purple); font-family:var(--font-mono); font-weight:bold; flex-shrink:0;">03</span>
+                <p style="color:var(--text);"><strong>You're still the architect.</strong> AI accelerates execution, but you own the vision and quality.</p>
+            </div>
+            <div class="card" style="display:flex; gap:0.75rem; align-items:flex-start;">
+                <span style="color:var(--accent-orange); font-family:var(--font-mono); font-weight:bold; flex-shrink:0;">04</span>
+                <p style="color:var(--text);"><strong>Researchers can build tools.</strong> The barrier to creating software just dropped dramatically.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ==========================================
+     SLIDE 25: THANK YOU
+     ========================================== -->
+<section class="slide section-slide" data-slide="27">
+    <div class="orb orb-blue" style="width:400px;height:400px;top:15%;left:20%;"></div>
+    <div class="orb orb-green" style="width:300px;height:300px;bottom:15%;right:20%;"></div>
+    <div class="orb orb-purple" style="width:250px;height:250px;top:40%;right:10%;"></div>
+
+    <div class="slide-content" style="align-items:center; text-align:center;">
+        <h1 class="reveal" style="font-size:var(--title-size);">Thank You<span class="cursor"></span></h1>
+        <p class="subtitle reveal d1" style="text-align:center; margin-top:var(--content-gap);">Questions, thoughts, or stories about your own AI coding adventures?</p>
+        <div style="display:flex; gap:clamp(0.5rem,2vw,1rem); margin-top:var(--content-gap); flex-wrap:wrap; justify-content:center;" class="reveal d2">
+            <div class="tool-badge">Chris Langseth</div>
+            <div class="tool-badge" style="color:var(--accent);">Karolinska Institutet</div>
+        </div>
+        <p class="reveal d3" style="font-size:var(--small-size); color:var(--text-dim); margin-top:var(--content-gap); font-family:var(--font-mono);">github.com/karospace</p>
+    </div>
+</section>
+
+
+<!-- ==========================================
+   JAVASCRIPT: Presentation Controller
+   Handles navigation, animations, and interactions
+   ========================================== -->
+<script>
+class SlidePresentation {
+    constructor() {
+        this.slides = document.querySelectorAll('.slide');
+        this.totalSlides = this.slides.length;
+        this.currentSlide = 0;
+        this.isAnimating = false;
+        this.touchStartY = 0;
+
+        this.progressBar = document.getElementById('progressBar');
+        this.navDots = document.getElementById('navDots');
+        this.slideCounter = document.getElementById('slideCounter');
+        this.keyboardHint = document.getElementById('keyboardHint');
+
+        this.init();
+    }
+
+    init() {
+        this.createNavDots();
+        this.setupIntersectionObserver();
+        this.setupKeyboardNav();
+        this.setupTouchNav();
+        this.setupWheelNav();
+        this.updateUI();
+
+        // Hide keyboard hint after first navigation
+        this.hasNavigated = false;
+    }
+
+    /* -------------------------------------------
+       Navigation Dots
+       Creates clickable dots for each slide
+       ------------------------------------------- */
+    createNavDots() {
+        this.slides.forEach((_, i) => {
+            const dot = document.createElement('button');
+            dot.className = 'nav-dot';
+            dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+            dot.addEventListener('click', () => this.goToSlide(i));
+            this.navDots.appendChild(dot);
+        });
+    }
+
+    /* -------------------------------------------
+       Intersection Observer
+       Triggers .visible class when slides enter view
+       ------------------------------------------- */
+    setupIntersectionObserver() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    const index = Array.from(this.slides).indexOf(entry.target);
+                    this.currentSlide = index;
+                    this.updateUI();
+                }
+            });
+        }, {
+            threshold: 0.5
+        });
+
+        this.slides.forEach(slide => observer.observe(slide));
+    }
+
+    /* -------------------------------------------
+       Keyboard Navigation
+       Arrow keys, Space, Page Up/Down, Home/End
+       ------------------------------------------- */
+    setupKeyboardNav() {
+        document.addEventListener('keydown', (e) => {
+            switch(e.key) {
+                case 'ArrowDown':
+                case 'ArrowRight':
+                case ' ':
+                case 'PageDown':
+                    e.preventDefault();
+                    this.nextSlide();
+                    break;
+                case 'ArrowUp':
+                case 'ArrowLeft':
+                case 'PageUp':
+                    e.preventDefault();
+                    this.prevSlide();
+                    break;
+                case 'Home':
+                    e.preventDefault();
+                    this.goToSlide(0);
+                    break;
+                case 'End':
+                    e.preventDefault();
+                    this.goToSlide(this.totalSlides - 1);
+                    break;
+            }
+        });
+    }
+
+    /* -------------------------------------------
+       Touch Navigation
+       Swipe up/down to navigate on mobile
+       ------------------------------------------- */
+    setupTouchNav() {
+        document.addEventListener('touchstart', (e) => {
+            this.touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+
+        document.addEventListener('touchend', (e) => {
+            const touchEndY = e.changedTouches[0].clientY;
+            const diff = this.touchStartY - touchEndY;
+
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) this.nextSlide();
+                else this.prevSlide();
+            }
+        }, { passive: true });
+    }
+
+    /* -------------------------------------------
+       Mouse Wheel Navigation
+       Throttled scroll for smooth slide transitions
+       ------------------------------------------- */
+    setupWheelNav() {
+        let lastWheel = 0;
+        document.addEventListener('wheel', (e) => {
+            const now = Date.now();
+            if (now - lastWheel < 800) return;
+            lastWheel = now;
+
+            if (e.deltaY > 0) this.nextSlide();
+            else if (e.deltaY < 0) this.prevSlide();
+        }, { passive: true });
+    }
+
+    /* -------------------------------------------
+       Navigation Methods
+       ------------------------------------------- */
+    nextSlide() {
+        if (this.currentSlide < this.totalSlides - 1) {
+            this.goToSlide(this.currentSlide + 1);
+        }
+    }
+
+    prevSlide() {
+        if (this.currentSlide > 0) {
+            this.goToSlide(this.currentSlide - 1);
+        }
+    }
+
+    goToSlide(index) {
+        if (index < 0 || index >= this.totalSlides) return;
+
+        this.slides[index].scrollIntoView({ behavior: 'smooth' });
+        this.currentSlide = index;
+        this.updateUI();
+
+        // Hide keyboard hint after first nav
+        if (!this.hasNavigated) {
+            this.hasNavigated = true;
+            this.keyboardHint.classList.add('hidden');
+        }
+    }
+
+    /* -------------------------------------------
+       UI Updates
+       Progress bar, nav dots, slide counter
+       ------------------------------------------- */
+    updateUI() {
+        // Progress bar
+        const progress = ((this.currentSlide + 1) / this.totalSlides) * 100;
+        this.progressBar.style.width = `${progress}%`;
+
+        // Nav dots
+        const dots = this.navDots.querySelectorAll('.nav-dot');
+        dots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === this.currentSlide);
+        });
+
+        // Slide counter
+        const current = String(this.currentSlide + 1).padStart(2, '0');
+        const total = String(this.totalSlides).padStart(2, '0');
+        this.slideCounter.textContent = `${current} / ${total}`;
+    }
+}
+
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    new SlidePresentation();
+});
+</script>
+
+</body>
+</html>

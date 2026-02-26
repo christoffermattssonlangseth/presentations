@@ -15,24 +15,24 @@
            Change these to restyle the entire presentation
            =========================================== */
         :root {
-            /* Colors */
-            --bg: #0c1117;
-            --bg-alt: #0f1620;
-            --surface: #161b22;
-            --surface-hover: #1c2129;
-            --border: #30363d;
-            --text: #e6edf3;
-            --text-muted: #8b949e;
-            --text-dim: #484f58;
-            --accent: #58a6ff;
+            /* Colors — KaroSpace branded palette */
+            --bg: #0f141d;
+            --bg-alt: #131a26;
+            --surface: #17202d;
+            --surface-hover: #1d2735;
+            --border: #2a3445;
+            --text: #e6e9ef;
+            --text-muted: #9ea8ba;
+            --text-dim: #5a6577;
+            --accent: #870052;
             --accent-green: #3fb950;
-            --accent-purple: #d2a8ff;
-            --accent-orange: #f0883e;
+            --accent-purple: #a34d7f;
+            --accent-orange: #ff876f;
             --accent-red: #f85149;
             --accent-yellow: #e3b341;
-            --glow-blue: rgba(88, 166, 255, 0.15);
+            --glow-accent: rgba(135, 0, 82, 0.15);
             --glow-green: rgba(63, 185, 80, 0.15);
-            --glow-purple: rgba(210, 168, 255, 0.12);
+            --glow-purple: rgba(163, 77, 127, 0.12);
 
             /* Typography — all clamp() for responsive scaling */
             --font-display: 'Satoshi', sans-serif;
@@ -118,8 +118,8 @@
             position: absolute;
             inset: 0;
             background-image:
-                linear-gradient(rgba(88, 166, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(88, 166, 255, 0.03) 1px, transparent 1px);
+                linear-gradient(rgba(135, 0, 82, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(135, 0, 82, 0.03) 1px, transparent 1px);
             background-size: 40px 40px;
             mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
             pointer-events: none;
@@ -133,16 +133,16 @@
             pointer-events: none;
         }
         .orb-blue {
-            background: radial-gradient(circle, rgba(88, 166, 255, 0.18), transparent);
+            background: radial-gradient(circle, rgba(135, 0, 82, 0.18), transparent);
         }
         .orb-green {
             background: radial-gradient(circle, rgba(63, 185, 80, 0.14), transparent);
         }
         .orb-purple {
-            background: radial-gradient(circle, rgba(210, 168, 255, 0.12), transparent);
+            background: radial-gradient(circle, rgba(163, 77, 127, 0.12), transparent);
         }
         .orb-orange {
-            background: radial-gradient(circle, rgba(240, 136, 62, 0.12), transparent);
+            background: radial-gradient(circle, rgba(255, 135, 111, 0.12), transparent);
         }
 
         /* Alt background for variety */
@@ -183,14 +183,14 @@
         }
 
         .gradient-text {
-            background: linear-gradient(135deg, var(--accent), var(--accent-purple));
+            background: linear-gradient(135deg, var(--accent), var(--accent-orange));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
         .gradient-green {
-            background: linear-gradient(135deg, var(--accent-green), var(--accent));
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-purple));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -231,11 +231,11 @@
         }
 
         /* Section tag (different color variants) */
-        .tag-blue { color: var(--accent); background: rgba(88, 166, 255, 0.06); border-color: rgba(88, 166, 255, 0.2); }
+        .tag-blue { color: var(--accent); background: rgba(135, 0, 82, 0.06); border-color: rgba(135, 0, 82, 0.2); }
         .tag-blue::before { background: var(--accent); }
-        .tag-purple { color: var(--accent-purple); background: rgba(210, 168, 255, 0.06); border-color: rgba(210, 168, 255, 0.2); }
+        .tag-purple { color: var(--accent-purple); background: rgba(163, 77, 127, 0.06); border-color: rgba(163, 77, 127, 0.2); }
         .tag-purple::before { background: var(--accent-purple); }
-        .tag-orange { color: var(--accent-orange); background: rgba(240, 136, 62, 0.06); border-color: rgba(240, 136, 62, 0.2); }
+        .tag-orange { color: var(--accent-orange); background: rgba(255, 135, 111, 0.06); border-color: rgba(255, 135, 111, 0.2); }
         .tag-orange::before { background: var(--accent-orange); }
 
         /* Card */
@@ -249,7 +249,7 @@
 
         .card:hover {
             border-color: var(--accent);
-            box-shadow: 0 0 30px var(--glow-blue);
+            box-shadow: 0 0 30px var(--glow-accent);
             transform: translateY(-2px);
         }
 
@@ -289,7 +289,7 @@
 
         .tool-badge:hover {
             border-color: var(--accent);
-            box-shadow: 0 0 20px var(--glow-blue);
+            box-shadow: 0 0 20px var(--glow-accent);
         }
 
         /* Bullet list */
@@ -429,8 +429,8 @@
 
         /* Tip box */
         .tip-box {
-            background: rgba(88, 166, 255, 0.05);
-            border: 1px solid rgba(88, 166, 255, 0.15);
+            background: rgba(135, 0, 82, 0.05);
+            border: 1px solid rgba(135, 0, 82, 0.15);
             border-radius: 10px;
             padding: clamp(0.75rem, 2vw, 1.25rem);
             display: flex;
@@ -555,10 +555,10 @@
             top: 0;
             left: 0;
             height: 3px;
-            background: linear-gradient(90deg, var(--accent), var(--accent-purple));
+            background: linear-gradient(90deg, var(--accent), var(--accent-orange));
             z-index: 100;
             transition: width 0.3s ease;
-            box-shadow: 0 0 10px var(--glow-blue);
+            box-shadow: 0 0 10px var(--glow-accent);
         }
 
         /* ===========================================
@@ -588,7 +588,7 @@
 
         .nav-dot.active {
             background: var(--accent);
-            box-shadow: 0 0 8px var(--glow-blue);
+            box-shadow: 0 0 8px var(--glow-accent);
             transform: scale(1.3);
         }
 
@@ -701,7 +701,7 @@
 <nav class="nav-dots" id="navDots"></nav>
 
 <!-- Slide counter -->
-<div class="slide-counter" id="slideCounter">01 / 27</div>
+<div class="slide-counter" id="slideCounter">01 / 30</div>
 
 <!-- Keyboard hint -->
 <div class="keyboard-hint" id="keyboardHint">
@@ -743,9 +743,10 @@
 
         <ul class="bullet-list reveal d3 stagger">
             <li>Computational biologist specializing in <strong>neuroinflammation</strong> &amp; <strong>spatial omics</strong></li>
-            <li>PhD in the <strong>Nilsson Lab</strong> — developed HybISS, mapped the cellular architecture of the human cortex, and studied oligodendrocyte lineage in development &amp; EAE</li>
-            <li>First author in <em>Cell</em> (2024): spatiotemporal atlas of neuroinflammatory lesions in MS</li>
+            <li>PhD in the <strong>Nilsson Lab</strong> — spatial transcriptomics method development &amp; brain mapping</li>
+            <li>Published a spatiotemporal atlas of neuroinflammatory lesions in animal model of MS and patient with MS (<em>Cell</em> 2024)</li>
             <li>Now building open-source spatial omics tools — KaroSpace, KaroSpaceBuilder, InSituCore</li>
+            <li>Working on biological projects including mouse models of MS and MS patient tissue samples using Xenium</li>
         </ul>
     </div>
 </section>
@@ -942,9 +943,42 @@
 
 
 <!-- ==========================================
-     SLIDE 9: THE SCALE — SECTION DIVIDER
+     SLIDE 9: KAROSPACE.SE
      ========================================== -->
-<section class="slide section-slide" data-slide="9">
+<section class="slide grid-bg" data-slide="9">
+    <div class="orb orb-blue" style="width:300px;height:300px;top:5%;left:5%;"></div>
+
+    <div class="slide-content">
+        <div class="tag reveal">PUBLIC PORTAL</div>
+        <h2 class="reveal d1">Karo<span class="gradient-green">Space</span><span style="color:var(--text-muted);">.se</span></h2>
+        <p class="subtitle reveal d2" style="margin-bottom:var(--content-gap);">A static site for sharing spatial transcriptomics datasets — no build step, no backend.</p>
+
+        <div class="card-grid reveal d3 stagger">
+            <div class="card">
+                <h3>Static Architecture</h3>
+                <p>Cloudflare Pages serves the portal UI; Cloudflare R2 hosts large interactive viewer files separately</p>
+            </div>
+            <div class="card">
+                <h3>Data-Driven</h3>
+                <p>A single datasets.json defines all metadata and viewer paths — add a dataset by editing one file</p>
+            </div>
+            <div class="card">
+                <h3>Chunked Delivery</h3>
+                <p>Python script splits large embedded JSON into chunked files + manifest for fast loading</p>
+            </div>
+            <div class="card">
+                <h3>Automated Pipeline</h3>
+                <p>Scripts handle thumbnail generation (Playwright) and R2 upload (S3-compatible API)</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ==========================================
+     SLIDE 10: THE SCALE — SECTION DIVIDER
+     ========================================== -->
+<section class="slide section-slide" data-slide="10">
     <div class="orb orb-blue" style="width:500px;height:500px;top:20%;left:30%;opacity:0.7;"></div>
     <div class="orb orb-green" style="width:300px;height:300px;bottom:20%;right:20%;"></div>
 
@@ -959,14 +993,14 @@
 <!-- ==========================================
      SLIDE 9: WHAT IS AGENTIC CODING
      ========================================== -->
-<section class="slide slide-alt" data-slide="10">
+<section class="slide slide-alt" data-slide="11">
     <div class="slide-content">
         <div class="tag tag-purple reveal">CONCEPT</div>
         <h2 class="reveal d1">What is Agentic Coding?</h2>
         <p class="subtitle reveal d2" style="margin-bottom:var(--content-gap);">A paradigm shift from "AI suggests lines" to "AI executes tasks."</p>
 
         <div class="card-grid card-grid-2 reveal d3 stagger">
-            <div class="card" style="border-color:rgba(210,168,255,0.2);">
+            <div class="card" style="border-color:rgba(163,77,127,0.2);">
                 <h3 style="color:var(--text-muted);">Traditional AI Coding</h3>
                 <ul class="bullet-list" style="margin-top:var(--element-gap);">
                     <li>Autocomplete in your editor</li>
@@ -975,7 +1009,7 @@
                     <li>Context = current file</li>
                 </ul>
             </div>
-            <div class="card" style="border-color:rgba(88,166,255,0.3); box-shadow:0 0 20px var(--glow-blue);">
+            <div class="card" style="border-color:rgba(135,0,82,0.3); box-shadow:0 0 20px var(--glow-accent);">
                 <h3 style="color:var(--accent);">Agentic Coding</h3>
                 <ul class="bullet-list" style="margin-top:var(--element-gap);">
                     <li>Full terminal + file system access</li>
@@ -992,7 +1026,7 @@
 <!-- ==========================================
      SLIDE 10: CLAUDE CODE
      ========================================== -->
-<section class="slide grid-bg" data-slide="11">
+<section class="slide grid-bg" data-slide="12">
     <div class="orb orb-blue" style="width:350px;height:350px;top:5%;right:5%;"></div>
 
     <div class="slide-content">
@@ -1014,7 +1048,7 @@
 <!-- ==========================================
      SLIDE 11: CODEX
      ========================================== -->
-<section class="slide slide-alt" data-slide="12">
+<section class="slide slide-alt" data-slide="13">
     <div class="orb orb-green" style="width:350px;height:350px;bottom:0;left:5%;"></div>
 
     <div class="slide-content">
@@ -1036,13 +1070,13 @@
 <!-- ==========================================
      SLIDE 12: HEAD TO HEAD
      ========================================== -->
-<section class="slide grid-bg" data-slide="13">
+<section class="slide grid-bg" data-slide="14">
     <div class="slide-content">
         <div class="tag tag-orange reveal">COMPARISON</div>
         <h2 class="reveal d1">Head-to-Head</h2>
 
         <div class="compare-grid reveal d2">
-            <div class="compare-col" style="border-color:rgba(88,166,255,0.2);">
+            <div class="compare-col" style="border-color:rgba(135,0,82,0.2);">
                 <h3><span style="color:var(--accent);">&gt;_</span> Claude Code</h3>
                 <ul class="bullet-list stagger">
                     <li>Deep project understanding</li>
@@ -1070,7 +1104,7 @@
 <!-- ==========================================
      SLIDE 13: MY WORKFLOW — SECTION DIVIDER
      ========================================== -->
-<section class="slide section-slide" data-slide="14">
+<section class="slide section-slide" data-slide="15">
     <div class="orb orb-purple" style="width:400px;height:400px;top:30%;left:20%;"></div>
     <div class="orb orb-orange" style="width:250px;height:250px;bottom:15%;right:25%;"></div>
 
@@ -1085,7 +1119,7 @@
 <!-- ==========================================
      SLIDE 14: MY WORKFLOW
      ========================================== -->
-<section class="slide slide-alt" data-slide="15">
+<section class="slide slide-alt" data-slide="16">
     <div class="slide-content">
         <div class="tag tag-purple reveal">WORKFLOW</div>
         <h2 class="reveal d1">How I Used Both Tools</h2>
@@ -1113,7 +1147,7 @@
 <!-- ==========================================
      SLIDE 15: PHASE 1 — ARCHITECTURE
      ========================================== -->
-<section class="slide grid-bg" data-slide="16">
+<section class="slide grid-bg" data-slide="17">
     <div class="orb orb-blue" style="width:300px;height:300px;top:5%;left:0;"></div>
 
     <div class="slide-content">
@@ -1146,7 +1180,7 @@
 <!-- ==========================================
      SLIDE 16: PHASE 2 — CORE ENGINE
      ========================================== -->
-<section class="slide slide-alt" data-slide="17">
+<section class="slide slide-alt" data-slide="18">
     <div class="slide-content">
         <div class="tag tag-blue reveal">PHASE 2</div>
         <h2 class="reveal d1">The Core Rendering Engine</h2>
@@ -1175,7 +1209,7 @@
 <!-- ==========================================
      SLIDE 17: PHASE 3 — FEATURES
      ========================================== -->
-<section class="slide grid-bg" data-slide="18">
+<section class="slide grid-bg" data-slide="19">
     <div class="orb orb-green" style="width:300px;height:300px;bottom:0;right:5%;"></div>
 
     <div class="slide-content">
@@ -1208,7 +1242,7 @@
 <!-- ==========================================
      SLIDE 18: PHASE 4 — POLISH
      ========================================== -->
-<section class="slide slide-alt" data-slide="19">
+<section class="slide slide-alt" data-slide="20">
     <div class="slide-content">
         <div class="tag tag-blue reveal">PHASE 4</div>
         <h2 class="reveal d1">Iteration & Polish</h2>
@@ -1228,7 +1262,7 @@
 <!-- ==========================================
      SLIDE 20: PHASE 5 — KAROSPACEBUILDER
      ========================================== -->
-<section class="slide grid-bg" data-slide="20">
+<section class="slide grid-bg" data-slide="21">
     <div class="orb orb-orange" style="width:300px;height:300px;top:0;right:5%;"></div>
 
     <div class="slide-content">
@@ -1261,7 +1295,7 @@
 <!-- ==========================================
      SLIDE 21: WHAT WORKED — SECTION DIVIDER
      ========================================== -->
-<section class="slide section-slide" data-slide="21">
+<section class="slide section-slide" data-slide="22">
     <div class="orb orb-green" style="width:400px;height:400px;top:25%;right:25%;"></div>
 
     <div class="slide-content" style="align-items:center; text-align:center;">
@@ -1275,7 +1309,7 @@
 <!-- ==========================================
      SLIDE 20: WHAT WORKED
      ========================================== -->
-<section class="slide grid-bg" data-slide="22">
+<section class="slide grid-bg" data-slide="23">
     <div class="orb orb-green" style="width:300px;height:300px;top:0;left:0;"></div>
 
     <div class="slide-content">
@@ -1296,7 +1330,7 @@
 <!-- ==========================================
      SLIDE 21: WHAT DIDN'T WORK
      ========================================== -->
-<section class="slide slide-alt" data-slide="23">
+<section class="slide slide-alt" data-slide="24">
     <div class="orb orb-orange" style="width:300px;height:300px;bottom:0;right:0;"></div>
 
     <div class="slide-content">
@@ -1317,7 +1351,7 @@
 <!-- ==========================================
      SLIDE 22: PROMPTING STRATEGIES
      ========================================== -->
-<section class="slide grid-bg" data-slide="24">
+<section class="slide grid-bg" data-slide="25">
     <div class="slide-content">
         <div class="tag tag-purple reveal">TIPS</div>
         <h2 class="reveal d1">Prompting Strategies</h2>
@@ -1348,13 +1382,13 @@
 <!-- ==========================================
      SLIDE 23: WHEN TO USE WHICH
      ========================================== -->
-<section class="slide slide-alt" data-slide="25">
+<section class="slide slide-alt" data-slide="26">
     <div class="slide-content">
         <div class="tag tag-orange reveal">DECISION FRAMEWORK</div>
         <h2 class="reveal d1">When to Use Which Tool</h2>
 
         <div class="compare-grid reveal d2">
-            <div class="compare-col" style="border-color:rgba(88,166,255,0.2);">
+            <div class="compare-col" style="border-color:rgba(135,0,82,0.2);">
                 <h3><span style="color:var(--accent);">Claude Code</span> when...</h3>
                 <ul class="bullet-list stagger">
                     <li>Designing new architecture</li>
@@ -1382,7 +1416,7 @@
 <!-- ==========================================
      SLIDE 24: KEY TAKEAWAYS
      ========================================== -->
-<section class="slide grid-bg" data-slide="26">
+<section class="slide grid-bg" data-slide="27">
     <div class="orb orb-blue" style="width:400px;height:400px;top:10%;left:10%;"></div>
     <div class="orb orb-purple" style="width:300px;height:300px;bottom:10%;right:10%;"></div>
 
@@ -1413,9 +1447,60 @@
 
 
 <!-- ==========================================
-     SLIDE 25: THANK YOU
+     SLIDE 25: OTHER PROJECTS
      ========================================== -->
-<section class="slide section-slide" data-slide="27">
+<section class="slide slide-alt" data-slide="28">
+    <div class="orb orb-orange" style="width:300px;height:300px;bottom:5%;right:5%;"></div>
+
+    <div class="slide-content">
+        <div class="tag tag-orange reveal">BEYOND KAROSPACE</div>
+        <h2 class="reveal d1">Other Projects with <span class="gradient-text">AI Agents</span></h2>
+        <p class="subtitle reveal d2" style="margin-bottom:var(--content-gap);">Once you start, you use it for everything.</p>
+
+        <div class="card-grid reveal d3 stagger">
+            <div class="card">
+                <h3>KidDos(e)</h3>
+                <p>My first iOS app — an ibuprofen &amp; paracetamol tracker for my kids</p>
+            </div>
+            <div class="card">
+                <h3>Spatial Data Pipelines</h3>
+                <p>Setting up new repositories for standardized processing of spatial data</p>
+            </div>
+            <div class="card">
+                <h3>Learning &amp; Implementing</h3>
+                <p>Understanding and implementing novel repos — AI as a guide through unfamiliar codebases</p>
+            </div>
+            <div class="card">
+                <h3>The Full KaroSpace Stack</h3>
+                <p>HTML viewer generation, desktop app, and karospace.se — all built with agentic coding</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ==========================================
+     SLIDE 26: THIS PRESENTATION
+     ========================================== -->
+<section class="slide slide-alt" data-slide="29">
+    <div class="orb orb-blue" style="width:300px;height:300px;top:10%;right:10%;"></div>
+
+    <div class="slide-content" style="align-items:center; text-align:center;">
+        <div class="tag reveal">META</div>
+        <h2 class="reveal d1">This Presentation Was<br>Built the <span class="gradient-text">Same Way</span></h2>
+        <p class="subtitle reveal d2" style="text-align:center; margin-top:var(--content-gap); max-width:700px;">These slides were generated with Claude Code using an open-source skill for creating zero-dependency HTML presentations.</p>
+
+        <div class="reveal d3" style="display:flex; gap:clamp(0.5rem,1.5vw,1rem); margin-top:var(--content-gap); flex-wrap:wrap; justify-content:center; align-items:center;">
+            <a href="https://github.com/zarazhangrui/frontend-slides" target="_blank" class="tool-badge" style="text-decoration:none; color:var(--accent); cursor:pointer;">github.com/zarazhangrui/frontend-slides</a>
+        </div>
+    </div>
+</section>
+
+
+<!-- ==========================================
+     SLIDE 27: THANK YOU
+     ========================================== -->
+<section class="slide section-slide" data-slide="30">
     <div class="orb orb-blue" style="width:400px;height:400px;top:15%;left:20%;"></div>
     <div class="orb orb-green" style="width:300px;height:300px;bottom:15%;right:20%;"></div>
     <div class="orb orb-purple" style="width:250px;height:250px;top:40%;right:10%;"></div>
@@ -1427,7 +1512,11 @@
             <div class="tool-badge">Christoffer Mattsson Langseth</div>
             <div class="tool-badge" style="color:var(--accent);">Karolinska Institutet</div>
         </div>
-        <p class="reveal d3" style="font-size:var(--small-size); color:var(--text-dim); margin-top:var(--content-gap); font-family:var(--font-mono);">github.com/karospace</p>
+        <div class="reveal d3" style="display:flex; gap:clamp(0.5rem,1.5vw,1rem); margin-top:var(--content-gap); flex-wrap:wrap; justify-content:center;">
+            <a href="https://karospace.se/" target="_blank" class="tool-badge" style="text-decoration:none; color:var(--accent); cursor:pointer;">karospace.se</a>
+            <a href="https://github.com/christoffermattssonlangseth" target="_blank" class="tool-badge" style="text-decoration:none; color:var(--text-muted); cursor:pointer;">github.com/christoffermattssonlangseth</a>
+            <a href="https://www.linkedin.com/in/christoffer-mattsson-langseth-76427011a/" target="_blank" class="tool-badge" style="text-decoration:none; color:var(--text-muted); cursor:pointer;">linkedin.com/in/christoffer-mattsson-langseth</a>
+        </div>
     </div>
 </section>
 

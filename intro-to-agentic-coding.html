@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Intro to Agentic Coding</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ===========================================
+   DESIGN TOKENS
+   =========================================== */
+:root {
+  --cream: #131417;
+  --warm:  #1b1d22;
+  --ink:       #e8eaed;
+  --ink-soft:  #b0b5bc;
+  --muted:     #6b7280;
+  --rule:      rgba(255,255,255,0.09);
+  --accent:      #6aacff;
+  --warm-accent: #e8693a;
+
+  --font-serif: 'Fraunces', Georgia, serif;
+  --font-sans:  'Instrument Sans', system-ui, sans-serif;
+
+  --title-size:   clamp(2.2rem, 5.5vw, 4.5rem);
+  --section-size: clamp(2rem,   4.5vw, 3.8rem);
+  --h2-size:      clamp(1.4rem, 3vw,   2.2rem);
+  --body-size:    clamp(1.05rem, 1.8vw, 1.35rem);
+  --small-size:   clamp(0.62rem,0.95vw,0.78rem);
+  --label-size:   clamp(0.58rem,0.85vw,0.7rem);
+
+  --pad:        clamp(1.5rem,  4vw,  3.5rem);
+  --v-pad:      clamp(1.25rem, 3.5vh, 2.75rem);
+  --bullet-gap: clamp(0.35rem, 0.9vh, 0.75rem);
+  --gap:        clamp(0.5rem,  1.5vh, 1.2rem);
+}
+
+/* ===========================================
+   RESET & BASE
+   =========================================== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  height: 100%;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+body {
+  height: 100%;
+  overflow-x: hidden;
+  font-family: var(--font-sans);
+  background: var(--cream);
+  color: var(--ink);
+}
+
+code {
+  font-family: 'Courier New', Consolas, monospace;
+  font-size: 0.88em;
+  background: rgba(255,255,255,0.07);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+  color: var(--ink-soft);
+}
+
+strong { font-weight: 600; color: var(--ink); }
+
+/* ===========================================
+   SLIDE FOUNDATION — CRITICAL: 100vh, no overflow
+   =========================================== */
+.slide {
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* ===========================================
+   FIXED UI
+   =========================================== */
+#progress-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  background: var(--accent);
+  transition: width 0.35s ease;
+  z-index: 200;
+  width: 0%;
+}
+
+#slide-counter {
+  position: fixed;
+  bottom: 1.25rem;
+  right: var(--pad);
+  font-size: var(--small-size);
+  color: var(--muted);
+  z-index: 200;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+#keyboard-hint {
+  position: fixed;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: var(--small-size);
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  z-index: 200;
+  opacity: 0;
+  transition: opacity 0.5s;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* ===========================================
+   ANIMATIONS
+   =========================================== */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.slide.visible .reveal                 { opacity: 1; transform: translateY(0); }
+.slide.visible .reveal:nth-child(1)    { transition-delay: 0.05s; }
+.slide.visible .reveal:nth-child(2)    { transition-delay: 0.15s; }
+.slide.visible .reveal:nth-child(3)    { transition-delay: 0.25s; }
+.slide.visible .reveal:nth-child(4)    { transition-delay: 0.35s; }
+.slide.visible .reveal:nth-child(5)    { transition-delay: 0.43s; }
+.slide.visible .reveal:nth-child(6)    { transition-delay: 0.50s; }
+
+.rule-expand {
+  width: 0 !important;
+  transition: width 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.15s !important;
+  transform: none !important;
+  opacity: 1 !important;
+}
+.slide.visible .rule-expand { width: 100% !important; }
+
+/* ===========================================
+   SHARED COMPONENTS
+   =========================================== */
+.slide-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.9rem var(--pad);
+  border-bottom: 1px solid var(--rule);
+  flex-shrink: 0;
+}
+
+.ki-label {
+  font-size: var(--label-size);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.slide-num-label {
+  font-size: var(--label-size);
+  color: var(--muted);
+  letter-spacing: 0.08em;
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--label-size);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--accent);
+}
+.eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 1.1rem;
+  height: 1px;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+.bullet-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--bullet-gap);
+}
+.bullet-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  font-size: var(--body-size);
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+.bullet-list li::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--warm-accent);
+  flex-shrink: 0;
+  margin-top: 0.53em;
+}
+.bullet-list li.sub {
+  margin-left: 1.4rem;
+  color: var(--muted);
+}
+.bullet-list li.sub::before {
+  width: 4px; height: 4px;
+  background: var(--muted);
+}
+.bullet-list li.accent-item { color: var(--accent); }
+.bullet-list li.accent-item::before { background: var(--accent); }
+
+/* ===========================================
+   TITLE SLIDE
+   =========================================== */
+.slide--title { background: var(--cream); }
+
+.title-body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 27% 73%;
+  overflow: hidden;
+}
+
+.title-left {
+  padding: var(--v-pad) var(--pad);
+  border-right: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: var(--warm);
+}
+
+.title-accent-block {
+  width: 2.5rem;
+  height: 2.5rem;
+  background: var(--warm-accent);
+  flex-shrink: 0;
+}
+
+.title-left-label {
+  font-size: var(--label-size);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.title-right {
+  padding: var(--v-pad) var(--pad) var(--v-pad) calc(var(--pad) * 1.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--gap);
+}
+
+h1.display {
+  font-family: var(--font-serif);
+  font-size: var(--title-size);
+  font-weight: 300;
+  line-height: 1.05;
+  color: var(--ink);
+}
+h1.display em { font-style: italic; color: var(--ink-soft); }
+
+.title-subtitle {
+  font-size: var(--body-size);
+  color: var(--muted);
+  line-height: 1.65;
+  max-width: 42ch;
+}
+
+.presenter-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+.presenter-name { font-size: var(--body-size); font-weight: 500; color: var(--ink-soft); }
+.presenter-sep  { width: 1px; height: 1rem; background: var(--muted); opacity: 0.3; }
+.presenter-date { font-size: var(--small-size); color: var(--muted); }
+
+/* ===========================================
+   SECTION DIVIDER SLIDES
+   =========================================== */
+.slide--section { background: var(--warm); }
+
+.section-inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--v-pad) var(--pad);
+  gap: var(--gap);
+  position: relative;
+  overflow: hidden;
+}
+
+.section-bg-num {
+  position: absolute;
+  right: -0.05em;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-serif);
+  font-size: clamp(7rem, 20vw, 16rem);
+  font-weight: 600;
+  color: rgba(255,255,255,0.04);
+  line-height: 1;
+  user-select: none;
+  pointer-events: none;
+}
+
+.section-part-label {
+  font-size: var(--label-size);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.section-rule {
+  height: 1px;
+  background: rgba(255,255,255,0.15);
+}
+
+h2.section-title {
+  font-family: var(--font-serif);
+  font-size: var(--section-size);
+  font-weight: 300;
+  line-height: 1.1;
+  color: var(--ink);
+  max-width: 16ch;
+}
+h2.section-title em { font-style: italic; color: var(--ink-soft); }
+
+.section-desc {
+  font-size: var(--body-size);
+  color: var(--muted);
+  line-height: 1.6;
+  max-width: 42ch;
+}
+
+/* ===========================================
+   CONTENT SLIDES (two-column)
+   =========================================== */
+.slide--content { background: var(--cream); }
+
+.content-body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 26% 74%;
+  overflow: hidden;
+}
+
+.content-sidebar {
+  padding: var(--v-pad) var(--pad);
+  border-right: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: var(--warm);
+  overflow: hidden;
+}
+
+.sidebar-section-label {
+  font-size: var(--label-size);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.sidebar-slide-num {
+  font-family: var(--font-serif);
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 300;
+  color: rgba(255,255,255,0.06);
+  line-height: 1;
+  font-style: italic;
+  align-self: flex-end;
+}
+
+.content-main {
+  padding: var(--v-pad) calc(var(--pad) * 1.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--gap);
+  overflow: hidden;
+}
+
+h2.slide-heading {
+  font-family: var(--font-serif);
+  font-size: var(--h2-size);
+  font-weight: 400;
+  line-height: 1.15;
+  color: var(--ink);
+}
+h2.slide-heading em { font-style: italic; }
+
+/* ===========================================
+   IMAGE SLIDE
+   =========================================== */
+.slide--image { background: #0d0f12; }
+
+.image-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.9rem var(--pad);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  flex-shrink: 0;
+}
+
+.image-body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 26% 74%;
+  overflow: hidden;
+}
+
+.image-sidebar {
+  padding: var(--v-pad) var(--pad);
+  border-right: 1px solid rgba(255,255,255,0.07);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--gap);
+}
+
+.image-section-label {
+  font-size: var(--label-size);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  font-weight: 500;
+}
+
+.image-caption {
+  font-family: var(--font-serif);
+  font-size: var(--h2-size);
+  font-weight: 300;
+  font-style: italic;
+  color: rgba(255,255,255,0.82);
+  line-height: 1.2;
+}
+
+.image-detail {
+  font-size: var(--small-size);
+  color: rgba(255,255,255,0.32);
+  line-height: 1.65;
+}
+
+.image-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem 2rem;
+  overflow: hidden;
+}
+
+.image-main img {
+  max-width: 100%;
+  max-height: min(70vh, 580px);
+  object-fit: contain;
+  border-radius: 5px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.55);
+}
+
+/* ===========================================
+   INTERVIEW SLIDES
+   =========================================== */
+.slide--interview { background: var(--cream); }
+
+.interview-band {
+  background: var(--warm);
+  padding: calc(var(--v-pad) * 0.75) var(--pad);
+  border-bottom: 1px solid var(--rule);
+  flex-shrink: 0;
+}
+
+.interview-index {
+  font-size: var(--label-size);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.35rem;
+}
+
+.interview-role {
+  font-family: var(--font-serif);
+  font-size: var(--h2-size);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ink);
+  line-height: 1.15;
+}
+
+.interview-context {
+  font-size: var(--small-size);
+  color: var(--muted);
+  margin-top: 0.25rem;
+}
+
+.interview-points {
+  flex: 1;
+  padding: calc(var(--v-pad) * 0.85) var(--pad);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* ===========================================
+   MULTI-AGENT SLIDE
+   =========================================== */
+.slide--multiagent { background: var(--cream); }
+
+.ma-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.ma-top {
+  padding: calc(var(--v-pad) * 0.6) var(--pad);
+  border-bottom: 1px solid var(--rule);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.ma-cols {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+}
+
+.ma-col {
+  padding: calc(var(--v-pad) * 0.7) var(--pad);
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--gap) * 0.75);
+  overflow: hidden;
+}
+
+.ma-col:first-child { border-right: 1px solid var(--rule); }
+
+.ma-col-label {
+  font-size: var(--label-size);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.ma-col-label--codex  { color: var(--accent); }
+.ma-col-label--claude { color: var(--warm-accent); }
+
+.ma-diff {
+  padding: calc(var(--v-pad) * 0.5) var(--pad);
+  border-top: 1px solid var(--rule);
+  background: var(--warm);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 3rem);
+}
+
+.ma-diff-label {
+  font-size: var(--label-size);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.ma-diff-items {
+  display: flex;
+  gap: clamp(1rem, 3vw, 3rem);
+  flex-wrap: wrap;
+}
+
+.ma-diff-item {
+  font-size: var(--body-size);
+  color: var(--ink-soft);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.ma-diff-item strong { font-weight: 600; color: var(--ink); }
+
+.ma-diff-sep {
+  width: 1px;
+  height: 1.2em;
+  background: var(--rule);
+  flex-shrink: 0;
+}
+
+/* ===========================================
+   CLOSING SLIDE (22)
+   =========================================== */
+.slide--closing { background: var(--cream); }
+
+.closing-heading {
+  padding: calc(var(--v-pad) * 0.75) var(--pad);
+  border-bottom: 1px solid var(--rule);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.closing-cols {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+}
+
+.closing-col {
+  padding: calc(var(--v-pad) * 0.85) var(--pad);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  overflow: hidden;
+}
+
+.closing-col:first-child { border-right: 1px solid var(--rule); }
+
+.closing-col-label {
+  font-size: var(--label-size);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.col-up   { color: var(--accent); }
+.col-down { color: var(--warm-accent); }
+
+/* ===========================================
+   RESPONSIVE
+   =========================================== */
+@media (max-height: 700px) {
+  :root {
+    --pad:    clamp(1rem, 3vw, 2.5rem);
+    --v-pad:  clamp(0.9rem, 2.5vh, 1.75rem);
+    --bullet-gap: clamp(0.28rem, 0.65vh, 0.5rem);
+  }
+}
+
+@media (max-height: 600px) {
+  :root {
+    --title-size:   clamp(1.8rem, 4.5vw, 3rem);
+    --section-size: clamp(1.6rem, 4vw,   2.8rem);
+    --h2-size:      clamp(1.1rem, 2.5vw, 1.75rem);
+    --body-size:    clamp(0.78rem, 1.2vw, 0.98rem);
+  }
+  #keyboard-hint { display: none; }
+}
+
+@media (max-height: 500px) {
+  :root {
+    --title-size: clamp(1.4rem, 3.5vw, 2.2rem);
+    --h2-size:    clamp(0.95rem, 2vw, 1.4rem);
+    --body-size:  clamp(0.72rem, 1.1vw, 0.88rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .title-body,
+  .content-body,
+  .image-body { grid-template-columns: 1fr; }
+  .title-left, .content-sidebar, .image-sidebar { display: none; }
+  .closing-cols { grid-template-columns: 1fr; }
+  .closing-col:first-child { border-right: none; border-bottom: 1px solid var(--rule); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { transition: opacity 0.2s ease; transform: none; }
+  .rule-expand { transition: width 0.3s ease 0s !important; }
+  html { scroll-behavior: auto; }
+}
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+<div id="slide-counter"></div>
+<div id="keyboard-hint">↑ ↓  arrows or scroll to navigate</div>
+
+<!-- ====================================================
+     01  TITLE
+     ==================================================== -->
+<section class="slide slide--title" id="slide-1">
+  <div class="slide-header">
+    <span class="ki-label">Karolinska Institutet</span>
+    <span class="slide-num-label">01 / 26</span>
+  </div>
+  <div class="title-body">
+    <div class="title-left">
+      <span class="title-left-label reveal">Workshop</span>
+      <div class="title-accent-block reveal"></div>
+      <span class="title-left-label reveal" style="color: var(--muted);">April 1, 2026</span>
+    </div>
+    <div class="title-right">
+      <div class="eyebrow reveal">Agentic Coding</div>
+      <h1 class="display reveal">Intro to<br><em>Agentic</em><br>Coding</h1>
+      <p class="title-subtitle reveal">Autonomous AI agents that write, read, and execute code — and what they mean for researchers.</p>
+      <div class="presenter-row reveal">
+        <span class="presenter-name">Christoffer Mattsson Langseth</span>
+        <div class="presenter-sep"></div>
+        <span class="presenter-date">April 1, 2026</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================
+     02  TABLE OF CONTENTS
+     ==================================================== -->
+<section class="slide slide--content" id="slide-2">
+  <div class="slide-header">
+    <span class="ki-label">Karolinska Institutet</span>
+    <span class="slide-num-label">02 / 26</span>
+  </div>
+  <div class="content-body">
+    <div class="content-sidebar">
+      <span class="sidebar-section-label">Overview</span>
+      <span class="sidebar-slide-num">02</span>
+    </div>
+    <div class="content-main">
+      <div class="eyebrow reveal">Contents</div>
+      <h2 class="slide-heading reveal">What we'll<br><em>cover</em></h2>
+      <ul class="bullet-list reveal" style="gap: clamp(0.5rem, 1.2vh, 1rem);">
+        <li><strong>Part 1</strong> — Introduction &amp; key tools</li>
+        <li><strong>Part 2</strong> — Useful features: AGENTS.md, Skills &amp; Multi-agent</li>
+        <li><strong>Part 3</strong> — How to interact: CLI, desktop, VS Code</li>
+        <li><strong>Part 4</strong> — Real perspectives from developers</li>
+        <li><strong>Part 5</strong> — Where does this leave us?</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================
+     03  SECTION — Introduction
+     ==================================================== -->
+<section class="slide slide--section" id="slide-3">
+  <div class="slide-header">
+    <span class="ki-label">Karolinska Institutet</span>
+    <span class="slide-num-label">03 / 26</span>
+  </div>
+  <div class="section-inner">
+    <div class="section-bg-num">01</div>
+    <span class="section-part-label reveal">Part One</span>
+    <div class="section-rule reveal rule-expand"></div>
+    <h2 class="section-title reveal">Introduction</h2>
+    <p class="section-desc reveal">What is agentic coding, and who are the key players?</p>
+  </div>
+</section>
+
+<!-- ====================================================
+     04  What is agentic coding?
+     ==================================================== -->
+<section class="slide slide--content" id="slide-4">
+  <div class="slide-header">
+    <span class="ki-label">Introduction</span>
+    <span class="slide-num-label">04 / 26</span>
+  </div>
+  <div class="content-body">
+    <div class="content-sidebar">
+      <span class="sidebar-section-label">Background</span>
+      <span class="sidebar-slide-num">03</span>
+    </div>
+    <div class="content-main">
+      <div class="eyebrow reveal">What is it?</div>
+      <h2 class="slide-heading reveal">What is agentic<br><em>coding?</em></h2>
+      <ul class="bullet-list reveal">
+        <li>Also called vibe coding, prompt engineering, AI-assisted development</li>
+        <li>Autonomous AI agents (LLMs) that can write, read, and execute code</li>
+        <li>Levels of use:</li>
+        <li class="sub"><strong>Low</strong> — Ask ChatGPT or Claude to write code snippets for you</li>
+        <li class="sub"><strong>High</strong> — Agents like Codex and Claude Code get full filesystem access: read, write, execute</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================
+     05  Introduction to Codex
+     ==================================================== -->
+<section class="slide slide--content" id="slide-5">
+  <div class="slide-header">
+    <span class="ki-label">Introduction</span>
+    <span class="slide-num-label">05 / 26</span>
+  </div>
+  <div class="content-body">
+    <div class="content-sidebar">
+      <span class="sidebar-section-label">Tools</span>
+      <span class="sidebar-slide-num">04</span>
+    </div>
+    <div class="content-main">
+      <div class="eyebrow reveal">OpenAI</div>
+      <h2 class="slide-heading reveal">Introduction to<br><em>Codex</em></h2>
+      <ul class="bullet-list reveal">
+        <li>OpenAI's coding agent</li>
+        <li>Latest generation (gpt-5.4) works very well</li>
+        <li>Model range: gpt-5.4, gpt-5.4-mini, gpt-5.3-codex, gpt-5.2-codex</li>
+        <li>Available as desktop app, CLI, and VS Code extension</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================
+     06  Introduction to Claude Code
+     ==================================================== -->
+<section class="slide slide--content" id="slide-6">
+  <div class="slide-header">
+    <span class="ki-label">Introduction</span>
+    <span class="slide-num-label">06 / 26</span>
+  </div>
+  <div class="content-body">
+    <div class="content-sidebar">
+      <span class="sidebar-section-label">Tools</span>
+      <span class="sidebar-slide-num">05</span>
+    </div>
+    <div class="content-main">
+      <div class="eyebrow reveal">Anthropic</div>
+      <h2 class="slide-heading reveal">Introduction to<br><em>Claude Code</em></h2>
+      <ul class="bullet-list reveal">
+        <li>Anthropic's coding agent — had an early edge on the field</li>
+        <li>Codex is accelerating and closing the gap</li>
+        <li>Three model tiers:</li>
+        <li class="sub"><strong>Opus 4.6</strong> — Most intelligent</li>
+        <li class="sub"><strong>Sonnet 4.6</strong> — Speed + intelligence balance</li>
+        <li class="sub"><strong>Haiku 4.5</strong> — Fastest</li>
+        <li>Available as desktop app, CLI, and VS Code extension</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================
+     07  General best practices
+     ==================================================== -->
+<section class="slide slide--content" id="slide-7">
+  <div class="slide-header">
+    <span class="ki-label">Introduction</span>
+    <span class="slide-num-label">07 / 26</span>
+  </div>
+  <div class="content-body">
+    <div class="content-sidebar">
+      <span class="sidebar-section-label">Guidance</span>
+      <span class="sidebar-slide-num">06</span>
+    </div>
+    <div class="content-main">
+      <div class="eyebrow reveal">Working effectively</div>
+      <h2 class="slide-heading reveal">General<br><em>best practices</em></h2>
+      <ul class="bullet-list reveal">
+        <li>They understand natural language — write to them like you would any engineer</li>
+        <li>Learn the "language" of the agent over time</li>
+        <li>Images work well for providing visual context</li>
+        <li>Context is everything — but too much can also hurt performance</li>
+        <li>Use both tools together: have one write, the other review</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================
+     08  A note on context
+     ==================================================== -->
+<section class="slide slide--content" id="slide-8">
+  <div class="slide-header">
+    <span class="ki-label">Introduction</span>
+    <span class="slide-num-label">08 / 26</span>
+  </div>
+  <div class="content-body">
+    <div class="content-sidebar">
+      <span class="sidebar-section-label">Context</span>
+      <span class="sidebar-slide-num">07</span>
+    </div>
+    <div class="content-main">
+      <div class="eyebrow reveal">Memory &amp; context windows</div>
+      <h2 class="slide-heading reveal">A note on<br><em>context</em></h2>
+      <ul class="bullet-list reveal">
+        <li>Context is essentially the agent's working memory</li>
+        <li>It is limited — agents compact their memory when full</li>
+        <li><strong>Compaction</strong>: reducing context size while preserving key information</li>
+        <li>Too much or too little context and the agent struggles — there's a sweet spot</li>
+        <li>Recommended: compact at around 70–90% context usage</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================
+     09  SECTION — Useful Features
+     ==================================================== -->
+<section class="slide slide--section" id="slide-9">
+  <div class="slide-header">
+    <span class="ki-label">Karolinska Institutet</span>
+    <span class="slide-num-label">09 / 26</span>
+  </div>
+  <div class="section-inner">
+    <div class="section-bg-num">02</div>
+    <span class="section-part-label reveal">Part Two</span>
+    <div class="section-rule reveal rule-expand"></div>
+    <h2 class="section-title reveal">Useful<br><em>Features</em></h2>
+    <p class="section-desc reveal">Tools and capabilities that make agents more reliable and consistent.</p>
+  </div>
+</section>
+
+<!-- ====================================================
+     10  AGENTS.md / CLAUDE.md
+     ==================================================== -->
+<section class="slide slide--content" id="slide-10">
+  <div class="slide-header">
+    <span class="ki-label">Useful Features</span>
+    <span class="slide-num-label">10 / 26</span>
+  </div>
+  <div class="content-body">
+    <div class="content-sidebar">
+      <span class="sidebar-section-label">Configuration</span>
+      <span class="sidebar-slide-num">09</span>
+    </div>
+    <div class="content-main">
+      <div class="eyebrow reveal">Project control files</div>
+      <h2 class="slide-heading reveal"><em>AGENTS.md</em><br>/ CLAUDE.md</h2>
+      <ul class="bullet-list reveal">
+        <li>A control file that tells coding agents how to behave in your project</li>
+        <li>Makes output consistent, predictable, and aligned with your conventions</li>
+        <li>Defines: project context, rules, coding patterns, workflows, known pitfalls</li>
+        <li>Prevents agents from making generic or wrong assumptions</li>
+        <li>A long-term "operating manual" for agents — vs. prompts which are short-term</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================
+     11  Agentic skills
+     ==================================================== -->
+<section class="slide slide--content" id="slide-11">
+  <div class="slide-header">
+    <span class="ki-label">Useful Features</span>
+    <span class="slide-num-label">11 / 26</span>
+  </div>
+  <div class="content-body">
+    <div class="content-sidebar">
+      <span class="sidebar-section-label">Extensibility</span>
+      <span class="sidebar-slide-num">11</span>
+    </div>
+    <div class="content-main">
+      <div class="eyebrow reveal">Modular capabilities</div>
+      <h2 class="slide-heading reveal">Agentic<br><em>Skills</em></h2>
+      <ul class="bullet-list reveal">
+        <li>Skills extend AI agents with specialized knowledge and workflows</li>
+        <li>A skill is a folder with a <code>SKILL.md</code> file at its core</li>
+        <li>Can also include scripts, templates, and reference materials</li>
+        <li>Modular, reusable, and easy to share across projects and teams</li>
+        <li class="accent-item">This presentation was built using the <em>frontend-slides</em> skill</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================
+     12  Multi-Agent Workflows
+     ==================================================== -->
+<section class="slide slide--multiagent" id="slide-12">
+  <div class="slide-header">
+    <span class="ki-label">Useful Features</span>
+    <span class="slide-num-label">12 / 26</span>
+  </div>
+  <div class="ma-body">
+    <div class="ma-top">
+      <div class="eyebrow reveal">Coordination patterns</div>
+      <h2 class="slide-heading reveal">Multi-Agent<br><em>Workflows</em></h2>
+    </div>
+    <div class="ma-cols">
+      <div class="ma-col">
+        <span class="ma-col-label ma-col-label--codex reveal">Codex</span>
+        <ul class="bullet-list">
+          <li class="reveal">Parallel agents / subagents — run tasks simultaneously, aggregate results</li>
+          <li class="reveal">Custom agents with different models and instructions</li>
+          <li class="reveal">Best for highly parallel tasks: exploration, multi-step builds</li>
+          <li class="reveal" style="color:var(--muted);">Watch-out: context pollution / rot</li>
+        </ul>
+      </div>
+      <div class="ma-col">
+        <span class="ma-col-label ma-col-label--claude reveal">Claude Code</span>
+        <ul class="bullet-list">
+          <li class="reveal">Sub-agents with roles coordinated by a main agent</li>
+          <li class="reveal">Planner → delegates → aggregates</li>
+          <li class="reveal">Strong for structured, multi-step workflows</li>
+        </ul>
+      </div>
+    </div>
+    <div class="ma-diff">
+      <span class="ma-diff-label reveal">Key difference</span>
+      <div class="ma-diff-items">
+        <span class="ma-diff-item reveal"><strong style="color:var(--accent);">Codex</strong> — parallel execution</span>
+        <div class="ma-diff-sep reveal"></div>
+        <span class="ma-diff-item reveal"><strong style="color:var(--warm-accent);">Claude Code</strong> — hierarchical delegation</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================
+     13  SECTION — How to interact?
+     ==================================================== -->
+<section class="slide slide--section" id="slide-13">
+  <div class="slide-header">
+    <span class="ki-label">Karolinska Institutet</span>
+    <span class="slide-num-label">13 / 26</span>
+  </div>
+  <div class="section-inner">
+    <div class="section-bg-num">03</div>
+    <span class="section-part-label reveal">Part Three</span>
+    <div class="section-rule reveal rule-expand"></div>
+    <h2 class="section-title reveal">How to<br><em>Interact</em></h2>
+    <p class="section-desc reveal">The different interfaces for working with coding agents.</p>
+  </div>
+</section>
+
+<!-- ====================================================
+     13  CLI
+     ==================================================== -->
+<section class="slide slide--content" id="slide-14">
+  <div class="slide-header">
+    <span class="ki-label">Interaction</span>
+    <span class="slide-num-label">14 / 26</span>
+  </div>
+  <div class="content-body">
+    <div class="content-sidebar">
+      <span class="sidebar-section-label">Interface</span>
+      <span class="sidebar-slide-num">14</span>
+    </div>
+    <div class="content-main">
+      <div class="eyebrow reveal">Terminal</div>
+      <h2 class="slide-heading reveal">Command Line<br><em>Interface (CLI)</em></h2>
+      <ul class="bullet-list reveal">
+        <li>Most powerful interface — full control via the terminal</li>
+        <li>Feels similar to a chatbot, but with direct filesystem access</li>
+        <li>Can feel daunting at first, very powerful once familiar</li>
+        <li>Use <strong>cmux</strong> to run multiple windows and agent instances in a single view</li>
+        <li>Enables parallel agent workflows in one terminal layout</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================
+     14  IMAGE — Claude Code in action
+     ==================================================== -->
+<section class="slide slide--image" id="slide-15">
+  <div class="image-header">
+    <span class="ki-label" style="color:rgba(255,255,255,0.3);">Interaction</span>
+    <span class="slide-num-label" style="color:rgba(255,255,255,0.3);">15 / 26</span>
+  </div>
+  <div class="image-body">
+    <div class="image-sidebar">
+      <span class="image-section-label reveal">CLI in practice</span>
+      <p class="image-caption reveal">Claude Code<br>in action</p>
+      <p class="image-detail reveal">Multiple instances running in a cmux layout, accessing the KaroSpace project alongside GitHub.</p>
+    </div>
+    <div class="image-main">
+      <img class="reveal" src="ppt-assets/slide13_img1.png" alt="Claude Code running in a terminal with tmux, alongside the KaroSpace GitHub project">
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================
+     15  Desktop apps
+     ==================================================== -->
+<section class="slide slide--content" id="slide-16">
+  <div class="slide-header">
+    <span class="ki-label">Interaction</span>
+    <span class="slide-num-label">16 / 26</span>
+  </div>
+  <div class="content-body">
+    <div class="content-sidebar">
+      <span class="sidebar-section-label">Interface</span>
+      <span class="sidebar-slide-num">16</span>
+    </div>
+    <div class="content-main">
+      <div class="eyebrow reveal">GUI</div>
+      <h2 class="slide-heading reveal">Desktop<br><em>Apps</em></h2>
+      <ul class="bullet-list reveal">
+        <li>Available for both Claude Code and Codex</li>
+        <li>Similar to the standard ChatGPT interface — chat-based interaction</li>
+        <li>Less powerful than the CLI, but more approachable for new users</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================
+     16  IMAGE — Codex desktop app
+     ==================================================== -->
+<section class="slide slide--image" id="slide-17">
+  <div class="image-header">
+    <span class="ki-label" style="color:rgba(255,255,255,0.3);">Interaction</span>
+    <span class="slide-num-label" style="color:rgba(255,255,255,0.3);">17 / 26</span>
+  </div>
+  <div class="image-body">
+    <div class="image-sidebar">
+      <span class="image-section-label reveal">Desktop app in practice</span>
+      <p class="image-caption reveal">Codex<br>desktop app</p>
+      <p class="image-detail reveal">Chat-based interface with project context, built-in skills, and model selection — running against the KaroSpaceBuilder project.</p>
+    </div>
+    <div class="image-main">
+      <img class="reveal" src="ppt-assets/codex-desktop.png" alt="Codex desktop app showing a chat interface with the KaroSpaceBuilder project">
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================
+     17  VS Code extensions
+     ==================================================== -->
+<section class="slide slide--content" id="slide-18">
+  <div class="slide-header">
+    <span class="ki-label">Interaction</span>
+    <span class="slide-num-label">18 / 26</span>
+  </div>
+  <div class="content-body">
+    <div class="content-sidebar">
+      <span class="sidebar-section-label">Interface</span>
+      <span class="sidebar-slide-num">17</span>
+    </div>
+    <div class="content-main">
+      <div class="eyebrow reveal">IDE integration</div>
+      <h2 class="slide-heading reveal">VS Code<br><em>Extensions</em></h2>
+      <ul class="bullet-list reveal">
+        <li>Brings coding agents directly into Visual Studio Code</li>
+        <li>Ideal when working with Jupyter notebooks or similar files</li>
+        <li>Reference specific notebooks and ask the agent to make targeted changes</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================
+     19  IMAGE — VS Code + Codex in action
+     ==================================================== -->
+<section class="slide slide--image" id="slide-19">
+  <div class="image-header">
+    <span class="ki-label" style="color:rgba(255,255,255,0.3);">Interaction</span>
+    <span class="slide-num-label" style="color:rgba(255,255,255,0.3);">19 / 26</span>
+  </div>
+  <div class="image-body">
+    <div class="image-sidebar">
+      <span class="image-section-label reveal">VS Code in practice</span>
+      <p class="image-caption reveal">Codex inside<br>VS Code</p>
+      <p class="image-detail reveal">Codex running alongside a Jupyter notebook — editing cells, reading outputs, and suggesting next steps in real time.</p>
+    </div>
+    <div class="image-main">
+      <img class="reveal" src="ppt-assets/vscode-codex.png" alt="Codex extension running inside VS Code alongside a Jupyter notebook">
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================
+     20  SECTION — Real perspectives
+     ==================================================== -->
+<section class="slide slide--section" id="slide-20">
+  <div class="slide-header">
+    <span class="ki-label">Karolinska Institutet</span>
+    <span class="slide-num-label">20 / 26</span>
+  </div>
+  <div class="section-inner">
+    <div class="section-bg-num">04</div>
+    <span class="section-part-label reveal">Part Four</span>
+    <div class="section-rule reveal rule-expand"></div>
+    <h2 class="section-title reveal">Real<br><em>Perspectives</em></h2>
+    <p class="section-desc reveal">Are people actually using agentic coding? Four developers share their views.</p>
+  </div>
+</section>
+
+<!-- ====================================================
+     18  Rust developer
+     ==================================================== -->
+<section class="slide slide--interview" id="slide-21">
+  <div class="slide-header">
+    <span class="ki-label">Perspectives</span>
+    <span class="slide-num-label">21 / 26</span>
+  </div>
+  <div class="interview-band">
+    <div class="interview-index reveal">Developer Perspective · 1 of 4</div>
+    <h2 class="interview-role reveal">Rust Developer</h2>
+    <p class="interview-context reveal">Stockholm-based hardware company</p>
+  </div>
+  <div class="interview-points">
+    <ul class="bullet-list">
+      <li class="reveal">Agentic coding is still niche — mostly used by AI researchers, not mainstream engineering</li>
+      <li class="reveal">Useful for autocomplete and boilerplate, but not reliable for production systems</li>
+      <li class="reveal">Trust is limited — not yet ready to build robust systems independently</li>
+      <li class="reveal">Developer performance should be judged by output, not the tools used</li>
+      <li class="reveal">Worth using while it's cheap, but avoid deep dependency long-term</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ====================================================
+     19  Computational biologist + biostatistician
+     ==================================================== -->
+<section class="slide slide--interview" id="slide-22">
+  <div class="slide-header">
+    <span class="ki-label">Perspectives</span>
+    <span class="slide-num-label">22 / 26</span>
+  </div>
+  <div class="interview-band">
+    <div class="interview-index reveal">Developer Perspective · 2 of 4</div>
+    <h2 class="interview-role reveal">Computational Biologist &amp; Biostatistician</h2>
+    <p class="interview-context reveal">&nbsp;</p>
+  </div>
+  <div class="interview-points">
+    <ul class="bullet-list">
+      <li class="reveal">LLMs are now essential for coding — not using them means falling behind</li>
+      <li class="reveal">Massively increase speed and productivity, especially for prototyping</li>
+      <li class="reveal">Most impactful on new projects — less so on large, legacy codebases</li>
+      <li class="reveal">Industry pressure is shifting expectations — AI-assisted coding is becoming the norm</li>
+      <li class="reveal">Coding is shifting from craft → throughput and iteration speed</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ====================================================
+     20  Computational biologist (biotech)
+     ==================================================== -->
+<section class="slide slide--interview" id="slide-23">
+  <div class="slide-header">
+    <span class="ki-label">Perspectives</span>
+    <span class="slide-num-label">23 / 26</span>
+  </div>
+  <div class="interview-band">
+    <div class="interview-index reveal">Developer Perspective · 3 of 4</div>
+    <h2 class="interview-role reveal">Computational Biologist</h2>
+    <p class="interview-context reveal">Stockholm-based biotech startup</p>
+  </div>
+  <div class="interview-points">
+    <ul class="bullet-list">
+      <li class="reveal">Limited experience with agentic coding — interesting concept, untested in practice</li>
+      <li class="reveal">Already requires double-checking outputs from current AI tools</li>
+      <li class="reveal">Unclear if agents actually reduce workload or just shift it</li>
+      <li class="reveal">Verification overhead may offset the productivity benefits</li>
+      <li class="reveal">Open to trying it, but waiting for clearer evidence of value</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ====================================================
+     21  Engineering manager
+     ==================================================== -->
+<section class="slide slide--interview" id="slide-24">
+  <div class="slide-header">
+    <span class="ki-label">Perspectives</span>
+    <span class="slide-num-label">24 / 26</span>
+  </div>
+  <div class="interview-band">
+    <div class="interview-index reveal">Developer Perspective · 4 of 5</div>
+    <h2 class="interview-role reveal">Engineering Manager</h2>
+    <p class="interview-context reveal">Software company</p>
+  </div>
+  <div class="interview-points">
+    <ul class="bullet-list">
+      <li class="reveal">Moving toward not writing code manually at all — agents handle execution</li>
+      <li class="reveal">Potential to build ~10× more through parallelization and automation</li>
+      <li class="reveal">Work shifts to planning, decision-making, and evaluation</li>
+      <li class="reveal">Orchestrating multiple agents in parallel instead of working serially</li>
+      <li class="reveal">Strong belief this will fundamentally reshape how software is built</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ====================================================
+     25  Java Programmer in Security
+     ==================================================== -->
+<section class="slide slide--interview" id="slide-25">
+  <div class="slide-header">
+    <span class="ki-label">Perspectives</span>
+    <span class="slide-num-label">25 / 28</span>
+  </div>
+  <div class="interview-band">
+    <div class="interview-index reveal">Developer Perspective · 5 of 5</div>
+    <h2 class="interview-role reveal">Java Programmer</h2>
+    <p class="interview-context reveal">Security industry</p>
+  </div>
+  <div class="interview-points">
+    <ul class="bullet-list">
+      <li class="reveal">This is a "prime moment" to use AI tools — models are likely priced below their true cost</li>
+      <li class="reveal">Strong incentive to exploit the upside now, while avoiding dependence</li>
+      <li class="reveal">Use heavily, but don't become reliant on a single provider</li>
+      <li class="reveal">Treat as a temporary advantage, not guaranteed long-term infrastructure</li>
+      <li class="reveal">Overall: very useful and enjoyable — but with awareness of the trade-offs</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ====================================================
+     26  SECTION — Conclusion
+     ==================================================== -->
+<section class="slide slide--section" id="slide-26">
+  <div class="slide-header">
+    <span class="ki-label">Karolinska Institutet</span>
+    <span class="slide-num-label">25 / 26</span>
+  </div>
+  <div class="section-inner">
+    <div class="section-bg-num">05</div>
+    <span class="section-part-label reveal">Part Five</span>
+    <div class="section-rule reveal rule-expand"></div>
+    <h2 class="section-title reveal">Where does<br>this <em>leave us?</em></h2>
+    <p class="section-desc reveal">Weighing the upsides and downsides of agentic coding.</p>
+  </div>
+</section>
+
+<!-- ====================================================
+     23  Upsides & Downsides
+     ==================================================== -->
+<section class="slide slide--closing" id="slide-27">
+  <div class="slide-header">
+    <span class="ki-label">Conclusion</span>
+    <span class="slide-num-label">27 / 28</span>
+  </div>
+  <div class="closing-heading">
+    <div class="eyebrow reveal">Taking stock</div>
+    <h2 class="slide-heading reveal">Upsides &amp; <em>Downsides</em></h2>
+  </div>
+  <div class="closing-cols">
+    <div class="closing-col">
+      <span class="closing-col-label col-up reveal">Upsides</span>
+      <ul class="bullet-list">
+        <li class="reveal">Shifts you from worker to <strong>architect</strong></li>
+        <li class="reveal">Makes coding idea-driven — anyone with great ideas can build great things</li>
+        <li class="reveal">Significant increase in productivity and iteration speed</li>
+      </ul>
+    </div>
+    <div class="closing-col">
+      <span class="closing-col-label col-down reveal">Downsides</span>
+      <ul class="bullet-list">
+        <li class="reveal">Risk of losing deep technical understanding</li>
+        <li class="reveal">Inconsistent code quality</li>
+        <li class="reveal">Over-reliance risk</li>
+        <li class="reveal">Security &amp; safety concerns</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================
+     27  Broader Concerns
+     ==================================================== -->
+<section class="slide slide--content" id="slide-28">
+  <div class="slide-header">
+    <span class="ki-label">Conclusion</span>
+    <span class="slide-num-label">28 / 28</span>
+  </div>
+  <div class="content-body">
+    <div class="content-sidebar">
+      <span class="sidebar-section-label">Concerns</span>
+      <span class="sidebar-slide-num">28</span>
+    </div>
+    <div class="content-main">
+      <div class="eyebrow reveal">Looking further ahead</div>
+      <h2 class="slide-heading reveal">Agentic Coding —<br><em>Broader Concerns</em></h2>
+      <ul class="bullet-list reveal">
+        <li><strong>Longevity &amp; dependence</strong> — What happens if these tools change, degrade, or disappear? Risk of over-reliance</li>
+        <li><strong>Environmental impact</strong> — Increasing compute demands → energy use and carbon footprint</li>
+        <li><strong>Data privacy &amp; governance</strong> — Sending code/data to external providers → security, confidentiality, compliance</li>
+        <li><strong>Ethical considerations</strong> — Use of AI by large companies (e.g. defense collaborations) raises values and alignment questions</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ============================================================
+   SLIDE PRESENTATION CONTROLLER
+   Keyboard, wheel, touch navigation + scroll-triggered animations.
+   ============================================================ */
+class SlidePresentation {
+  constructor() {
+    this.slides   = Array.from(document.querySelectorAll('.slide'));
+    this.total    = this.slides.length;
+    this.current  = 0;
+    this.locked   = false; /* debounce wheel events */
+
+    this.$progress = document.getElementById('progress-bar');
+    this.$counter  = document.getElementById('slide-counter');
+    this.$hint     = document.getElementById('keyboard-hint');
+
+    this.init();
+  }
+
+  init() {
+    this.setupObserver();
+    this.setupKeyboard();
+    this.setupWheel();
+    this.setupTouch();
+    this.update(0);
+    this.showHint();
+  }
+
+  /* Intersection observer — adds .visible to trigger CSS animations */
+  setupObserver() {
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          this.update(this.slides.indexOf(e.target));
+        }
+      });
+    }, { threshold: 0.5 });
+
+    this.slides.forEach(s => io.observe(s));
+  }
+
+  /* Keyboard: arrows, space, home/end */
+  setupKeyboard() {
+    document.addEventListener('keydown', e => {
+      const map = {
+        ArrowDown: 1, ArrowRight: 1, ' ': 1,
+        ArrowUp: -1, ArrowLeft: -1
+      };
+      if (e.key in map) {
+        e.preventDefault();
+        this.go(this.current + map[e.key]);
+      }
+      if (e.key === 'Home') { e.preventDefault(); this.go(0); }
+      if (e.key === 'End')  { e.preventDefault(); this.go(this.total - 1); }
+    });
+  }
+
+  /* Wheel: debounced */
+  setupWheel() {
+    document.addEventListener('wheel', e => {
+      e.preventDefault();
+      if (this.locked) return;
+      this.locked = true;
+      this.go(this.current + (e.deltaY > 0 ? 1 : -1));
+      setTimeout(() => { this.locked = false; }, 750);
+    }, { passive: false });
+  }
+
+  /* Touch: swipe up/down */
+  setupTouch() {
+    let y0 = 0;
+    document.addEventListener('touchstart', e => { y0 = e.touches[0].clientY; }, { passive: true });
+    document.addEventListener('touchend', e => {
+      const dy = y0 - e.changedTouches[0].clientY;
+      if (Math.abs(dy) > 40) this.go(this.current + (dy > 0 ? 1 : -1));
+    }, { passive: true });
+  }
+
+  go(idx) {
+    idx = Math.max(0, Math.min(this.total - 1, idx));
+    this.slides[idx].scrollIntoView({ behavior: 'smooth' });
+  }
+
+  update(idx) {
+    this.current = idx;
+    const pct = (idx / (this.total - 1)) * 100;
+    this.$progress.style.width = pct + '%';
+    this.$counter.textContent  = pad(idx + 1) + ' / ' + pad(this.total);
+    this.$counter.style.opacity = '1';
+    if (idx > 0) this.$hint.style.opacity = '0';
+  }
+
+  showHint() {
+    setTimeout(() => { this.$hint.style.opacity = '1'; }, 1400);
+    setTimeout(() => { this.$hint.style.opacity = '0'; }, 4200);
+  }
+}
+
+function pad(n) { return String(n).padStart(2, '0'); }
+
+document.addEventListener('DOMContentLoaded', () => new SlidePresentation());
+</script>
+</body>
+</html>

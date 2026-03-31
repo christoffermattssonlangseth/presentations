@@ -525,6 +525,60 @@ h2.slide-heading em { font-style: italic; }
 }
 
 /* ===========================================
+   PROJECTS LIST
+   =========================================== */
+.project-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 clamp(1.5rem, 3vw, 3rem);
+  overflow: hidden;
+}
+
+.project-item {
+  padding: clamp(0.35rem, 0.7vh, 0.6rem) 0;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.project-item-name {
+  font-size: var(--body-size);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.project-item-desc {
+  font-size: var(--small-size);
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+/* ===========================================
+   PROJECTS + PHONE LAYOUT (slide 26)
+   Three-column: sidebar | projects | phone
+   =========================================== */
+.content-body--with-phone {
+  grid-template-columns: 26% 1fr auto;
+}
+
+.phone-panel {
+  padding: var(--v-pad) var(--pad) var(--v-pad) 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-left: 1px solid var(--rule);
+  overflow: hidden;
+}
+
+.phone-panel img {
+  max-height: min(74vh, 560px);
+  width: auto;
+  border-radius: 24px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+}
+
+/* ===========================================
    MULTI-AGENT SLIDE
    =========================================== */
 .slide--multiagent { background: var(--cream); }
@@ -614,6 +668,40 @@ h2.slide-heading em { font-style: italic; }
 }
 
 /* ===========================================
+   CONCERN CARDS (2x2 grid)
+   =========================================== */
+.concern-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(0.5rem, 1.2vh, 0.9rem) clamp(0.75rem, 2vw, 1.5rem);
+  overflow: hidden;
+}
+
+.concern-card {
+  padding: clamp(0.6rem, 1.2vh, 1rem) clamp(0.75rem, 1.5vw, 1.2rem);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--warm-accent);
+  background: var(--warm);
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.concern-title {
+  font-size: var(--body-size);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.concern-desc {
+  font-size: var(--small-size);
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* ===========================================
    CLOSING SLIDE (22)
    =========================================== */
 .slide--closing { background: var(--cream); }
@@ -696,6 +784,343 @@ h2.slide-heading em { font-style: italic; }
   .rule-expand { transition: width 0.3s ease 0s !important; }
   html { scroll-behavior: auto; }
 }
+
+/* ===========================================
+   CODEX DEMO SLIDE
+   3-column narrative: Question → Search → Answer
+   =========================================== */
+.slide--codex-demo { background: var(--cream); }
+
+.codex-demo-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.codex-demo-top {
+  padding: calc(var(--v-pad) * 0.55) var(--pad);
+  border-bottom: 1px solid var(--rule);
+  flex-shrink: 0;
+  display: flex;
+  align-items: baseline;
+  gap: clamp(1rem, 3vw, 3rem);
+}
+
+/* 3 equal columns */
+.codex-demo-split {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  overflow: hidden;
+}
+
+/* Shared column base */
+.cd-col {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-right: 1px solid var(--rule);
+}
+.cd-col:last-child { border-right: none; }
+
+.cd-col-header {
+  padding: clamp(0.5rem, 1vh, 0.8rem) clamp(0.8rem, 1.5vw, 1.3rem);
+  border-bottom: 1px solid var(--rule);
+  background: var(--warm);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.cd-col-num {
+  font-family: var(--font-serif);
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  font-weight: 300;
+  font-style: italic;
+  color: rgba(255,255,255,0.12);
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.cd-col-title {
+  font-size: var(--label-size);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.cd-col-body {
+  flex: 1;
+  padding: clamp(0.7rem, 1.4vw, 1.2rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.45rem, 0.9vh, 0.8rem);
+  overflow: hidden;
+}
+
+/* ---- Column 1: The Question ---- */
+.cd-question-bubble {
+  background: rgba(232,105,58,0.08);
+  border: 1px solid rgba(232,105,58,0.18);
+  border-left: 2px solid var(--warm-accent);
+  padding: clamp(0.55rem, 1.1vw, 0.95rem);
+  border-radius: 2px;
+}
+
+.cd-q-label {
+  font-size: var(--label-size);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--warm-accent);
+  margin-bottom: 0.4rem;
+}
+
+.cd-q-text {
+  font-family: var(--font-serif);
+  font-size: clamp(0.85rem, 1.4vw, 1.05rem);
+  font-style: italic;
+  font-weight: 300;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+.cd-q-link {
+  font-family: 'Courier New', monospace;
+  font-size: var(--label-size);
+  color: rgba(232,105,58,0.65);
+  margin-top: 0.4rem;
+  word-break: break-all;
+}
+
+.cd-scale-badge {
+  background: var(--warm);
+  border: 1px solid var(--rule);
+  padding: clamp(0.45rem, 0.9vw, 0.75rem) clamp(0.6rem, 1.2vw, 1rem);
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.cd-scale-num {
+  font-family: var(--font-serif);
+  font-size: clamp(1.6rem, 3vw, 2.5rem);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--accent);
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.cd-scale-desc {
+  font-size: var(--small-size);
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* ---- Column 2: The Search ---- */
+.cd-search-list {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.25rem, 0.5vh, 0.45rem);
+  border-left: 1px solid rgba(255,255,255,0.07);
+  padding-left: 0.7rem;
+}
+
+.cd-search-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: var(--small-size);
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+.cd-search-item .cs-icon {
+  font-size: 0.6rem;
+  flex-shrink: 0;
+  margin-top: 0.35em;
+  color: rgba(106,172,255,0.4);
+}
+
+.cd-search-item.hi { color: var(--ink-soft); }
+.cd-search-item.hi .cs-icon { color: var(--accent); }
+
+.cd-search-item .cs-query {
+  font-family: 'Courier New', monospace;
+  font-size: 0.85em;
+  color: rgba(106,172,255,0.75);
+}
+
+.cd-search-more {
+  font-size: var(--small-size);
+  color: var(--accent);
+  font-style: italic;
+  padding-left: 1.2rem;
+  opacity: 0.8;
+}
+
+/* ---- Column 3: The Answer ---- */
+.cd-answer-block {
+  background: var(--warm);
+  border: 1px solid var(--rule);
+  padding: clamp(0.5rem, 1vw, 0.85rem);
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.cd-answer-block.negative { border-left: 2px solid var(--warm-accent); }
+.cd-answer-block.positive { border-left: 2px solid #4ade80; }
+
+.cd-answer-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: var(--label-size);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 0.1rem;
+}
+.cd-answer-tag.neg { color: var(--warm-accent); }
+.cd-answer-tag.pos { color: #4ade80; }
+
+.cd-answer-accession {
+  font-family: 'Courier New', monospace;
+  font-size: clamp(0.8rem, 1.3vw, 1rem);
+  color: var(--ink);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.cd-answer-text {
+  font-size: var(--small-size);
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.cd-answer-text strong { color: var(--ink-soft); font-weight: 500; }
+
+.cd-answer-text .mono {
+  font-family: 'Courier New', monospace;
+  font-size: 0.88em;
+  color: var(--accent);
+  background: rgba(106,172,255,0.07);
+  padding: 0.05em 0.3em;
+  border-radius: 2px;
+}
+
+/* Actions taken */
+.cd-actions-label {
+  font-size: var(--label-size);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+  padding-top: 0.2rem;
+  flex-shrink: 0;
+}
+
+.cd-action {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  font-size: var(--small-size);
+  color: var(--ink-soft);
+  line-height: 1.45;
+}
+
+.cd-action-check { color: #4ade80; flex-shrink: 0; font-size: 0.7rem; margin-top: 0.22em; }
+
+.cd-action .mono {
+  font-family: 'Courier New', monospace;
+  font-size: 0.85em;
+  color: rgba(232,234,237,0.75);
+  background: rgba(255,255,255,0.04);
+  padding: 0.05em 0.35em;
+  border-radius: 2px;
+  border: 1px solid rgba(255,255,255,0.07);
+}
+
+@media (max-width: 900px) {
+  .codex-demo-split { grid-template-columns: 1fr; }
+  .cd-col { border-right: none; border-bottom: 1px solid var(--rule); }
+  .cd-col:last-child { border-bottom: none; }
+}
+
+/* ===========================================
+   MY SKILLS SLIDE
+   3-card grid showcasing custom Codex skills
+   =========================================== */
+.skill-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: clamp(0.5rem, 1.5vw, 1.2rem);
+}
+
+.skill-card {
+  background: var(--warm);
+  border: 1px solid var(--rule);
+  border-top: 2px solid var(--accent);
+  padding: clamp(0.9rem, 1.8vw, 1.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.5rem, 1vh, 0.85rem);
+  border-radius: 2px;
+}
+
+.skill-card-name {
+  font-family: 'Courier New', Consolas, monospace;
+  font-size: clamp(0.78rem, 1.3vw, 1rem);
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.03em;
+}
+
+.skill-card-desc {
+  font-size: clamp(0.78rem, 1.25vw, 0.95rem);
+  color: var(--ink-soft);
+  line-height: 1.6;
+  flex: 1;
+}
+
+.skill-card-contents {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding-top: 0.45rem;
+  border-top: 1px solid var(--rule);
+}
+
+.skill-card-contents-label {
+  font-size: var(--label-size);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.2rem;
+}
+
+.skill-card-file {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: 'Courier New', monospace;
+  font-size: clamp(0.65rem, 1vw, 0.8rem);
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.skill-card-file::before {
+  content: '›';
+  color: var(--accent);
+  font-style: normal;
+  flex-shrink: 0;
+}
 </style>
 </head>
 <body>
@@ -720,7 +1145,7 @@ h2.slide-heading em { font-style: italic; }
     </div>
     <div class="title-right">
       <div class="eyebrow reveal">Agentic Coding</div>
-      <h1 class="display reveal">Intro to<br><em>Agentic</em><br>Coding</h1>
+      <h1 class="display reveal">Intro to <em>Agentic</em> Coding</h1>
       <p class="title-subtitle reveal">Autonomous AI agents that write, read, and execute code — and what they mean for researchers.</p>
       <div class="presenter-row reveal">
         <span class="presenter-name">Christoffer Mattsson Langseth</span>
@@ -746,13 +1171,14 @@ h2.slide-heading em { font-style: italic; }
     </div>
     <div class="content-main">
       <div class="eyebrow reveal">Contents</div>
-      <h2 class="slide-heading reveal">What we'll<br><em>cover</em></h2>
+      <h2 class="slide-heading reveal">What we'll <em>cover</em></h2>
       <ul class="bullet-list reveal" style="gap: clamp(0.5rem, 1.2vh, 1rem);">
         <li><strong>Part 1</strong> — Introduction &amp; key tools</li>
         <li><strong>Part 2</strong> — Useful features: AGENTS.md, Skills &amp; Multi-agent</li>
         <li><strong>Part 3</strong> — How to interact: CLI, desktop, VS Code</li>
         <li><strong>Part 4</strong> — Real perspectives from developers</li>
-        <li><strong>Part 5</strong> — Where does this leave us?</li>
+        <li><strong>Part 5</strong> — What I've vibe coded</li>
+        <li><strong>Part 6</strong> — Where does this leave us?</li>
       </ul>
     </div>
   </div>
@@ -790,7 +1216,7 @@ h2.slide-heading em { font-style: italic; }
     </div>
     <div class="content-main">
       <div class="eyebrow reveal">What is it?</div>
-      <h2 class="slide-heading reveal">What is agentic<br><em>coding?</em></h2>
+      <h2 class="slide-heading reveal">What is agentic <em>coding?</em></h2>
       <ul class="bullet-list reveal">
         <li>Also called vibe coding, prompt engineering, AI-assisted development</li>
         <li>Autonomous AI agents (LLMs) that can write, read, and execute code</li>
@@ -817,7 +1243,7 @@ h2.slide-heading em { font-style: italic; }
     </div>
     <div class="content-main">
       <div class="eyebrow reveal">OpenAI</div>
-      <h2 class="slide-heading reveal">Introduction to<br><em>Codex</em></h2>
+      <h2 class="slide-heading reveal">Introduction to <em>Codex</em></h2>
       <ul class="bullet-list reveal">
         <li>OpenAI's coding agent</li>
         <li>Latest generation (gpt-5.4) works very well</li>
@@ -829,9 +1255,9 @@ h2.slide-heading em { font-style: italic; }
 </section>
 
 <!-- ====================================================
-     06  Introduction to Claude Code
+     07  Introduction to Claude Code
      ==================================================== -->
-<section class="slide slide--content" id="slide-6">
+<section class="slide slide--content" id="slide-7">
   <div class="slide-header">
     <span class="ki-label">Introduction</span>
     <span class="slide-num-label">06 / 26</span>
@@ -843,7 +1269,7 @@ h2.slide-heading em { font-style: italic; }
     </div>
     <div class="content-main">
       <div class="eyebrow reveal">Anthropic</div>
-      <h2 class="slide-heading reveal">Introduction to<br><em>Claude Code</em></h2>
+      <h2 class="slide-heading reveal">Introduction to <em>Claude Code</em></h2>
       <ul class="bullet-list reveal">
         <li>Anthropic's coding agent — had an early edge on the field</li>
         <li>Codex is accelerating and closing the gap</li>
@@ -858,9 +1284,48 @@ h2.slide-heading em { font-style: italic; }
 </section>
 
 <!-- ====================================================
-     07  General best practices
+     07  My take: Codex vs Claude Code
      ==================================================== -->
-<section class="slide slide--content" id="slide-7">
+<section class="slide slide--multiagent" id="slide-7">
+  <div class="slide-header">
+    <span class="ki-label">Introduction</span>
+    <span class="slide-num-label">07 / 30</span>
+  </div>
+  <div class="ma-body">
+    <div class="ma-top">
+      <div class="eyebrow reveal">Personal experience</div>
+      <h2 class="slide-heading reveal">My take: Codex vs <em>Claude Code</em></h2>
+    </div>
+    <div class="ma-cols">
+      <div class="ma-col">
+        <span class="ma-col-label ma-col-label--claude reveal">Claude Code</span>
+        <ul class="bullet-list">
+          <li class="reveal">Better at one-shotting things — tends to get it right on the first try</li>
+          <li class="reveal">Really strong at design decisions — often nails it where Codex is unreliable</li>
+        </ul>
+      </div>
+      <div class="ma-col">
+        <span class="ma-col-label ma-col-label--codex reveal">Codex</span>
+        <ul class="bullet-list">
+          <li class="reveal">Often takes a long time to think before responding</li>
+          <li class="reveal">I find myself trusting its output more — not entirely sure why</li>
+          <li class="reveal">Much more permissive with token limits — Claude tokens run out fast</li>
+        </ul>
+      </div>
+    </div>
+    <div class="ma-diff">
+      <span class="ma-diff-label reveal">Bottom line</span>
+      <div class="ma-diff-items">
+        <span class="ma-diff-item reveal">It's not one vs the other — they complement each other</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================
+     08  General best practices
+     ==================================================== -->
+<section class="slide slide--content" id="slide-8">
   <div class="slide-header">
     <span class="ki-label">Introduction</span>
     <span class="slide-num-label">07 / 26</span>
@@ -872,7 +1337,7 @@ h2.slide-heading em { font-style: italic; }
     </div>
     <div class="content-main">
       <div class="eyebrow reveal">Working effectively</div>
-      <h2 class="slide-heading reveal">General<br><em>best practices</em></h2>
+      <h2 class="slide-heading reveal">General <em>best practices</em></h2>
       <ul class="bullet-list reveal">
         <li>They understand natural language — write to them like you would any engineer</li>
         <li>Learn the "language" of the agent over time</li>
@@ -887,7 +1352,7 @@ h2.slide-heading em { font-style: italic; }
 <!-- ====================================================
      08  A note on context
      ==================================================== -->
-<section class="slide slide--content" id="slide-8">
+<section class="slide slide--content" id="slide-9">
   <div class="slide-header">
     <span class="ki-label">Introduction</span>
     <span class="slide-num-label">08 / 26</span>
@@ -899,7 +1364,7 @@ h2.slide-heading em { font-style: italic; }
     </div>
     <div class="content-main">
       <div class="eyebrow reveal">Memory &amp; context windows</div>
-      <h2 class="slide-heading reveal">A note on<br><em>context</em></h2>
+      <h2 class="slide-heading reveal">A note on <em>context</em></h2>
       <ul class="bullet-list reveal">
         <li>Context is essentially the agent's working memory</li>
         <li>It is limited — agents compact their memory when full</li>
@@ -914,7 +1379,7 @@ h2.slide-heading em { font-style: italic; }
 <!-- ====================================================
      09  SECTION — Useful Features
      ==================================================== -->
-<section class="slide slide--section" id="slide-9">
+<section class="slide slide--section" id="slide-10">
   <div class="slide-header">
     <span class="ki-label">Karolinska Institutet</span>
     <span class="slide-num-label">09 / 26</span>
@@ -923,7 +1388,7 @@ h2.slide-heading em { font-style: italic; }
     <div class="section-bg-num">02</div>
     <span class="section-part-label reveal">Part Two</span>
     <div class="section-rule reveal rule-expand"></div>
-    <h2 class="section-title reveal">Useful<br><em>Features</em></h2>
+    <h2 class="section-title reveal">Useful <em>Features</em></h2>
     <p class="section-desc reveal">Tools and capabilities that make agents more reliable and consistent.</p>
   </div>
 </section>
@@ -931,7 +1396,7 @@ h2.slide-heading em { font-style: italic; }
 <!-- ====================================================
      10  AGENTS.md / CLAUDE.md
      ==================================================== -->
-<section class="slide slide--content" id="slide-10">
+<section class="slide slide--content" id="slide-11">
   <div class="slide-header">
     <span class="ki-label">Useful Features</span>
     <span class="slide-num-label">10 / 26</span>
@@ -943,7 +1408,7 @@ h2.slide-heading em { font-style: italic; }
     </div>
     <div class="content-main">
       <div class="eyebrow reveal">Project control files</div>
-      <h2 class="slide-heading reveal"><em>AGENTS.md</em><br>/ CLAUDE.md</h2>
+      <h2 class="slide-heading reveal"><em>AGENTS.md</em> / CLAUDE.md</h2>
       <ul class="bullet-list reveal">
         <li>A control file that tells coding agents how to behave in your project</li>
         <li>Makes output consistent, predictable, and aligned with your conventions</li>
@@ -958,7 +1423,7 @@ h2.slide-heading em { font-style: italic; }
 <!-- ====================================================
      11  Agentic skills
      ==================================================== -->
-<section class="slide slide--content" id="slide-11">
+<section class="slide slide--content" id="slide-12">
   <div class="slide-header">
     <span class="ki-label">Useful Features</span>
     <span class="slide-num-label">11 / 26</span>
@@ -966,11 +1431,11 @@ h2.slide-heading em { font-style: italic; }
   <div class="content-body">
     <div class="content-sidebar">
       <span class="sidebar-section-label">Extensibility</span>
-      <span class="sidebar-slide-num">11</span>
+      <span class="sidebar-slide-num">12</span>
     </div>
     <div class="content-main">
       <div class="eyebrow reveal">Modular capabilities</div>
-      <h2 class="slide-heading reveal">Agentic<br><em>Skills</em></h2>
+      <h2 class="slide-heading reveal">Agentic <em>Skills</em></h2>
       <ul class="bullet-list reveal">
         <li>Skills extend AI agents with specialized knowledge and workflows</li>
         <li>A skill is a folder with a <code>SKILL.md</code> file at its core</li>
@@ -983,9 +1448,65 @@ h2.slide-heading em { font-style: italic; }
 </section>
 
 <!-- ====================================================
+     11b  My custom Codex skills
+     ==================================================== -->
+<section class="slide slide--content" id="slide-my-skills">
+  <div class="slide-header">
+    <span class="ki-label">Useful Features · Skills</span>
+    <span class="slide-num-label">— / —</span>
+  </div>
+  <div class="content-body">
+    <div class="content-sidebar">
+      <span class="sidebar-section-label">My skills</span>
+      <span class="sidebar-slide-num" style="font-style:italic;">⌘</span>
+    </div>
+    <div class="content-main">
+      <div class="eyebrow reveal">github.com/chrislangseth/codex-skills</div>
+      <h2 class="slide-heading reveal">My custom <em>KaroSpace skills</em></h2>
+      <div class="skill-cards reveal">
+
+        <div class="skill-card">
+          <div class="skill-card-name">karospace-companion-sh</div>
+          <p class="skill-card-desc">Generates dataset runner shell scripts for KaroSpaceCompanion. Auto-selects <code>groupby</code>, composition, and analytics columns from an <code>.h5ad</code> input using lab-specific heuristics.</p>
+          <div class="skill-card-contents">
+            <div class="skill-card-contents-label">Includes</div>
+            <div class="skill-card-file">SKILL.md</div>
+            <div class="skill-card-file">scripts/generate_runner.py</div>
+            <div class="skill-card-file">agents/</div>
+          </div>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-card-name">karospace-export-py</div>
+          <p class="skill-card-desc">Inspects <code>.h5ad</code> datasets and scaffolds KaroSpace viewer export scripts — choosing section keys, color columns, and <code>obsm</code> embeddings with sensible defaults.</p>
+          <div class="skill-card-contents">
+            <div class="skill-card-contents-label">Includes</div>
+            <div class="skill-card-file">SKILL.md</div>
+            <div class="skill-card-file">scripts/inspect_h5ad.py</div>
+            <div class="skill-card-file">references/heuristics.md</div>
+          </div>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-card-name">karospace-r2-uploader</div>
+          <p class="skill-card-desc">Stages exported KaroSpace viewer bundles and emits exact <code>bash</code> commands for dry-run and live upload to Cloudflare R2 storage.</p>
+          <div class="skill-card-contents">
+            <div class="skill-card-contents-label">Includes</div>
+            <div class="skill-card-file">SKILL.md</div>
+            <div class="skill-card-file">scripts/emit_r2_upload_commands.py</div>
+            <div class="skill-card-file">agents/</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================
      12  Multi-Agent Workflows
      ==================================================== -->
-<section class="slide slide--multiagent" id="slide-12">
+<section class="slide slide--multiagent" id="slide-13">
   <div class="slide-header">
     <span class="ki-label">Useful Features</span>
     <span class="slide-num-label">12 / 26</span>
@@ -993,7 +1514,7 @@ h2.slide-heading em { font-style: italic; }
   <div class="ma-body">
     <div class="ma-top">
       <div class="eyebrow reveal">Coordination patterns</div>
-      <h2 class="slide-heading reveal">Multi-Agent<br><em>Workflows</em></h2>
+      <h2 class="slide-heading reveal">Multi-Agent <em>Workflows</em></h2>
     </div>
     <div class="ma-cols">
       <div class="ma-col">
@@ -1028,7 +1549,7 @@ h2.slide-heading em { font-style: italic; }
 <!-- ====================================================
      13  SECTION — How to interact?
      ==================================================== -->
-<section class="slide slide--section" id="slide-13">
+<section class="slide slide--section" id="slide-14">
   <div class="slide-header">
     <span class="ki-label">Karolinska Institutet</span>
     <span class="slide-num-label">13 / 26</span>
@@ -1037,7 +1558,7 @@ h2.slide-heading em { font-style: italic; }
     <div class="section-bg-num">03</div>
     <span class="section-part-label reveal">Part Three</span>
     <div class="section-rule reveal rule-expand"></div>
-    <h2 class="section-title reveal">How to<br><em>Interact</em></h2>
+    <h2 class="section-title reveal">How to <em>Interact</em></h2>
     <p class="section-desc reveal">The different interfaces for working with coding agents.</p>
   </div>
 </section>
@@ -1045,7 +1566,7 @@ h2.slide-heading em { font-style: italic; }
 <!-- ====================================================
      13  CLI
      ==================================================== -->
-<section class="slide slide--content" id="slide-14">
+<section class="slide slide--content" id="slide-15">
   <div class="slide-header">
     <span class="ki-label">Interaction</span>
     <span class="slide-num-label">14 / 26</span>
@@ -1053,11 +1574,11 @@ h2.slide-heading em { font-style: italic; }
   <div class="content-body">
     <div class="content-sidebar">
       <span class="sidebar-section-label">Interface</span>
-      <span class="sidebar-slide-num">14</span>
+      <span class="sidebar-slide-num">15</span>
     </div>
     <div class="content-main">
       <div class="eyebrow reveal">Terminal</div>
-      <h2 class="slide-heading reveal">Command Line<br><em>Interface (CLI)</em></h2>
+      <h2 class="slide-heading reveal">Command Line <em>Interface (CLI)</em></h2>
       <ul class="bullet-list reveal">
         <li>Most powerful interface — full control via the terminal</li>
         <li>Feels similar to a chatbot, but with direct filesystem access</li>
@@ -1072,7 +1593,7 @@ h2.slide-heading em { font-style: italic; }
 <!-- ====================================================
      14  IMAGE — Claude Code in action
      ==================================================== -->
-<section class="slide slide--image" id="slide-15">
+<section class="slide slide--image" id="slide-16">
   <div class="image-header">
     <span class="ki-label" style="color:rgba(255,255,255,0.3);">Interaction</span>
     <span class="slide-num-label" style="color:rgba(255,255,255,0.3);">15 / 26</span>
@@ -1092,7 +1613,7 @@ h2.slide-heading em { font-style: italic; }
 <!-- ====================================================
      15  Desktop apps
      ==================================================== -->
-<section class="slide slide--content" id="slide-16">
+<section class="slide slide--content" id="slide-17">
   <div class="slide-header">
     <span class="ki-label">Interaction</span>
     <span class="slide-num-label">16 / 26</span>
@@ -1100,11 +1621,11 @@ h2.slide-heading em { font-style: italic; }
   <div class="content-body">
     <div class="content-sidebar">
       <span class="sidebar-section-label">Interface</span>
-      <span class="sidebar-slide-num">16</span>
+      <span class="sidebar-slide-num">17</span>
     </div>
     <div class="content-main">
       <div class="eyebrow reveal">GUI</div>
-      <h2 class="slide-heading reveal">Desktop<br><em>Apps</em></h2>
+      <h2 class="slide-heading reveal">Desktop <em>Apps</em></h2>
       <ul class="bullet-list reveal">
         <li>Available for both Claude Code and Codex</li>
         <li>Similar to the standard ChatGPT interface — chat-based interaction</li>
@@ -1117,7 +1638,7 @@ h2.slide-heading em { font-style: italic; }
 <!-- ====================================================
      16  IMAGE — Codex desktop app
      ==================================================== -->
-<section class="slide slide--image" id="slide-17">
+<section class="slide slide--image" id="slide-18">
   <div class="image-header">
     <span class="ki-label" style="color:rgba(255,255,255,0.3);">Interaction</span>
     <span class="slide-num-label" style="color:rgba(255,255,255,0.3);">17 / 26</span>
@@ -1137,7 +1658,7 @@ h2.slide-heading em { font-style: italic; }
 <!-- ====================================================
      17  VS Code extensions
      ==================================================== -->
-<section class="slide slide--content" id="slide-18">
+<section class="slide slide--content" id="slide-19">
   <div class="slide-header">
     <span class="ki-label">Interaction</span>
     <span class="slide-num-label">18 / 26</span>
@@ -1145,11 +1666,11 @@ h2.slide-heading em { font-style: italic; }
   <div class="content-body">
     <div class="content-sidebar">
       <span class="sidebar-section-label">Interface</span>
-      <span class="sidebar-slide-num">17</span>
+      <span class="sidebar-slide-num">18</span>
     </div>
     <div class="content-main">
       <div class="eyebrow reveal">IDE integration</div>
-      <h2 class="slide-heading reveal">VS Code<br><em>Extensions</em></h2>
+      <h2 class="slide-heading reveal">VS Code <em>Extensions</em></h2>
       <ul class="bullet-list reveal">
         <li>Brings coding agents directly into Visual Studio Code</li>
         <li>Ideal when working with Jupyter notebooks or similar files</li>
@@ -1162,7 +1683,7 @@ h2.slide-heading em { font-style: italic; }
 <!-- ====================================================
      19  IMAGE — VS Code + Codex in action
      ==================================================== -->
-<section class="slide slide--image" id="slide-19">
+<section class="slide slide--image" id="slide-20">
   <div class="image-header">
     <span class="ki-label" style="color:rgba(255,255,255,0.3);">Interaction</span>
     <span class="slide-num-label" style="color:rgba(255,255,255,0.3);">19 / 26</span>
@@ -1182,7 +1703,7 @@ h2.slide-heading em { font-style: italic; }
 <!-- ====================================================
      20  SECTION — Real perspectives
      ==================================================== -->
-<section class="slide slide--section" id="slide-20">
+<section class="slide slide--section" id="slide-21">
   <div class="slide-header">
     <span class="ki-label">Karolinska Institutet</span>
     <span class="slide-num-label">20 / 26</span>
@@ -1191,21 +1712,21 @@ h2.slide-heading em { font-style: italic; }
     <div class="section-bg-num">04</div>
     <span class="section-part-label reveal">Part Four</span>
     <div class="section-rule reveal rule-expand"></div>
-    <h2 class="section-title reveal">Real<br><em>Perspectives</em></h2>
-    <p class="section-desc reveal">Are people actually using agentic coding? Four developers share their views.</p>
+    <h2 class="section-title reveal">Real <em>Perspectives</em></h2>
+    <p class="section-desc reveal">Are people actually using agentic coding? Five developers share their views.</p>
   </div>
 </section>
 
 <!-- ====================================================
      18  Rust developer
      ==================================================== -->
-<section class="slide slide--interview" id="slide-21">
+<section class="slide slide--interview" id="slide-22">
   <div class="slide-header">
     <span class="ki-label">Perspectives</span>
     <span class="slide-num-label">21 / 26</span>
   </div>
   <div class="interview-band">
-    <div class="interview-index reveal">Developer Perspective · 1 of 4</div>
+    <div class="interview-index reveal">Developer Perspective · 1 of 5</div>
     <h2 class="interview-role reveal">Rust Developer</h2>
     <p class="interview-context reveal">Stockholm-based hardware company</p>
   </div>
@@ -1223,13 +1744,13 @@ h2.slide-heading em { font-style: italic; }
 <!-- ====================================================
      19  Computational biologist + biostatistician
      ==================================================== -->
-<section class="slide slide--interview" id="slide-22">
+<section class="slide slide--interview" id="slide-23">
   <div class="slide-header">
     <span class="ki-label">Perspectives</span>
     <span class="slide-num-label">22 / 26</span>
   </div>
   <div class="interview-band">
-    <div class="interview-index reveal">Developer Perspective · 2 of 4</div>
+    <div class="interview-index reveal">Developer Perspective · 2 of 5</div>
     <h2 class="interview-role reveal">Computational Biologist &amp; Biostatistician</h2>
     <p class="interview-context reveal">&nbsp;</p>
   </div>
@@ -1247,13 +1768,13 @@ h2.slide-heading em { font-style: italic; }
 <!-- ====================================================
      20  Computational biologist (biotech)
      ==================================================== -->
-<section class="slide slide--interview" id="slide-23">
+<section class="slide slide--interview" id="slide-24">
   <div class="slide-header">
     <span class="ki-label">Perspectives</span>
     <span class="slide-num-label">23 / 26</span>
   </div>
   <div class="interview-band">
-    <div class="interview-index reveal">Developer Perspective · 3 of 4</div>
+    <div class="interview-index reveal">Developer Perspective · 3 of 5</div>
     <h2 class="interview-role reveal">Computational Biologist</h2>
     <p class="interview-context reveal">Stockholm-based biotech startup</p>
   </div>
@@ -1271,7 +1792,7 @@ h2.slide-heading em { font-style: italic; }
 <!-- ====================================================
      21  Engineering manager
      ==================================================== -->
-<section class="slide slide--interview" id="slide-24">
+<section class="slide slide--interview" id="slide-25">
   <div class="slide-header">
     <span class="ki-label">Perspectives</span>
     <span class="slide-num-label">24 / 26</span>
@@ -1295,10 +1816,10 @@ h2.slide-heading em { font-style: italic; }
 <!-- ====================================================
      25  Java Programmer in Security
      ==================================================== -->
-<section class="slide slide--interview" id="slide-25">
+<section class="slide slide--interview" id="slide-26">
   <div class="slide-header">
     <span class="ki-label">Perspectives</span>
-    <span class="slide-num-label">25 / 28</span>
+    <span class="slide-num-label">26 / 30</span>
   </div>
   <div class="interview-band">
     <div class="interview-index reveal">Developer Perspective · 5 of 5</div>
@@ -1317,9 +1838,185 @@ h2.slide-heading em { font-style: italic; }
 </section>
 
 <!-- ====================================================
-     26  SECTION — Conclusion
+     26  What I've built
      ==================================================== -->
-<section class="slide slide--section" id="slide-26">
+<section class="slide slide--content" id="slide-27">
+  <div class="slide-header">
+    <span class="ki-label">Conclusion</span>
+    <span class="slide-num-label">27 / 30</span>
+  </div>
+  <div class="content-body content-body--with-phone">
+    <div class="content-sidebar">
+      <span class="sidebar-section-label">Portfolio</span>
+      <span class="sidebar-slide-num">27</span>
+    </div>
+    <div class="content-main">
+      <div class="eyebrow reveal">Personal experience</div>
+      <h2 class="slide-heading reveal">What I've <em>vibe coded</em></h2>
+      <div class="project-list reveal">
+        <div class="project-item">
+          <span class="project-item-name">KaroSpace</span>
+          <span class="project-item-desc">Spatial omics viewer with Python CLI</span>
+        </div>
+        <div class="project-item">
+          <span class="project-item-name">spatialrs</span>
+          <span class="project-item-desc">Fast Rust CLI for spatial transcriptomics — neighbor graphs, NMF, GMM niche detection</span>
+        </div>
+        <div class="project-item">
+          <span class="project-item-name">KaroSpaceBuilder</span>
+          <span class="project-item-desc">Desktop app to generate KaroSpace omics viewers</span>
+        </div>
+        <div class="project-item">
+          <span class="project-item-name">KidDos(e)</span>
+          <span class="project-item-desc">iOS app to track kids' Ibuprofen and Paracetamol usage</span>
+        </div>
+        <div class="project-item">
+          <span class="project-item-name">KaroSpaceCompanion</span>
+          <span class="project-item-desc">Rust CLI for generating KaroSpace-ready AnnData (.h5ad)</span>
+        </div>
+        <div class="project-item">
+          <span class="project-item-name">InSituCore</span>
+          <span class="project-item-desc">Desktop app for spatial transcriptomics analysis</span>
+        </div>
+        <div class="project-item">
+          <span class="project-item-name">KaroSpaceR &amp; KaroSpaceRBuilder</span>
+          <span class="project-item-desc">CLI and desktop app for KaroSpace viewers from .rds objects</span>
+        </div>
+      </div>
+    </div>
+    <div class="phone-panel">
+      <img class="reveal" src="ppt-assets/kiddose-screenshot.png" alt="KidDose iOS app screenshot">
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================
+     CODEX IN ACTION — research demo (after vibe coded)
+     ==================================================== -->
+<section class="slide slide--codex-demo" id="slide-codex-demo">
+  <div class="slide-header">
+    <span class="ki-label">What I've vibe coded · In practice</span>
+    <span class="slide-num-label">— / —</span>
+  </div>
+  <div class="codex-demo-body">
+
+    <!-- Top bar: eyebrow + heading -->
+    <div class="codex-demo-top">
+      <div class="eyebrow reveal">Real example</div>
+      <h2 class="slide-heading reveal" style="font-size: var(--h2-size);">
+        Codex hunting <em>data</em> across the web
+      </h2>
+    </div>
+
+    <!-- 3-column split: Question | Search | Answer -->
+    <div class="codex-demo-split">
+
+      <!-- COLUMN 1: The question -->
+      <div class="cd-col reveal">
+        <div class="cd-col-header">
+          <span class="cd-col-num">01</span>
+          <span class="cd-col-title">The question</span>
+        </div>
+        <div class="cd-col-body">
+          <div class="cd-question-bubble">
+            <div class="cd-q-label">You asked</div>
+            <p class="cd-q-text">"I cannot for the life of me find the data for the entire mouse from this paper…"</p>
+            <p class="cd-q-link">cell.com/…/S0092-8674(26)00273-4</p>
+          </div>
+
+          <div class="cd-scale-badge">
+            <div class="cd-scale-num">11</div>
+            <div class="cd-scale-desc">sources searched autonomously across GEO, PMC, Zenodo, and the paper's full text</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COLUMN 2: The search trace -->
+      <div class="cd-col reveal">
+        <div class="cd-col-header">
+          <span class="cd-col-num">02</span>
+          <span class="cd-col-title">The search</span>
+        </div>
+        <div class="cd-col-body">
+          <div class="cd-search-list">
+            <div class="cd-search-item">
+              <span class="cs-icon">◆</span>
+              <span>Checking paper's data-availability section…</span>
+            </div>
+            <div class="cd-search-item hi">
+              <span class="cs-icon">◆</span>
+              <span>Searched <span class="cs-query">S0092-8674(26)00273-4 GEO data availability</span></span>
+            </div>
+            <div class="cd-search-item hi">
+              <span class="cs-icon">◆</span>
+              <span>Read full text at <span class="cs-query">PMC11984966</span></span>
+            </div>
+            <div class="cd-search-item hi">
+              <span class="cs-icon">◆</span>
+              <span>Searched GEO: <span class="cs-query">acc=GSE266244</span></span>
+            </div>
+            <div class="cd-search-item hi">
+              <span class="cs-icon">◆</span>
+              <span>Read GSE266244 design — inspected all 12 samples</span>
+            </div>
+            <div class="cd-search-item hi">
+              <span class="cs-icon">◆</span>
+              <span>Searched <span class="cs-query">zenodo.10158368 whole mouse spatial</span></span>
+            </div>
+            <div class="cd-search-item hi">
+              <span class="cs-icon">◆</span>
+              <span>Searched GEO: <span class="cs-query">acc=GSE248904</span></span>
+            </div>
+            <div class="cd-search-item hi">
+              <span class="cs-icon">◆</span>
+              <span>Searched GEO superseries: <span class="cs-query">acc=GSE224146</span></span>
+            </div>
+            <div class="cd-search-more">+ 3 additional searches…</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COLUMN 3: The answer + actions -->
+      <div class="cd-col reveal">
+        <div class="cd-col-header">
+          <span class="cd-col-num">03</span>
+          <span class="cd-col-title">The answer</span>
+        </div>
+        <div class="cd-col-body">
+
+          <div class="cd-answer-block negative">
+            <div class="cd-answer-tag neg">✗ Not here</div>
+            <div class="cd-answer-accession">GSE266244</div>
+            <p class="cd-answer-text">The paper says "whole-mouse sections, as we recently demonstrated" — that's a reference to a <strong>different paper</strong>, not data deposited in this accession.</p>
+          </div>
+
+          <div class="cd-answer-block positive">
+            <div class="cd-answer-tag pos">✓ Found it</div>
+            <div class="cd-answer-accession">GSE248904</div>
+            <p class="cd-answer-text"><strong>4 whole-body Array-seq sections</strong> — 2 untreated + 2 LPS-treated. File: <span class="mono">GSE248904_All_Samples.h5ad.gz</span>. Part of superseries <span class="mono">GSE224146</span>.</p>
+          </div>
+
+          <div class="cd-actions-label">Then Codex did this</div>
+          <div class="cd-action">
+            <span class="cd-action-check">▶</span>
+            Downloaded <span class="mono">All_Samples.h5ad.gz</span> &nbsp;<span style="color:var(--accent); opacity:0.75;">(3.4 GB)</span>
+          </div>
+          <div class="cd-action">
+            <span class="cd-action-check">▶</span>
+            Created <span class="mono">gse248904-whole-mouse-arrayseq.ipynb</span>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================
+     27  SECTION — Conclusion
+     ==================================================== -->
+<section class="slide slide--section" id="slide-28">
   <div class="slide-header">
     <span class="ki-label">Karolinska Institutet</span>
     <span class="slide-num-label">25 / 26</span>
@@ -1328,7 +2025,7 @@ h2.slide-heading em { font-style: italic; }
     <div class="section-bg-num">05</div>
     <span class="section-part-label reveal">Part Five</span>
     <div class="section-rule reveal rule-expand"></div>
-    <h2 class="section-title reveal">Where does<br>this <em>leave us?</em></h2>
+    <h2 class="section-title reveal">Where does this <em>leave us?</em></h2>
     <p class="section-desc reveal">Weighing the upsides and downsides of agentic coding.</p>
   </div>
 </section>
@@ -1336,10 +2033,10 @@ h2.slide-heading em { font-style: italic; }
 <!-- ====================================================
      23  Upsides & Downsides
      ==================================================== -->
-<section class="slide slide--closing" id="slide-27">
+<section class="slide slide--closing" id="slide-29">
   <div class="slide-header">
     <span class="ki-label">Conclusion</span>
-    <span class="slide-num-label">27 / 28</span>
+    <span class="slide-num-label">29 / 30</span>
   </div>
   <div class="closing-heading">
     <div class="eyebrow reveal">Taking stock</div>
@@ -1369,25 +2066,37 @@ h2.slide-heading em { font-style: italic; }
 <!-- ====================================================
      27  Broader Concerns
      ==================================================== -->
-<section class="slide slide--content" id="slide-28">
+<section class="slide slide--content" id="slide-30">
   <div class="slide-header">
     <span class="ki-label">Conclusion</span>
-    <span class="slide-num-label">28 / 28</span>
+    <span class="slide-num-label">30 / 30</span>
   </div>
   <div class="content-body">
     <div class="content-sidebar">
       <span class="sidebar-section-label">Concerns</span>
-      <span class="sidebar-slide-num">28</span>
+      <span class="sidebar-slide-num">30</span>
     </div>
     <div class="content-main">
       <div class="eyebrow reveal">Looking further ahead</div>
-      <h2 class="slide-heading reveal">Agentic Coding —<br><em>Broader Concerns</em></h2>
-      <ul class="bullet-list reveal">
-        <li><strong>Longevity &amp; dependence</strong> — What happens if these tools change, degrade, or disappear? Risk of over-reliance</li>
-        <li><strong>Environmental impact</strong> — Increasing compute demands → energy use and carbon footprint</li>
-        <li><strong>Data privacy &amp; governance</strong> — Sending code/data to external providers → security, confidentiality, compliance</li>
-        <li><strong>Ethical considerations</strong> — Use of AI by large companies (e.g. defense collaborations) raises values and alignment questions</li>
-      </ul>
+      <h2 class="slide-heading reveal">Broader <em>Concerns</em></h2>
+      <div class="concern-grid">
+        <div class="concern-card reveal">
+          <span class="concern-title">Longevity &amp; dependence</span>
+          <span class="concern-desc">What happens if these tools change, degrade, or disappear? Risk of over-reliance on external infrastructure.</span>
+        </div>
+        <div class="concern-card reveal">
+          <span class="concern-title">Environmental impact</span>
+          <span class="concern-desc">Increasing compute demands → growing energy use and carbon footprint.</span>
+        </div>
+        <div class="concern-card reveal">
+          <span class="concern-title">Data privacy &amp; governance</span>
+          <span class="concern-desc">Sending code and data to external providers raises security, confidentiality, and compliance concerns.</span>
+        </div>
+        <div class="concern-card reveal">
+          <span class="concern-title">Ethical considerations</span>
+          <span class="concern-desc">Use of AI by large companies — e.g. defense collaborations — raises values and alignment questions.</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>

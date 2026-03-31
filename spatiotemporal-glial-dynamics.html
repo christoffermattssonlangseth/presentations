@@ -1,0 +1,1460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spatiotemporal Dynamics of Glial Cells · Christoffer M. Langseth</title>
+
+<!-- Fonts: Cormorant Garamond (serif elegance) + DM Sans (clean body) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ===========================================
+   CSS CUSTOM PROPERTIES — DEEP MERIDIAN THEME
+   Modify these variables to retheme the entire deck
+   =========================================== */
+:root {
+  /* Colors */
+  --bg-deep:    #0a0e18;
+  --bg-card:    #111827;
+  --bg-surface: #161d2e;
+  --border:     rgba(100, 160, 220, 0.14);
+  --border-hi:  rgba(100, 160, 220, 0.32);
+  --accent:     #7eb8e8;
+  --accent-dim: #4a8fc0;
+  --accent-glow:rgba(78, 143, 192, 0.18);
+  --text-hi:    #eef2f8;
+  --text-body:  #c8d4e0;
+  --text-muted: #7888a0;
+
+  /* Typography */
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans:  'DM Sans', system-ui, sans-serif;
+
+  /* Sizes — all clamp() for viewport fitting */
+  --title-size:    clamp(1.6rem, 4.5vw, 3.8rem);
+  --h2-size:       clamp(1.4rem, 3.5vw, 2.8rem);
+  --h3-size:       clamp(1rem, 2vw, 1.5rem);
+  --body-size:     clamp(0.72rem, 1.35vw, 1rem);
+  --small-size:    clamp(0.6rem, 0.95vw, 0.78rem);
+  --label-size:    clamp(0.55rem, 0.9vw, 0.7rem);
+
+  /* Spacing */
+  --pad:       clamp(1.5rem, 5vw, 5.5rem);
+  --pad-v:     clamp(1.5rem, 4vh, 4rem);
+  --gap:       clamp(0.5rem, 1.5vh, 1.4rem);
+  --gap-sm:    clamp(0.3rem, 0.8vh, 0.8rem);
+
+  /* Motion */
+  --ease:      cubic-bezier(0.16, 1, 0.3, 1);
+  --dur:       0.65s;
+}
+
+/* ===========================================
+   BASE RESET & VIEWPORT LOCK
+   =========================================== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  height: 100%;
+  overflow-x: hidden;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--sans);
+  background: var(--bg-deep);
+  color: var(--text-body);
+  overflow-x: hidden;
+  height: 100%;
+}
+
+/* ===========================================
+   SHARED BACKGROUND ELEMENTS
+   =========================================== */
+.grid-bg {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(100,160,220,0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(100,160,220,0.022) 1px, transparent 1px);
+  background-size: 55px 55px;
+  pointer-events: none;
+}
+
+.glow-tl {
+  position: absolute;
+  top: -10%; left: -10%;
+  width: 50%; height: 50%;
+  background: radial-gradient(ellipse, rgba(30,80,150,0.14) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.glow-br {
+  position: absolute;
+  bottom: -10%; right: -5%;
+  width: 40%; height: 50%;
+  background: radial-gradient(ellipse, rgba(78,143,192,0.09) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Corner bracket decoration */
+.corner { position: absolute; width: 32px; height: 32px; border-color: var(--border-hi); border-style: solid; }
+.corner.tl { top: 1.8rem; left: 2rem;   border-width: 1px 0 0 1px; }
+.corner.tr { top: 1.8rem; right: 2rem;  border-width: 1px 1px 0 0; }
+.corner.br { bottom: 1.8rem; right: 2rem; border-width: 0 1px 1px 0; }
+.corner.bl { bottom: 1.8rem; left: 2rem;  border-width: 0 0 1px 1px; }
+
+/* ===========================================
+   SLIDE CONTAINER — VIEWPORT FITTING (CRITICAL)
+   Every slide must be exactly 100vh, no scrolling
+   =========================================== */
+.slide {
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;       /* Dynamic viewport height for mobile browsers */
+  overflow: hidden;     /* CRITICAL: prevent any overflow */
+  scroll-snap-align: start;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===========================================
+   SLIDE CONTENT WRAPPER
+   Handles centering and overflow protection
+   =========================================== */
+.slide-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--pad-v) var(--pad);
+  max-height: 100%;
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
+}
+
+/* ===========================================
+   ANIMATION SYSTEM
+   .reveal classes animate when .slide gets .visible
+   =========================================== */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity var(--dur) var(--ease),
+              transform var(--dur) var(--ease);
+}
+.slide.visible .reveal { opacity: 1; transform: translateY(0); }
+
+/* Stagger delays for children */
+.reveal:nth-child(1)  { transition-delay: 0.05s; }
+.reveal:nth-child(2)  { transition-delay: 0.15s; }
+.reveal:nth-child(3)  { transition-delay: 0.25s; }
+.reveal:nth-child(4)  { transition-delay: 0.35s; }
+.reveal:nth-child(5)  { transition-delay: 0.42s; }
+.reveal:nth-child(6)  { transition-delay: 0.50s; }
+
+/* Left-origin reveal variant */
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-24px);
+  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.slide.visible .reveal-left { opacity: 1; transform: translateX(0); }
+
+/* ===========================================
+   TYPOGRAPHY COMPONENTS
+   =========================================== */
+.kicker {
+  font-family: var(--sans);
+  font-size: var(--label-size);
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.slide-title {
+  font-family: var(--serif);
+  font-size: var(--title-size);
+  font-weight: 400;
+  line-height: 1.12;
+  color: var(--text-hi);
+}
+
+.slide-h2 {
+  font-family: var(--serif);
+  font-size: var(--h2-size);
+  font-weight: 400;
+  line-height: 1.15;
+  color: var(--text-hi);
+}
+
+.slide-h2 em { font-style: italic; color: var(--accent); }
+
+.divider {
+  width: 3rem;
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent-dim), transparent);
+  flex-shrink: 0;
+}
+
+/* Bullet list for content slides */
+.bullet-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-sm);
+}
+
+.bullet-list li {
+  font-size: var(--body-size);
+  color: var(--text-body);
+  line-height: 1.5;
+  padding-left: 1.2em;
+  position: relative;
+}
+
+.bullet-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.65em;
+  width: 4px;
+  height: 1px;
+  background: var(--accent-dim);
+}
+
+/* Sub-bullets */
+.bullet-list li.sub {
+  padding-left: 2em;
+  color: var(--text-muted);
+  font-size: calc(var(--body-size) * 0.9);
+}
+.bullet-list li.sub::before {
+  left: 1em;
+  background: var(--border-hi);
+}
+
+/* ===========================================
+   SLIDE COUNTER + NAVIGATION
+   =========================================== */
+.slide-num {
+  position: absolute;
+  bottom: 1.8rem; right: 2.5rem;
+  font-size: var(--label-size);
+  letter-spacing: 0.14em;
+  color: var(--text-muted);
+  font-family: var(--sans);
+  z-index: 10;
+}
+
+/* Nav dots (right side) */
+#nav-dots {
+  position: fixed;
+  right: 1.2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 100;
+}
+
+.dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s;
+}
+
+.dot.active {
+  background: var(--accent);
+  transform: scale(1.4);
+}
+
+/* Progress bar (top) */
+#progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 1px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent-dim), var(--accent));
+  z-index: 100;
+  transition: width 0.3s ease;
+}
+
+/* ===========================================
+   SLIDE 1: TITLE
+   =========================================== */
+#slide-1 {
+  background: linear-gradient(158deg, #0a0e18 0%, #0f1825 100%);
+}
+
+#slide-1 .slide-title {
+  font-size: var(--title-size);
+  max-width: 72%;
+}
+
+#slide-1 .author-line {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.3rem;
+}
+
+#slide-1 .author-name {
+  font-family: var(--sans);
+  font-size: var(--body-size);
+  font-weight: 400;
+  color: var(--text-body);
+}
+
+#slide-1 .author-sep {
+  width: 1px; height: 0.85em;
+  background: var(--border-hi);
+}
+
+#slide-1 .author-inst {
+  font-family: var(--sans);
+  font-size: var(--small-size);
+  color: var(--text-muted);
+}
+
+/* ===========================================
+   SLIDE 2: WHOAMI
+   Two column — timeline left, detail right
+   =========================================== */
+#slide-2 .two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1.5rem, 4vw, 4rem);
+  align-items: start;
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-sm);
+  border-left: 1px solid var(--border);
+  padding-left: 1.2rem;
+}
+
+.timeline-item {
+  position: relative;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -1.35rem;
+  top: 0.5em;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--bg-deep);
+  border: 1px solid var(--accent-dim);
+}
+
+.timeline-item .t-label {
+  font-size: var(--label-size);
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 0.15rem;
+}
+
+.timeline-item .t-text {
+  font-size: var(--body-size);
+  color: var(--text-body);
+  line-height: 1.4;
+}
+
+.highlight-box {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--accent-dim);
+  padding: clamp(0.8rem, 1.5vw, 1.4rem);
+  border-radius: 2px;
+}
+
+.highlight-box .hb-label {
+  font-size: var(--label-size);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: var(--gap-sm);
+}
+
+.highlight-box .hb-title {
+  font-family: var(--serif);
+  font-size: var(--h3-size);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--text-hi);
+  line-height: 1.35;
+  margin-bottom: var(--gap-sm);
+}
+
+.highlight-box .hb-sub {
+  font-size: var(--small-size);
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: var(--gap);
+}
+
+.tag {
+  font-size: var(--label-size);
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  border: 1px solid var(--border);
+  padding: 0.2rem 0.6rem;
+  border-radius: 2px;
+  background: var(--accent-glow);
+}
+
+/* ===========================================
+   SLIDE 3: GCB LAB
+   =========================================== */
+#slide-3 .lab-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1rem, 2.5vw, 2.5rem);
+  margin-top: var(--gap);
+}
+
+.lab-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  padding: clamp(0.8rem, 1.5vw, 1.4rem);
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.lab-card .lc-icon {
+  font-size: 1.2rem;
+  opacity: 0.7;
+  flex-shrink: 0;
+}
+
+.lab-card .lc-title {
+  font-family: var(--serif);
+  font-size: var(--h3-size);
+  font-weight: 400;
+  color: var(--text-hi);
+}
+
+.lab-card .lc-body {
+  font-size: var(--small-size);
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+/* ===========================================
+   SLIDE 4: MULTIPLE SCLEROSIS
+   Facts with a side accent panel
+   =========================================== */
+#slide-4 .ms-layout {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: clamp(1.5rem, 4vw, 4rem);
+  align-items: start;
+}
+
+.ms-facts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-sm);
+}
+
+.ms-aside {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  width: clamp(120px, 18vw, 200px);
+  flex-shrink: 0;
+}
+
+.ms-stat {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-top: 2px solid var(--accent-dim);
+  padding: clamp(0.6rem, 1.2vw, 1rem);
+  text-align: center;
+}
+
+.ms-stat .val {
+  font-family: var(--serif);
+  font-size: clamp(1.4rem, 3vw, 2.5rem);
+  font-weight: 300;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.ms-stat .lbl {
+  font-size: var(--label-size);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 0.3rem;
+  line-height: 1.3;
+}
+
+/* ===========================================
+   SLIDE 5: MY RESEARCH
+   3-section layout: platforms, models, tools
+   =========================================== */
+#slide-5 .research-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr 1fr;
+  gap: clamp(0.6rem, 1.5vw, 1.5rem);
+  margin-top: var(--gap);
+}
+
+.research-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-sm);
+}
+
+.research-col .col-head {
+  font-size: var(--label-size);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0.3rem;
+}
+
+.research-item {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  padding: clamp(0.5rem, 1vw, 0.9rem);
+  border-radius: 2px;
+}
+
+.research-item .ri-name {
+  font-size: var(--small-size);
+  font-weight: 500;
+  color: var(--text-hi);
+  line-height: 1.3;
+}
+
+.research-item .ri-sub {
+  font-size: calc(var(--small-size) * 0.9);
+  color: var(--text-muted);
+  line-height: 1.4;
+  margin-top: 0.2rem;
+}
+
+/* ===========================================
+   SLIDE 6: FUTURE DIRECTIONS
+   3 items with number accents
+   =========================================== */
+#slide-6 .future-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  margin-top: var(--gap);
+}
+
+.future-item {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(0.8rem, 2vw, 1.8rem);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  padding: clamp(0.8rem, 1.5vw, 1.4rem);
+  border-radius: 2px;
+}
+
+.future-item .fi-num {
+  font-family: var(--serif);
+  font-size: clamp(1.4rem, 3vw, 2.4rem);
+  font-weight: 300;
+  color: var(--border-hi);
+  line-height: 1;
+  flex-shrink: 0;
+  width: 2rem;
+  text-align: right;
+}
+
+.future-item .fi-content { flex: 1; }
+
+.future-item .fi-title {
+  font-family: var(--serif);
+  font-size: var(--h3-size);
+  font-weight: 400;
+  color: var(--text-hi);
+  line-height: 1.3;
+  margin-bottom: 0.3rem;
+}
+
+.future-item .fi-body {
+  font-size: var(--small-size);
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ===========================================
+   SLIDE 7: QUESTIONS
+   Centered, sparse, inviting
+   =========================================== */
+#slide-7 {
+  background: linear-gradient(158deg, #0a0e18 0%, #0d1523 100%);
+}
+
+#slide-7 .slide-body {
+  align-items: flex-start;
+}
+
+.question-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  margin-top: var(--gap);
+}
+
+.question-list li {
+  font-family: var(--serif);
+  font-size: clamp(1rem, 2.2vw, 1.7rem);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--text-body);
+  line-height: 1.3;
+  padding-left: 1.5rem;
+  border-left: 1px solid var(--border);
+}
+
+.question-list li:first-child { color: var(--text-hi); }
+
+.closing-note {
+  font-size: var(--small-size);
+  color: var(--text-muted);
+  margin-top: clamp(1.5rem, 3vh, 3rem);
+  letter-spacing: 0.04em;
+}
+
+/* ===========================================
+   RESPONSIVE BREAKPOINTS
+   =========================================== */
+@media (max-height: 700px) {
+  :root {
+    --pad-v: clamp(1rem, 3vh, 2.5rem);
+    --gap:   clamp(0.35rem, 1.2vh, 1rem);
+    --gap-sm: clamp(0.25rem, 0.6vh, 0.6rem);
+  }
+}
+
+@media (max-height: 600px) {
+  :root {
+    --pad:   clamp(1.2rem, 4vw, 3rem);
+    --pad-v: clamp(0.8rem, 2.5vh, 2rem);
+    --gap:   clamp(0.3rem, 0.8vh, 0.7rem);
+    --title-size: clamp(1.3rem, 4vw, 2.8rem);
+    --h2-size:    clamp(1.1rem, 3vw, 2rem);
+  }
+  .corner { display: none; }
+  #nav-dots { display: none; }
+}
+
+@media (max-height: 500px) {
+  :root {
+    --title-size: clamp(1.1rem, 3.5vw, 2rem);
+    --h2-size:    clamp(1rem, 2.5vw, 1.5rem);
+    --body-size:  clamp(0.65rem, 1.1vw, 0.85rem);
+    --pad: clamp(1rem, 3vw, 2rem);
+    --pad-v: clamp(0.5rem, 1.5vh, 1.5rem);
+  }
+}
+
+@media (max-width: 768px) {
+  #slide-2 .two-col { grid-template-columns: 1fr; }
+  #slide-3 .lab-grid { grid-template-columns: 1fr; }
+  #slide-4 .ms-layout { grid-template-columns: 1fr; }
+  #slide-4 .ms-aside { flex-direction: row; width: auto; }
+  #slide-5 .research-grid { grid-template-columns: 1fr; }
+}
+
+/* ===========================================
+   REDUCED MOTION
+   =========================================== */
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal-left {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  html { scroll-behavior: auto; }
+}
+
+/* ===========================================
+   SLIDE 7: CODEX IN ACTION
+   Terminal-style chat interface
+   =========================================== */
+.codex-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1rem, 2.5vw, 2.5rem);
+  align-items: stretch;
+  margin-top: var(--gap);
+}
+
+.codex-window {
+  background: #080c14;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: 'Space Mono', 'Fira Mono', 'Courier New', monospace;
+  max-height: min(58vh, 480px);
+}
+
+.codex-titlebar {
+  background: #0f1520;
+  border-bottom: 1px solid var(--border);
+  padding: 0.45rem 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-shrink: 0;
+}
+
+.tb-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--border-hi);
+}
+.tb-dot.red   { background: rgba(255,90,80,0.6); }
+.tb-dot.amber { background: rgba(220,160,40,0.6); }
+.tb-dot.green { background: rgba(50,200,100,0.5); }
+
+.tb-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-left: 0.4rem;
+}
+
+.codex-body {
+  padding: clamp(0.6rem, 1.2vw, 1rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.4rem, 0.8vh, 0.7rem);
+  overflow: hidden;
+  flex: 1;
+}
+
+/* User message bubble */
+.msg-user {
+  align-self: flex-start;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 2px 6px 6px 2px;
+  padding: 0.45rem 0.7rem;
+  max-width: 90%;
+}
+
+.msg-user .mu-label {
+  font-size: calc(var(--label-size) * 0.9);
+  letter-spacing: 0.1em;
+  color: var(--accent-dim);
+  text-transform: uppercase;
+  margin-bottom: 0.2rem;
+}
+
+.msg-user p {
+  font-size: calc(var(--small-size) * 0.92);
+  color: var(--text-body);
+  line-height: 1.5;
+  font-family: var(--sans);
+}
+
+/* Codex search steps */
+.search-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding-left: 0.2rem;
+  border-left: 1px solid var(--border);
+  margin-left: 0.2rem;
+}
+
+.search-step {
+  font-size: calc(var(--label-size) * 0.95);
+  color: var(--text-muted);
+  line-height: 1.4;
+  padding: 0.1rem 0 0.1rem 0.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.35rem;
+}
+
+.search-step::before {
+  content: '•';
+  color: var(--accent-dim);
+  flex-shrink: 0;
+  margin-top: 0.05rem;
+}
+
+.search-step.highlight { color: var(--text-body); }
+.search-step.dim { color: rgba(120,136,160,0.6); font-style: italic; }
+
+.step-count {
+  font-size: calc(var(--label-size) * 0.85);
+  color: var(--accent);
+  font-style: italic;
+  padding-left: 0.9rem;
+}
+
+/* Codex result panel */
+.codex-result {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: clamp(0.8rem, 1.5vw, 1.4rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.5rem, 1vh, 0.9rem);
+  max-height: min(58vh, 480px);
+  overflow: hidden;
+}
+
+.cr-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.cr-indicator {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+.cr-title {
+  font-size: var(--label-size);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.cr-finding {
+  background: #080c14;
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--accent-dim);
+  padding: 0.55rem 0.8rem;
+  border-radius: 2px;
+}
+
+.cr-finding .cf-label {
+  font-family: 'Space Mono', 'Fira Mono', monospace;
+  font-size: calc(var(--label-size) * 0.9);
+  color: var(--accent-dim);
+  letter-spacing: 0.08em;
+  margin-bottom: 0.25rem;
+}
+
+.cr-finding p {
+  font-size: var(--small-size);
+  color: var(--text-body);
+  line-height: 1.55;
+  font-family: var(--sans);
+}
+
+.cr-finding p strong {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.cr-action-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.cr-action {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--small-size);
+  color: var(--text-muted);
+  font-family: var(--sans);
+}
+
+.cr-action .check {
+  color: var(--accent);
+  font-size: 0.7rem;
+  flex-shrink: 0;
+}
+
+.cr-action .mono {
+  font-family: 'Space Mono', monospace;
+  font-size: calc(var(--small-size) * 0.85);
+  color: var(--text-body);
+  background: var(--bg-card);
+  padding: 0.1rem 0.4rem;
+  border-radius: 2px;
+  border: 1px solid var(--border);
+}
+</style>
+</head>
+<body>
+
+<!-- Progress indicator -->
+<div id="progress"></div>
+
+<!-- Navigation dots -->
+<nav id="nav-dots" aria-label="Slide navigation"></nav>
+
+<!-- ==========================================
+     SLIDE 1 · TITLE
+     ========================================== -->
+<section class="slide" id="slide-1" aria-label="Title slide">
+  <div class="grid-bg"></div>
+  <div class="glow-tl"></div>
+  <div class="glow-br"></div>
+  <div class="corner tl"></div>
+  <div class="corner br"></div>
+
+  <div class="slide-body" style="gap: var(--gap);">
+    <p class="kicker reveal">Karolinska Institutet · GCB Lab</p>
+
+    <h1 class="slide-title reveal" style="margin-top: 0.6rem; max-width: 75%;">
+      Spatiotemporal dynamics of <em style="font-style:italic; color:var(--accent);">glial cells</em><br>
+      in neuroinflammatory mouse models<br>
+      and human MS samples
+    </h1>
+
+    <div class="divider reveal" style="margin-top: 1.2rem;"></div>
+
+    <div class="author-line reveal" style="margin-top: 0.2rem; display:flex; align-items:center; gap:0.9rem; flex-wrap:wrap;">
+      <span class="author-name" style="font-family:var(--sans); font-size:var(--body-size); color:var(--text-body);">
+        Christoffer M. Langseth
+      </span>
+      <span class="author-sep" style="width:1px; height:0.8em; background:var(--border-hi);"></span>
+      <span style="font-size:var(--small-size); color:var(--text-muted);">
+        Spatial Omics &amp; Computational Biology
+      </span>
+    </div>
+  </div>
+
+  <div class="slide-num">01 / 08</div>
+</section>
+
+<!-- ==========================================
+     SLIDE 2 · WHOAMI
+     ========================================== -->
+<section class="slide" id="slide-2" aria-label="About the speaker">
+  <div class="grid-bg"></div>
+  <div class="glow-tl"></div>
+  <div class="corner tl"></div>
+  <div class="corner br"></div>
+
+  <div class="slide-body" style="gap: var(--gap);">
+    <p class="kicker reveal">Background</p>
+    <h2 class="slide-h2 reveal">whoami?</h2>
+    <div class="divider reveal"></div>
+
+    <div class="two-col reveal" style="margin-top: 0.5rem;">
+      <!-- Timeline: education -->
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="t-label">Uppsala University</div>
+          <div class="t-text">MSc in Cell and Molecular Biology</div>
+        </div>
+        <div class="timeline-item">
+          <div class="t-label">Bioinformatics</div>
+          <div class="t-text">MSc in Bioinformatics</div>
+        </div>
+        <div class="timeline-item">
+          <div class="t-label">PhD · Biochemistry</div>
+          <div class="t-text">
+            Spatial omics focus. Defended March 2025.
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="t-label">Industry</div>
+          <div class="t-text">Co-founder, <em style="font-style:italic; color:var(--accent);">spatialist</em> — spatial omics consultancy</div>
+        </div>
+      </div>
+
+      <!-- Thesis highlight + tags -->
+      <div style="display:flex; flex-direction:column; gap:var(--gap);">
+        <div class="highlight-box">
+          <div class="hb-label">PhD Thesis</div>
+          <div class="hb-title">
+            Cells in Time and Space: moving beyond comprehensive atlases
+          </div>
+          <div class="hb-sub">
+            Charting the cellular architecture of the mammalian CNS in health and disease
+          </div>
+        </div>
+        <div class="tag-row">
+          <span class="tag">Spatial Omics</span>
+          <span class="tag">CNS</span>
+          <span class="tag">Neuroinflammation</span>
+          <span class="tag">Computational Biology</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-num">02 / 08</div>
+</section>
+
+<!-- ==========================================
+     SLIDE 3 · GCB LAB
+     ========================================== -->
+<section class="slide" id="slide-3" aria-label="GCB Lab at Karolinska">
+  <div class="grid-bg"></div>
+  <div class="glow-br"></div>
+  <div class="corner tl"></div>
+  <div class="corner br"></div>
+
+  <div class="slide-body" style="gap: var(--gap);">
+    <p class="kicker reveal">Research Group</p>
+    <h2 class="slide-h2 reveal">GCB Lab at Karolinska</h2>
+    <div class="divider reveal"></div>
+
+    <div class="lab-grid reveal">
+      <div class="lab-card">
+        <div class="lc-title">Gonçalo Castelo-Branco</div>
+        <div class="lc-body">Professor of Glial Cell Biology. Lab PI with research on glial cell function and identity in the CNS.</div>
+      </div>
+      <div class="lab-card">
+        <div class="lc-title">MS as central focus</div>
+        <div class="lc-body">Multiple sclerosis research is central to the entire lab — from molecular mechanisms to tissue-level dynamics.</div>
+      </div>
+      <div class="lab-card">
+        <div class="lc-title">Interdisciplinary team</div>
+        <div class="lc-body">Immunologists, wet lab scientists, and computational biologists working together on the same questions.</div>
+      </div>
+      <div class="lab-card">
+        <div class="lc-title">Animal models</div>
+        <div class="lc-body">Work with established mouse models of neuroinflammation to study disease mechanisms in a controlled setting.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-num">03 / 08</div>
+</section>
+
+<!-- ==========================================
+     SLIDE 4 · MULTIPLE SCLEROSIS
+     ========================================== -->
+<section class="slide" id="slide-4" aria-label="Multiple sclerosis overview">
+  <div class="grid-bg"></div>
+  <div class="glow-tl"></div>
+  <div class="corner tl"></div>
+  <div class="corner br"></div>
+
+  <div class="slide-body" style="gap: var(--gap);">
+    <p class="kicker reveal">Disease Background</p>
+    <h2 class="slide-h2 reveal">Multiple <em>Sclerosis</em></h2>
+    <div class="divider reveal"></div>
+
+    <div class="ms-layout reveal" style="margin-top: 0.5rem;">
+      <!-- Bullet facts -->
+      <ul class="ms-facts bullet-list">
+        <li>Autoimmune neurodegenerative disease — immune system attacks the CNS</li>
+        <li>Myelin sheath surrounding axonal projections is progressively broken down</li>
+        <li>Oligodendrocytes, the myelinating cells of the CNS, are the primary target</li>
+        <li>Underlying factors include both environmental and genetic components</li>
+        <li>Disease course: relapse-remitting or chronic progressive</li>
+      </ul>
+
+      <!-- Stats panel -->
+      <div class="ms-aside">
+        <div class="ms-stat">
+          <div class="val">2×</div>
+          <div class="lbl">More common in females</div>
+        </div>
+        <div class="ms-stat">
+          <div class="val">20–40</div>
+          <div class="lbl">Typical age of onset</div>
+        </div>
+        <div class="ms-stat">
+          <div class="val">OPC</div>
+          <div class="lbl">Key cell type studied</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-num">04 / 08</div>
+</section>
+
+<!-- ==========================================
+     SLIDE 5 · MY RESEARCH
+     ========================================== -->
+<section class="slide" id="slide-5" aria-label="Research overview">
+  <div class="grid-bg"></div>
+  <div class="glow-br"></div>
+  <div class="corner tl"></div>
+  <div class="corner br"></div>
+
+  <div class="slide-body" style="gap: var(--gap);">
+    <p class="kicker reveal">Work</p>
+    <h2 class="slide-h2 reveal">My Research</h2>
+    <div class="divider reveal"></div>
+
+    <div class="research-grid reveal" style="margin-top:0.4rem;">
+      <!-- Column 1: Platforms -->
+      <div class="research-col">
+        <div class="col-head">Spatial Platforms</div>
+        <div class="research-item">
+          <div class="ri-name">Xenium</div>
+          <div class="ri-sub">In situ gene expression at single-cell resolution</div>
+        </div>
+        <div class="research-item">
+          <div class="ri-name">DVP</div>
+          <div class="ri-sub">Deep Visual Proteomics for spatial proteomics</div>
+        </div>
+        <div class="research-item">
+          <div class="ri-name">DBiT</div>
+          <div class="ri-sub">Microfluidic barcoding for spatial multi-omics</div>
+        </div>
+      </div>
+
+      <!-- Column 2: Disease models -->
+      <div class="research-col">
+        <div class="col-head">Disease Models</div>
+        <div class="research-item">
+          <div class="ri-name">Relapse-remitting</div>
+          <div class="ri-sub">Outside-in paradigm — peripheral immune infiltration</div>
+        </div>
+        <div class="research-item">
+          <div class="ri-name">Chronic course</div>
+          <div class="ri-sub">Outside-in paradigm — sustained neuroinflammation</div>
+        </div>
+        <div class="research-item">
+          <div class="ri-name">Mitochondrial dysfunction</div>
+          <div class="ri-sub">Inside-out paradigm — intrinsic oligodendrocyte failure</div>
+        </div>
+      </div>
+
+      <!-- Column 3: Computational tools -->
+      <div class="research-col">
+        <div class="col-head">Computational Tools</div>
+        <div class="research-item">
+          <div class="ri-name">KaroSpace</div>
+          <div class="ri-sub">Spatial omics analysis platform developed at GCB Lab</div>
+        </div>
+        <div class="research-item">
+          <div class="ri-name">spatialrs</div>
+          <div class="ri-sub">Rust CLI for high-performance spatial omics analysis</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-num">05 / 08</div>
+</section>
+
+<!-- ==========================================
+     SLIDE 6 · FUTURE DIRECTIONS
+     ========================================== -->
+<section class="slide" id="slide-6" aria-label="Future directions">
+  <div class="grid-bg"></div>
+  <div class="glow-tl"></div>
+  <div class="corner tl"></div>
+  <div class="corner br"></div>
+
+  <div class="slide-body" style="gap: var(--gap);">
+    <p class="kicker reveal">What's Next</p>
+    <h2 class="slide-h2 reveal">Future Directions</h2>
+    <div class="divider reveal"></div>
+
+    <div class="future-list">
+      <div class="future-item reveal">
+        <div class="fi-num">01</div>
+        <div class="fi-content">
+          <div class="fi-title">Temporal factors in disease progression</div>
+          <div class="fi-body">Applying ML approaches to identify the molecular and cellular dynamics governing how neuroinflammation evolves over time.</div>
+        </div>
+      </div>
+      <div class="future-item reveal">
+        <div class="fi-num">02</div>
+        <div class="fi-content">
+          <div class="fi-title">Expanding KaroSpace</div>
+          <div class="fi-body">Adding new analysis features and performance optimizations to support growing spatial omics dataset sizes.</div>
+        </div>
+      </div>
+      <div class="future-item reveal">
+        <div class="fi-num">03</div>
+        <div class="fi-content">
+          <div class="fi-title">In-house neuroinflammation atlas</div>
+          <div class="fi-body">Integrative analysis across multiple neuroinflammatory models and human MS samples to build a comprehensive spatial atlas.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-num">06 / 08</div>
+</section>
+
+<!-- ==========================================
+     SLIDE 7 · CODEX IN ACTION
+     ========================================== -->
+<section class="slide" id="slide-7" aria-label="Codex AI assistant demo">
+  <div class="grid-bg"></div>
+  <div class="glow-tl"></div>
+  <div class="glow-br"></div>
+  <div class="corner tl"></div>
+  <div class="corner br"></div>
+
+  <div class="slide-body" style="gap: var(--gap);">
+    <p class="kicker reveal">AI-Assisted Research</p>
+    <h2 class="slide-h2 reveal">Codex <em>in action</em></h2>
+    <div class="divider reveal"></div>
+
+    <div class="codex-layout reveal">
+
+      <!-- LEFT: the conversation / search trace -->
+      <div class="codex-window">
+        <div class="codex-titlebar">
+          <div class="tb-dot red"></div>
+          <div class="tb-dot amber"></div>
+          <div class="tb-dot green"></div>
+          <span class="tb-label">codex · research session</span>
+        </div>
+        <div class="codex-body">
+          <!-- User message -->
+          <div class="msg-user">
+            <div class="mu-label">You</div>
+            <p>I cannot for the life of me find the data for the entire mouse from this paper — <em style="color:var(--accent-dim)">cell.com/…/S0092-8674(26)00273-4</em></p>
+          </div>
+
+          <!-- Search steps -->
+          <div class="search-steps">
+            <div class="search-step dim">Checking paper's data-availability section and linked accessions…</div>
+            <div class="search-step">Searched <span style="color:var(--accent-dim)">S0092-8674(26)00273-4 data availability GEO</span></div>
+            <div class="search-step">Searched <span style="color:var(--accent-dim)">PMC11984966 Array-seq whole mouse</span></div>
+            <div class="search-step">Searched <span style="color:var(--accent-dim)">GEO acc GSE266244</span></div>
+            <div class="search-step">Searched <span style="color:var(--accent-dim)">10.5281/zenodo.10158368 whole mouse</span></div>
+            <div class="search-step">Searched <span style="color:var(--accent-dim)">GEO acc GSE248904</span></div>
+            <div class="step-count">+ 6 more searches across GEO, PMC, Zenodo</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: the finding + action taken -->
+      <div class="codex-result">
+        <div class="cr-header">
+          <div class="cr-indicator"></div>
+          <div class="cr-title">Finding</div>
+        </div>
+
+        <div class="cr-finding">
+          <div class="cf-label">GSE266244 — absent</div>
+          <p>The whole-mouse data is <strong>not in GSE266244</strong>. The paper text references a prior publication, not additional deposited data.</p>
+        </div>
+
+        <div class="cr-finding">
+          <div class="cf-label">GSE248904 — correct accession</div>
+          <p>"A pairwise cytokine code explains the organism-wide response to sepsis" — <strong>4 whole-body Array-seq sections</strong> (2 untreated, 2 LPS). File: <span style="color:var(--accent); font-family:monospace;">GSE248904_All_Samples.h5ad.gz</span></p>
+        </div>
+
+        <div class="cr-action-row">
+          <div class="cr-action">
+            <span class="check">✓</span>
+            Downloaded <span class="mono">GSE248904_All_Samples.h5ad.gz</span> <span style="color:var(--accent-dim);">(3.4 GB)</span>
+          </div>
+          <div class="cr-action">
+            <span class="check">✓</span>
+            Created notebook <span class="mono">gse248904-whole-mouse-arrayseq.ipynb</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="slide-num">07 / 08</div>
+</section>
+
+<!-- ==========================================
+     SLIDE 8 · QUESTIONS FOR YOU
+     ========================================== -->
+<section class="slide" id="slide-8" aria-label="Questions for the audience">
+  <div class="grid-bg"></div>
+  <div class="glow-tl"></div>
+  <div class="glow-br"></div>
+  <div class="corner tl"></div>
+  <div class="corner br"></div>
+
+  <div class="slide-body" style="gap: var(--gap);">
+    <p class="kicker reveal">Discussion</p>
+    <h2 class="slide-h2 reveal">Some questions for <em>you</em></h2>
+    <div class="divider reveal"></div>
+
+    <ul class="question-list">
+      <li class="reveal">What are your areas of interest?</li>
+      <li class="reveal">What skill sets do you bring to the table?</li>
+      <li class="reveal">Future plans — academia or industry?</li>
+    </ul>
+
+    <p class="closing-note reveal" style="margin-top: clamp(1.2rem, 2.5vh, 2.5rem);">
+      Christoffer M. Langseth · GCB Lab · Karolinska Institutet · 2025
+    </p>
+  </div>
+
+  <div class="slide-num">08 / 08</div>
+</section>
+
+<script>
+/* ===========================================
+   SLIDE PRESENTATION CONTROLLER
+   Handles navigation, scroll sync, animations,
+   progress bar, and nav dots.
+   =========================================== */
+class SlidePresentation {
+  constructor() {
+    this.slides = Array.from(document.querySelectorAll('.slide'));
+    this.totalSlides = this.slides.length;
+    this.currentSlide = 0;
+    this.isScrolling = false;
+    this.scrollCooldown = 700;
+
+    this.progressBar = document.getElementById('progress');
+    this.navDots = document.getElementById('nav-dots');
+
+    this.buildNavDots();
+    this.setupObserver();
+    this.setupKeyboard();
+    this.setupWheel();
+    this.setupTouch();
+
+    // Trigger first slide immediately
+    this.slides[0].classList.add('visible');
+    this.updateUI(0);
+  }
+
+  /* Build navigation dots (one per slide) */
+  buildNavDots() {
+    this.slides.forEach((slide, i) => {
+      const dot = document.createElement('button');
+      dot.className = 'dot';
+      dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+      dot.addEventListener('click', () => this.goTo(i));
+      this.navDots.appendChild(dot);
+    });
+  }
+
+  /* Intersection Observer: marks slides as visible for animations */
+  setupObserver() {
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            const idx = this.slides.indexOf(entry.target);
+            if (idx !== -1) {
+              this.currentSlide = idx;
+              this.updateUI(idx);
+            }
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    this.slides.forEach(s => observer.observe(s));
+  }
+
+  /* Update progress bar and nav dots */
+  updateUI(index) {
+    const pct = ((index) / (this.totalSlides - 1)) * 100;
+    this.progressBar.style.width = pct + '%';
+
+    const dots = this.navDots.querySelectorAll('.dot');
+    dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+  }
+
+  /* Navigate to a specific slide index */
+  goTo(index) {
+    if (index < 0 || index >= this.totalSlides) return;
+    this.slides[index].scrollIntoView({ behavior: 'smooth' });
+  }
+
+  /* Keyboard navigation: arrows, space */
+  setupKeyboard() {
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') {
+        e.preventDefault();
+        this.goTo(this.currentSlide + 1);
+      } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+        e.preventDefault();
+        this.goTo(this.currentSlide - 1);
+      }
+    });
+  }
+
+  /* Mouse wheel navigation with cooldown */
+  setupWheel() {
+    document.addEventListener('wheel', e => {
+      e.preventDefault();
+      if (this.isScrolling) return;
+      this.isScrolling = true;
+      setTimeout(() => { this.isScrolling = false; }, this.scrollCooldown);
+
+      if (e.deltaY > 0) {
+        this.goTo(this.currentSlide + 1);
+      } else {
+        this.goTo(this.currentSlide - 1);
+      }
+    }, { passive: false });
+  }
+
+  /* Touch/swipe support */
+  setupTouch() {
+    let touchStartY = 0;
+
+    document.addEventListener('touchstart', e => {
+      touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+
+    document.addEventListener('touchend', e => {
+      if (this.isScrolling) return;
+      const delta = touchStartY - e.changedTouches[0].clientY;
+      if (Math.abs(delta) < 40) return; // ignore small swipes
+
+      this.isScrolling = true;
+      setTimeout(() => { this.isScrolling = false; }, this.scrollCooldown);
+
+      if (delta > 0) {
+        this.goTo(this.currentSlide + 1);
+      } else {
+        this.goTo(this.currentSlide - 1);
+      }
+    }, { passive: true });
+  }
+}
+
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  new SlidePresentation();
+});
+</script>
+
+</body>
+</html>

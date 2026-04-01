@@ -231,7 +231,7 @@ strong { font-weight: 600; color: var(--ink); }
 .title-body {
   flex: 1;
   display: grid;
-  grid-template-columns: 27% 73%;
+  grid-template-columns: 16% 84%;
   overflow: hidden;
 }
 
@@ -361,7 +361,7 @@ h2.section-title em { font-style: italic; color: var(--ink-soft); }
 .content-body {
   flex: 1;
   display: grid;
-  grid-template-columns: 26% 74%;
+  grid-template-columns: 16% 84%;
   overflow: hidden;
 }
 
@@ -428,7 +428,7 @@ h2.slide-heading em { font-style: italic; }
 .image-body {
   flex: 1;
   display: grid;
-  grid-template-columns: 26% 74%;
+  grid-template-columns: 16% 84%;
   overflow: hidden;
 }
 
@@ -559,7 +559,7 @@ h2.slide-heading em { font-style: italic; }
    Three-column: sidebar | projects | phone
    =========================================== */
 .content-body--with-phone {
-  grid-template-columns: 26% 1fr auto;
+  grid-template-columns: 16% 1fr auto;
 }
 
 .phone-panel {
@@ -1054,6 +1054,56 @@ h2.slide-heading em { font-style: italic; }
 }
 
 /* ===========================================
+   RECENT DEVELOPMENTS SLIDE
+   2x2 news-card grid
+   =========================================== */
+.slide--news { background: var(--cream); }
+
+.news-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: clamp(0.5rem, 1.2vw, 1rem);
+}
+
+.news-card {
+  background: var(--warm);
+  border: 1px solid var(--rule);
+  padding: clamp(0.8rem, 1.5vw, 1.3rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.news-card-tag {
+  font-size: var(--label-size);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.news-tag--openai   { color: #10a37f; }
+.news-tag--anthropic{ color: var(--warm-accent); }
+.news-tag--leak     { color: #e45c5c; }
+.news-tag--new      { color: var(--accent); }
+
+.news-card-headline {
+  font-family: var(--font-serif);
+  font-size: clamp(0.95rem, 1.6vw, 1.2rem);
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1.25;
+}
+
+.news-card-body {
+  font-size: clamp(0.72rem, 1.15vw, 0.88rem);
+  color: var(--muted);
+  line-height: 1.6;
+  flex: 1;
+}
+
+/* ===========================================
    MY SKILLS SLIDE
    3-card grid showcasing custom Codex skills
    =========================================== */
@@ -1135,7 +1185,6 @@ h2.slide-heading em { font-style: italic; }
 <section class="slide slide--title" id="slide-1">
   <div class="slide-header">
     <span class="ki-label">Karolinska Institutet</span>
-    <span class="slide-num-label">01 / 26</span>
   </div>
   <div class="title-body">
     <div class="title-left">
@@ -1162,12 +1211,10 @@ h2.slide-heading em { font-style: italic; }
 <section class="slide slide--content" id="slide-2">
   <div class="slide-header">
     <span class="ki-label">Karolinska Institutet</span>
-    <span class="slide-num-label">02 / 26</span>
   </div>
   <div class="content-body">
     <div class="content-sidebar">
       <span class="sidebar-section-label">Overview</span>
-      <span class="sidebar-slide-num">02</span>
     </div>
     <div class="content-main">
       <div class="eyebrow reveal">Contents</div>
@@ -1178,7 +1225,8 @@ h2.slide-heading em { font-style: italic; }
         <li><strong>Part 3</strong> — How to interact: CLI, desktop, VS Code</li>
         <li><strong>Part 4</strong> — Real perspectives from developers</li>
         <li><strong>Part 5</strong> — What I've vibe coded</li>
-        <li><strong>Part 6</strong> — Where does this leave us?</li>
+        <li><strong>Part 6</strong> — Recent developments</li>
+        <li><strong>Part 7</strong> — Where does this leave us?</li>
       </ul>
     </div>
   </div>
@@ -1190,7 +1238,6 @@ h2.slide-heading em { font-style: italic; }
 <section class="slide slide--section" id="slide-3">
   <div class="slide-header">
     <span class="ki-label">Karolinska Institutet</span>
-    <span class="slide-num-label">03 / 26</span>
   </div>
   <div class="section-inner">
     <div class="section-bg-num">01</div>
@@ -1207,12 +1254,10 @@ h2.slide-heading em { font-style: italic; }
 <section class="slide slide--content" id="slide-4">
   <div class="slide-header">
     <span class="ki-label">Introduction</span>
-    <span class="slide-num-label">04 / 26</span>
   </div>
   <div class="content-body">
     <div class="content-sidebar">
       <span class="sidebar-section-label">Background</span>
-      <span class="sidebar-slide-num">03</span>
     </div>
     <div class="content-main">
       <div class="eyebrow reveal">What is it?</div>
@@ -1234,12 +1279,10 @@ h2.slide-heading em { font-style: italic; }
 <section class="slide slide--content" id="slide-5">
   <div class="slide-header">
     <span class="ki-label">Introduction</span>
-    <span class="slide-num-label">05 / 26</span>
   </div>
   <div class="content-body">
     <div class="content-sidebar">
       <span class="sidebar-section-label">Tools</span>
-      <span class="sidebar-slide-num">04</span>
     </div>
     <div class="content-main">
       <div class="eyebrow reveal">OpenAI</div>
@@ -1260,12 +1303,10 @@ h2.slide-heading em { font-style: italic; }
 <section class="slide slide--content" id="slide-7">
   <div class="slide-header">
     <span class="ki-label">Introduction</span>
-    <span class="slide-num-label">06 / 26</span>
   </div>
   <div class="content-body">
     <div class="content-sidebar">
       <span class="sidebar-section-label">Tools</span>
-      <span class="sidebar-slide-num">05</span>
     </div>
     <div class="content-main">
       <div class="eyebrow reveal">Anthropic</div>
@@ -1289,7 +1330,6 @@ h2.slide-heading em { font-style: italic; }
 <section class="slide slide--multiagent" id="slide-7">
   <div class="slide-header">
     <span class="ki-label">Introduction</span>
-    <span class="slide-num-label">07 / 30</span>
   </div>
   <div class="ma-body">
     <div class="ma-top">
@@ -1328,12 +1368,10 @@ h2.slide-heading em { font-style: italic; }
 <section class="slide slide--content" id="slide-8">
   <div class="slide-header">
     <span class="ki-label">Introduction</span>
-    <span class="slide-num-label">07 / 26</span>
   </div>
   <div class="content-body">
     <div class="content-sidebar">
       <span class="sidebar-section-label">Guidance</span>
-      <span class="sidebar-slide-num">06</span>
     </div>
     <div class="content-main">
       <div class="eyebrow reveal">Working effectively</div>
@@ -1355,12 +1393,10 @@ h2.slide-heading em { font-style: italic; }
 <section class="slide slide--content" id="slide-9">
   <div class="slide-header">
     <span class="ki-label">Introduction</span>
-    <span class="slide-num-label">08 / 26</span>
   </div>
   <div class="content-body">
     <div class="content-sidebar">
       <span class="sidebar-section-label">Context</span>
-      <span class="sidebar-slide-num">07</span>
     </div>
     <div class="content-main">
       <div class="eyebrow reveal">Memory &amp; context windows</div>
@@ -1382,7 +1418,6 @@ h2.slide-heading em { font-style: italic; }
 <section class="slide slide--section" id="slide-10">
   <div class="slide-header">
     <span class="ki-label">Karolinska Institutet</span>
-    <span class="slide-num-label">09 / 26</span>
   </div>
   <div class="section-inner">
     <div class="section-bg-num">02</div>
@@ -1399,12 +1434,10 @@ h2.slide-heading em { font-style: italic; }
 <section class="slide slide--content" id="slide-11">
   <div class="slide-header">
     <span class="ki-label">Useful Features</span>
-    <span class="slide-num-label">10 / 26</span>
   </div>
   <div class="content-body">
     <div class="content-sidebar">
       <span class="sidebar-section-label">Configuration</span>
-      <span class="sidebar-slide-num">09</span>
     </div>
     <div class="content-main">
       <div class="eyebrow reveal">Project control files</div>
@@ -1426,12 +1459,10 @@ h2.slide-heading em { font-style: italic; }
 <section class="slide slide--content" id="slide-12">
   <div class="slide-header">
     <span class="ki-label">Useful Features</span>
-    <span class="slide-num-label">11 / 26</span>
   </div>
   <div class="content-body">
     <div class="content-sidebar">
       <span class="sidebar-section-label">Extensibility</span>
-      <span class="sidebar-slide-num">12</span>
     </div>
     <div class="content-main">
       <div class="eyebrow reveal">Modular capabilities</div>
@@ -1453,12 +1484,10 @@ h2.slide-heading em { font-style: italic; }
 <section class="slide slide--content" id="slide-my-skills">
   <div class="slide-header">
     <span class="ki-label">Useful Features · Skills</span>
-    <span class="slide-num-label">— / —</span>
   </div>
   <div class="content-body">
     <div class="content-sidebar">
       <span class="sidebar-section-label">My skills</span>
-      <span class="sidebar-slide-num" style="font-style:italic;">⌘</span>
     </div>
     <div class="content-main">
       <div class="eyebrow reveal">github.com/chrislangseth/codex-skills</div>
@@ -1509,7 +1538,6 @@ h2.slide-heading em { font-style: italic; }
 <section class="slide slide--multiagent" id="slide-13">
   <div class="slide-header">
     <span class="ki-label">Useful Features</span>
-    <span class="slide-num-label">12 / 26</span>
   </div>
   <div class="ma-body">
     <div class="ma-top">
@@ -1552,7 +1580,6 @@ h2.slide-heading em { font-style: italic; }
 <section class="slide slide--section" id="slide-14">
   <div class="slide-header">
     <span class="ki-label">Karolinska Institutet</span>
-    <span class="slide-num-label">13 / 26</span>
   </div>
   <div class="section-inner">
     <div class="section-bg-num">03</div>
@@ -1569,12 +1596,10 @@ h2.slide-heading em { font-style: italic; }
 <section class="slide slide--content" id="slide-15">
   <div class="slide-header">
     <span class="ki-label">Interaction</span>
-    <span class="slide-num-label">14 / 26</span>
   </div>
   <div class="content-body">
     <div class="content-sidebar">
       <span class="sidebar-section-label">Interface</span>
-      <span class="sidebar-slide-num">15</span>
     </div>
     <div class="content-main">
       <div class="eyebrow reveal">Terminal</div>
@@ -1596,7 +1621,6 @@ h2.slide-heading em { font-style: italic; }
 <section class="slide slide--image" id="slide-16">
   <div class="image-header">
     <span class="ki-label" style="color:rgba(255,255,255,0.3);">Interaction</span>
-    <span class="slide-num-label" style="color:rgba(255,255,255,0.3);">15 / 26</span>
   </div>
   <div class="image-body">
     <div class="image-sidebar">
@@ -1616,12 +1640,10 @@ h2.slide-heading em { font-style: italic; }
 <section class="slide slide--content" id="slide-17">
   <div class="slide-header">
     <span class="ki-label">Interaction</span>
-    <span class="slide-num-label">16 / 26</span>
   </div>
   <div class="content-body">
     <div class="content-sidebar">
       <span class="sidebar-section-label">Interface</span>
-      <span class="sidebar-slide-num">17</span>
     </div>
     <div class="content-main">
       <div class="eyebrow reveal">GUI</div>
@@ -1641,7 +1663,6 @@ h2.slide-heading em { font-style: italic; }
 <section class="slide slide--image" id="slide-18">
   <div class="image-header">
     <span class="ki-label" style="color:rgba(255,255,255,0.3);">Interaction</span>
-    <span class="slide-num-label" style="color:rgba(255,255,255,0.3);">17 / 26</span>
   </div>
   <div class="image-body">
     <div class="image-sidebar">
@@ -1661,12 +1682,10 @@ h2.slide-heading em { font-style: italic; }
 <section class="slide slide--content" id="slide-19">
   <div class="slide-header">
     <span class="ki-label">Interaction</span>
-    <span class="slide-num-label">18 / 26</span>
   </div>
   <div class="content-body">
     <div class="content-sidebar">
       <span class="sidebar-section-label">Interface</span>
-      <span class="sidebar-slide-num">18</span>
     </div>
     <div class="content-main">
       <div class="eyebrow reveal">IDE integration</div>
@@ -1686,7 +1705,6 @@ h2.slide-heading em { font-style: italic; }
 <section class="slide slide--image" id="slide-20">
   <div class="image-header">
     <span class="ki-label" style="color:rgba(255,255,255,0.3);">Interaction</span>
-    <span class="slide-num-label" style="color:rgba(255,255,255,0.3);">19 / 26</span>
   </div>
   <div class="image-body">
     <div class="image-sidebar">
@@ -1706,7 +1724,6 @@ h2.slide-heading em { font-style: italic; }
 <section class="slide slide--section" id="slide-21">
   <div class="slide-header">
     <span class="ki-label">Karolinska Institutet</span>
-    <span class="slide-num-label">20 / 26</span>
   </div>
   <div class="section-inner">
     <div class="section-bg-num">04</div>
@@ -1723,7 +1740,6 @@ h2.slide-heading em { font-style: italic; }
 <section class="slide slide--interview" id="slide-22">
   <div class="slide-header">
     <span class="ki-label">Perspectives</span>
-    <span class="slide-num-label">21 / 26</span>
   </div>
   <div class="interview-band">
     <div class="interview-index reveal">Developer Perspective · 1 of 5</div>
@@ -1747,7 +1763,6 @@ h2.slide-heading em { font-style: italic; }
 <section class="slide slide--interview" id="slide-23">
   <div class="slide-header">
     <span class="ki-label">Perspectives</span>
-    <span class="slide-num-label">22 / 26</span>
   </div>
   <div class="interview-band">
     <div class="interview-index reveal">Developer Perspective · 2 of 5</div>
@@ -1771,7 +1786,6 @@ h2.slide-heading em { font-style: italic; }
 <section class="slide slide--interview" id="slide-24">
   <div class="slide-header">
     <span class="ki-label">Perspectives</span>
-    <span class="slide-num-label">23 / 26</span>
   </div>
   <div class="interview-band">
     <div class="interview-index reveal">Developer Perspective · 3 of 5</div>
@@ -1795,7 +1809,6 @@ h2.slide-heading em { font-style: italic; }
 <section class="slide slide--interview" id="slide-25">
   <div class="slide-header">
     <span class="ki-label">Perspectives</span>
-    <span class="slide-num-label">24 / 26</span>
   </div>
   <div class="interview-band">
     <div class="interview-index reveal">Developer Perspective · 4 of 5</div>
@@ -1819,7 +1832,6 @@ h2.slide-heading em { font-style: italic; }
 <section class="slide slide--interview" id="slide-26">
   <div class="slide-header">
     <span class="ki-label">Perspectives</span>
-    <span class="slide-num-label">26 / 30</span>
   </div>
   <div class="interview-band">
     <div class="interview-index reveal">Developer Perspective · 5 of 5</div>
@@ -1838,17 +1850,31 @@ h2.slide-heading em { font-style: italic; }
 </section>
 
 <!-- ====================================================
+     SECTION — What I've vibe coded
+     ==================================================== -->
+<section class="slide slide--section" id="slide-section-5">
+  <div class="slide-header">
+    <span class="ki-label">Karolinska Institutet</span>
+  </div>
+  <div class="section-inner">
+    <div class="section-bg-num">05</div>
+    <span class="section-part-label reveal">Part Five</span>
+    <div class="section-rule reveal rule-expand"></div>
+    <h2 class="section-title reveal">What I've <em>vibe coded</em></h2>
+    <p class="section-desc reveal">Projects built with agentic coding tools — from spatial omics to iOS apps.</p>
+  </div>
+</section>
+
+<!-- ====================================================
      26  What I've built
      ==================================================== -->
 <section class="slide slide--content" id="slide-27">
   <div class="slide-header">
     <span class="ki-label">Conclusion</span>
-    <span class="slide-num-label">27 / 30</span>
   </div>
   <div class="content-body content-body--with-phone">
     <div class="content-sidebar">
       <span class="sidebar-section-label">Portfolio</span>
-      <span class="sidebar-slide-num">27</span>
     </div>
     <div class="content-main">
       <div class="eyebrow reveal">Personal experience</div>
@@ -1896,7 +1922,6 @@ h2.slide-heading em { font-style: italic; }
 <section class="slide slide--codex-demo" id="slide-codex-demo">
   <div class="slide-header">
     <span class="ki-label">What I've vibe coded · In practice</span>
-    <span class="slide-num-label">— / —</span>
   </div>
   <div class="codex-demo-body">
 
@@ -2014,16 +2039,76 @@ h2.slide-heading em { font-style: italic; }
 </section>
 
 <!-- ====================================================
+     SECTION — Recent Developments
+     ==================================================== -->
+<section class="slide slide--section" id="slide-section-6">
+  <div class="slide-header">
+    <span class="ki-label">Karolinska Institutet</span>
+  </div>
+  <div class="section-inner">
+    <div class="section-bg-num">06</div>
+    <span class="section-part-label reveal">Part Six</span>
+    <div class="section-rule reveal rule-expand"></div>
+    <h2 class="section-title reveal">Recent <em>Developments</em></h2>
+    <p class="section-desc reveal">The field is moving fast — what's happened in the last few months.</p>
+  </div>
+</section>
+
+<!-- ====================================================
+     Recent Developments
+     ==================================================== -->
+<section class="slide slide--news" id="slide-recent-dev">
+  <div class="slide-header">
+    <span class="ki-label">Recent Developments</span>
+  </div>
+  <div class="content-body">
+    <div class="content-sidebar">
+      <span class="sidebar-section-label">April 2026</span>
+    </div>
+    <div class="content-main">
+      <div class="eyebrow reveal">The field is moving fast</div>
+      <h2 class="slide-heading reveal">What's happening <em>right now</em></h2>
+      <div class="news-grid reveal">
+
+        <div class="news-card">
+          <span class="news-card-tag news-tag--openai">OpenAI</span>
+          <div class="news-card-headline">DoD collaboration drives users to Anthropic</div>
+          <p class="news-card-body">OpenAI's partnership with the US Department of Defense raised ethical concerns among researchers and developers, prompting a visible shift toward Anthropic as a perceived safer alternative.</p>
+        </div>
+
+        <div class="news-card">
+          <span class="news-card-tag news-tag--anthropic">Anthropic</span>
+          <div class="news-card-headline">Tighter token limits push users away</div>
+          <p class="news-card-body">Anthropic's introduction of more restrictive token limits has frustrated power users, particularly in long research sessions — sending some back toward Codex, which remains more permissive.</p>
+        </div>
+
+        <div class="news-card">
+          <span class="news-card-tag news-tag--leak">Security</span>
+          <div class="news-card-headline">Claude Code source code leaked</div>
+          <p class="news-card-body">The full source code for Claude Code was leaked publicly. Potential implications: Codex and other agents could adopt ideas from it, and open-source Claude Code clones may soon emerge.</p>
+        </div>
+
+        <div class="news-card">
+          <span class="news-card-tag news-tag--new">Coming Soon</span>
+          <div class="news-card-headline">Anthropic announces Operon for Claude Desktop</div>
+          <p class="news-card-body">Operon is a new Anthropic product built for scientific research — with native capabilities for biology workflows and single-cell analysis, targeted directly at the research community.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================
      27  SECTION — Conclusion
      ==================================================== -->
 <section class="slide slide--section" id="slide-28">
   <div class="slide-header">
     <span class="ki-label">Karolinska Institutet</span>
-    <span class="slide-num-label">25 / 26</span>
   </div>
   <div class="section-inner">
-    <div class="section-bg-num">05</div>
-    <span class="section-part-label reveal">Part Five</span>
+    <div class="section-bg-num">07</div>
+    <span class="section-part-label reveal">Part Seven</span>
     <div class="section-rule reveal rule-expand"></div>
     <h2 class="section-title reveal">Where does this <em>leave us?</em></h2>
     <p class="section-desc reveal">Weighing the upsides and downsides of agentic coding.</p>
@@ -2036,7 +2121,6 @@ h2.slide-heading em { font-style: italic; }
 <section class="slide slide--closing" id="slide-29">
   <div class="slide-header">
     <span class="ki-label">Conclusion</span>
-    <span class="slide-num-label">29 / 30</span>
   </div>
   <div class="closing-heading">
     <div class="eyebrow reveal">Taking stock</div>
@@ -2069,12 +2153,10 @@ h2.slide-heading em { font-style: italic; }
 <section class="slide slide--content" id="slide-30">
   <div class="slide-header">
     <span class="ki-label">Conclusion</span>
-    <span class="slide-num-label">30 / 30</span>
   </div>
   <div class="content-body">
     <div class="content-sidebar">
       <span class="sidebar-section-label">Concerns</span>
-      <span class="sidebar-slide-num">30</span>
     </div>
     <div class="content-main">
       <div class="eyebrow reveal">Looking further ahead</div>

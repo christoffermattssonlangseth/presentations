@@ -224,6 +224,62 @@ strong { font-weight: 600; color: var(--ink); }
 .bullet-list li.accent-item::before { background: var(--accent); }
 
 /* ===========================================
+   AUDIENCE QUESTIONS SLIDE
+   =========================================== */
+.slide--audience { background: var(--warm); }
+
+.audience-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--v-pad) var(--pad);
+  gap: clamp(0.9rem, 2vh, 1.6rem);
+  overflow: hidden;
+}
+
+.audience-prompt {
+  font-family: var(--font-serif);
+  font-size: clamp(1.1rem, 2.2vw, 1.6rem);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--muted);
+}
+
+.audience-questions {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.55rem, 1.2vh, 1rem);
+}
+
+.audience-questions li {
+  display: flex;
+  align-items: baseline;
+  gap: clamp(0.75rem, 1.5vw, 1.2rem);
+  font-size: clamp(1rem, 2vw, 1.45rem);
+  color: var(--ink-soft);
+  line-height: 1.3;
+}
+
+.audience-questions li .aq-num {
+  font-family: var(--font-serif);
+  font-size: clamp(1.3rem, 2.5vw, 1.9rem);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--accent);
+  flex-shrink: 0;
+  width: 1.6rem;
+  text-align: right;
+  line-height: 1;
+}
+
+.audience-questions li strong {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+/* ===========================================
    TITLE SLIDE
    =========================================== */
 .slide--title { background: var(--cream); }
@@ -1066,6 +1122,17 @@ h2.slide-heading em { font-style: italic; }
   gap: clamp(0.5rem, 1.2vw, 1rem);
 }
 
+.news-card-thumb {
+  width: 100%;
+  height: auto;
+  max-height: min(16vh, 140px);
+  object-fit: cover;
+  object-position: top center;
+  border-radius: 3px;
+  opacity: 0.88;
+  margin-top: 0.3rem;
+}
+
 .news-card {
   background: var(--warm);
   border: 1px solid var(--rule);
@@ -1202,6 +1269,27 @@ h2.slide-heading em { font-style: italic; }
         <span class="presenter-date">April 1, 2026</span>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ====================================================
+     02  AUDIENCE QUESTIONS
+     ==================================================== -->
+<section class="slide slide--audience" id="slide-audience">
+  <div class="slide-header">
+    <span class="ki-label">Karolinska Institutet</span>
+  </div>
+  <div class="audience-body">
+    <p class="audience-prompt reveal">Raise your hand if…</p>
+    <ul class="audience-questions">
+      <li class="reveal"><span class="aq-num">1</span><span>You have <strong>heard about coding agents</strong> before today</span></li>
+      <li class="reveal"><span class="aq-num">2</span><span>You are <strong>skeptical</strong> towards coding agents and AI in general</span></li>
+      <li class="reveal"><span class="aq-num">3</span><span>You are <strong>not skeptical</strong> towards coding agents and AI in general</span></li>
+      <li class="reveal"><span class="aq-num">4</span><span>You have <strong>used a coding agent</strong> — including asking ChatGPT to write code for you</span></li>
+      <li class="reveal"><span class="aq-num">5</span><span>The main bottleneck for you is that you are <strong>not sure you trust it</strong></span></li>
+      <li class="reveal"><span class="aq-num">6</span><span>The main bottleneck is that you <strong>don't find the time</strong> to try it out</span></li>
+      <li class="reveal"><span class="aq-num">7</span><span>The main bottleneck is that you <strong>don't know what to use it for</strong></span></li>
+    </ul>
   </div>
 </section>
 
@@ -2085,7 +2173,8 @@ h2.slide-heading em { font-style: italic; }
         <div class="news-card">
           <span class="news-card-tag news-tag--leak">Security</span>
           <div class="news-card-headline">Claude Code source code leaked</div>
-          <p class="news-card-body">The full source code for Claude Code was leaked publicly. Potential implications: Codex and other agents could adopt ideas from it, and open-source Claude Code clones may soon emerge.</p>
+          <p class="news-card-body">Leaked via a map file in their npm registry. Codex could adopt ideas from it, and open-source Claude Code clones may soon emerge.</p>
+          <img class="news-card-thumb" src="ppt-assets/claude-code-leak-tweet.png" alt="Tweet about the Claude Code source leak">
         </div>
 
         <div class="news-card">

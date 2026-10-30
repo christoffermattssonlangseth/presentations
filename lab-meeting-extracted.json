@@ -1,0 +1,1443 @@
+[
+  {
+    "number": 1,
+    "title": "Lab meeting #0 (260206)",
+    "content": [
+      {
+        "type": "text",
+        "paragraphs": [
+          {
+            "text": "Christoffer",
+            "level": 0
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide1_img1.png",
+        "width": 1206974,
+        "height": 603126
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE"
+  },
+  {
+    "number": 2,
+    "title": "whoami?",
+    "content": [],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide2_img1.png",
+        "width": 1206974,
+        "height": 603126
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 3,
+    "title": "",
+    "content": [],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide3_img1.png",
+        "width": 1206974,
+        "height": 603126
+      },
+      {
+        "path": "lab-meeting-assets/slide3_img2.png",
+        "width": 3223784,
+        "height": 4838700
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 4,
+    "title": "whoami?",
+    "content": [],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide4_img1.png",
+        "width": 1206974,
+        "height": 603126
+      },
+      {
+        "path": "lab-meeting-assets/slide4_img2.png",
+        "width": 1280400,
+        "height": 1221502
+      },
+      {
+        "path": "lab-meeting-assets/slide4_img3.png",
+        "width": 2053225,
+        "height": 864400
+      },
+      {
+        "path": "lab-meeting-assets/slide4_img4.png",
+        "width": 2306174,
+        "height": 842475
+      },
+      {
+        "path": "lab-meeting-assets/slide4_img5.png",
+        "width": 2132800,
+        "height": 809000
+      },
+      {
+        "path": "lab-meeting-assets/slide4_img6.png",
+        "width": 2267049,
+        "height": 688150
+      },
+      {
+        "path": "lab-meeting-assets/slide4_img7.png",
+        "width": 2053224,
+        "height": 957352
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 5,
+    "title": "Introduction",
+    "content": [
+      {
+        "type": "text",
+        "paragraphs": [
+          {
+            "text": "Busy start with many datasets coming in from the xenium platform",
+            "level": 0
+          },
+          {
+            "text": "Tried to identify my niche: metabolism and inflammation",
+            "level": 0
+          },
+          {
+            "text": "Refined research question: \u000b\u000bHow does chronic neuroinflammation reshape cell type\u2013specific metabolic and mitochondrial programs in the CNS?",
+            "level": 0
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide5_img1.png",
+        "width": 1206974,
+        "height": 603126
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 6,
+    "title": "",
+    "content": [
+      {
+        "type": "text",
+        "paragraphs": [
+          {
+            "text": "If time permits: my current setup with Codex + broader discussion of use of AI in research and development",
+            "level": 0
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide6_img1.png",
+        "width": 2283684,
+        "height": 2283684
+      },
+      {
+        "path": "lab-meeting-assets/slide6_img2.png",
+        "width": 2283684,
+        "height": 2283684
+      },
+      {
+        "path": "lab-meeting-assets/slide6_img3.png",
+        "width": 2283684,
+        "height": 2283684
+      },
+      {
+        "path": "lab-meeting-assets/slide6_img4.png",
+        "width": 2283686,
+        "height": 1522460
+      },
+      {
+        "path": "lab-meeting-assets/slide6_img5.png",
+        "width": 2078618,
+        "height": 1872032
+      },
+      {
+        "path": "lab-meeting-assets/slide6_img6.png",
+        "width": 1805878,
+        "height": 1805878
+      },
+      {
+        "path": "lab-meeting-assets/slide6_img7.png",
+        "width": 1206974,
+        "height": 603126
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 7,
+    "title": "",
+    "content": [],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide7_img1.png",
+        "width": 3762624,
+        "height": 3762476
+      },
+      {
+        "path": "lab-meeting-assets/slide7_img2.png",
+        "width": 1206974,
+        "height": 603126
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 8,
+    "title": "RRMap",
+    "content": [
+      {
+        "type": "text",
+        "paragraphs": [
+          {
+            "text": "I will leave much of this discussion to Tings LM",
+            "level": 0
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide8_img1.png",
+        "width": 969638,
+        "height": 969600
+      },
+      {
+        "path": "lab-meeting-assets/slide8_img2.png",
+        "width": 1206974,
+        "height": 603126
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 9,
+    "title": "",
+    "content": [],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide9_img1.png",
+        "width": 3607076,
+        "height": 3607050
+      },
+      {
+        "path": "lab-meeting-assets/slide9_img2.png",
+        "width": 1206974,
+        "height": 603126
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 10,
+    "title": "Oligo-mtDSB: Inside out model",
+    "content": [
+      {
+        "type": "text",
+        "paragraphs": [
+          {
+            "text": "Collaboration with Roberta Brambilla",
+            "level": 0
+          },
+          {
+            "text": "mtDNA DSBs are specifically induced in myelinating oligodendrocytes",
+            "level": 0
+          },
+          {
+            "text": "Reported demyelination, axonal injury and inflammation",
+            "level": 0
+          },
+          {
+            "text": "\u2192 mtDNA damage can cause oligodendrocyte death",
+            "level": 0
+          },
+          {
+            "text": "Models inside out paradigm",
+            "level": 0
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "paragraphs": [
+          {
+            "text": "Inside out model",
+            "level": 0
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide10_img1.png",
+        "width": 8122199,
+        "height": 1445350
+      },
+      {
+        "path": "lab-meeting-assets/slide10_img2.png",
+        "width": 1206974,
+        "height": 603126
+      },
+      {
+        "path": "lab-meeting-assets/slide10_img3.png",
+        "width": 794724,
+        "height": 794724
+      },
+      {
+        "path": "lab-meeting-assets/slide10_img4.png",
+        "width": 1206974,
+        "height": 603126
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 11,
+    "title": "",
+    "content": [
+      {
+        "type": "text",
+        "paragraphs": [
+          {
+            "text": "Xenium markers and cell type breakdown",
+            "level": 0
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide11_img1.png",
+        "width": 7671350,
+        "height": 3835849
+      },
+      {
+        "path": "lab-meeting-assets/slide11_img2.png",
+        "width": 762350,
+        "height": 762350
+      },
+      {
+        "path": "lab-meeting-assets/slide11_img3.png",
+        "width": 969638,
+        "height": 969600
+      },
+      {
+        "path": "lab-meeting-assets/slide11_img4.png",
+        "width": 1206974,
+        "height": 603126
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 12,
+    "title": "Comparison",
+    "content": [
+      {
+        "type": "text",
+        "paragraphs": [
+          {
+            "text": "Global differences between control or mtDSB",
+            "level": 0
+          },
+          {
+            "text": "Age differences",
+            "level": 0
+          },
+          {
+            "text": "Sex differences",
+            "level": 0
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide12_img1.png",
+        "width": 833825,
+        "height": 833825
+      },
+      {
+        "path": "lab-meeting-assets/slide12_img2.png",
+        "width": 762350,
+        "height": 762350
+      },
+      {
+        "path": "lab-meeting-assets/slide12_img3.png",
+        "width": 2644775,
+        "height": 2559950
+      },
+      {
+        "path": "lab-meeting-assets/slide12_img4.png",
+        "width": 4721726,
+        "height": 2013450
+      },
+      {
+        "path": "lab-meeting-assets/slide12_img5.png",
+        "width": 1206974,
+        "height": 603126
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 13,
+    "title": "Age and condition comparison (within OLs)",
+    "content": [
+      {
+        "type": "text",
+        "paragraphs": [
+          {
+            "text": "Basic built in comparison of condition and age:",
+            "level": 0
+          },
+          {
+            "text": "Control 21 d vs rest: Mbp, Mog, Cnp \u2192 mature myelinating profile",
+            "level": 0
+          },
+          {
+            "text": "Control 60 d vs rest: Induction of Sgk1, Ddit4, Hspa1a/b, Dnajb1 (age-related stress?)",
+            "level": 0
+          },
+          {
+            "text": "mtDSB 21 d vs rest: Upregulation of Ddit4, Sod2, Zfp36, Kdr, Aqp4, early mitochondrial and oxidative stress?",
+            "level": 0
+          },
+          {
+            "text": "mtDSB 60 d vs rest: Strong Hsph1, Hspa1a/b, Atf4, Serpina3n, Dnajb1 \u2192 integrated stress response?",
+            "level": 0
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide13_img1.png",
+        "width": 833825,
+        "height": 833825
+      },
+      {
+        "path": "lab-meeting-assets/slide13_img2.png",
+        "width": 4025974,
+        "height": 1755178
+      },
+      {
+        "path": "lab-meeting-assets/slide13_img3.png",
+        "width": 3902556,
+        "height": 1755178
+      },
+      {
+        "path": "lab-meeting-assets/slide13_img4.png",
+        "width": 1206974,
+        "height": 603126
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 14,
+    "title": "Oligodendrocytes display stress response and metabolic adaptation",
+    "content": [
+      {
+        "type": "text",
+        "paragraphs": [
+          {
+            "text": "ISR & glycolytic genes up \u2192 Atf4, Aldoa, Gstp1, Mt2",
+            "level": 0
+          },
+          {
+            "text": "Myelin genes down \u2192 Mbp, Mag, Mog, Cldn11",
+            "level": 0
+          },
+          {
+            "text": "Acute stress fades \u2192 Ddit4, Sgk1",
+            "level": 0
+          },
+          {
+            "text": "Inflammatory tone persists \u2192 Il33, B2m, H2-D1",
+            "level": 0
+          },
+          {
+            "text": "Metabolic and redox remodeling \u2192 Qdpr, Car2 up",
+            "level": 0
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "paragraphs": [
+          {
+            "text": "Inside out model",
+            "level": 0
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide14_img1.png",
+        "width": 4947575,
+        "height": 3547225
+      },
+      {
+        "path": "lab-meeting-assets/slide14_img2.png",
+        "width": 1206974,
+        "height": 603126
+      },
+      {
+        "path": "lab-meeting-assets/slide14_img3.png",
+        "width": 794724,
+        "height": 794724
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 15,
+    "title": "Microglia transition from homeostatic to chronically reactive state",
+    "content": [
+      {
+        "type": "text",
+        "paragraphs": [
+          {
+            "text": "Homeostatic microglial genes down \u2192 P2ry12, Siglech, Cx3cr1",
+            "level": 0
+          },
+          {
+            "text": "Antigen presentation & IFN-response up \u2192 B2m, H2-D1, Cd9",
+            "level": 0
+          },
+          {
+            "text": "Metabolic activation sustained \u2192 Aldoa, Gfap",
+            "level": 0
+          },
+          {
+            "text": "Acute ISR genes fade \u2192 Ddit4",
+            "level": 0
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "paragraphs": [
+          {
+            "text": "Inside out model",
+            "level": 0
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide15_img1.png",
+        "width": 5205600,
+        "height": 3728730
+      },
+      {
+        "path": "lab-meeting-assets/slide15_img2.png",
+        "width": 1206974,
+        "height": 603126
+      },
+      {
+        "path": "lab-meeting-assets/slide15_img3.png",
+        "width": 794724,
+        "height": 794724
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 16,
+    "title": "Astrocytes show late stress and metal-response activation with reduced metabolic and glial homeostasis genes",
+    "content": [
+      {
+        "type": "text",
+        "paragraphs": [
+          {
+            "text": "Reactive gliosis persists \u2192 Gfap, Selenop, Qdpr",
+            "level": 0
+          },
+          {
+            "text": "Mitochondrial & ISR adaptation \u2192 Mt2, Tsc22d3",
+            "level": 0
+          },
+          {
+            "text": "Homeostatic & metabolic genes decline \u2192 Slc1a3, Slc6a11, Sox9, Gja1",
+            "level": 0
+          },
+          {
+            "text": "Stress resolution trend \u2192 Ddit4, Mertk, Ptgds down",
+            "level": 0
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "paragraphs": [
+          {
+            "text": "Inside out model",
+            "level": 0
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide16_img1.png",
+        "width": 4701301,
+        "height": 3367499
+      },
+      {
+        "path": "lab-meeting-assets/slide16_img2.png",
+        "width": 1206974,
+        "height": 603126
+      },
+      {
+        "path": "lab-meeting-assets/slide16_img3.png",
+        "width": 794724,
+        "height": 794724
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 17,
+    "title": "Stress-driven ISR activation and impaired maturation in OPCs",
+    "content": [
+      {
+        "type": "text",
+        "paragraphs": [
+          {
+            "text": "Stress and ISR activation \u2192 Hspa5, Gfap, Aldoa, Mt2, Selenop, B2m",
+            "level": 0
+          },
+          {
+            "text": "Maturation and myelin-lineage genes decline \u2192 Olig2, Plp1, Mbp, Mmp15, Vegfa",
+            "level": 0
+          },
+          {
+            "text": "Growth & signaling adjustment \u2192 Dusp6, Sh3bp4 down",
+            "level": 0
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "paragraphs": [
+          {
+            "text": "Inside out model",
+            "level": 0
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide17_img1.png",
+        "width": 4852951,
+        "height": 3440700
+      },
+      {
+        "path": "lab-meeting-assets/slide17_img2.png",
+        "width": 1206974,
+        "height": 603126
+      },
+      {
+        "path": "lab-meeting-assets/slide17_img3.png",
+        "width": 794724,
+        "height": 794724
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 18,
+    "title": "Medium Spiny Neurons show ISR activation and synaptic downregulation at P60",
+    "content": [
+      {
+        "type": "text",
+        "paragraphs": [
+          {
+            "text": "Stress & ISR upregulation \u2192 Hspa5, Aldoa, Gfap, Mt2, Selenop",
+            "level": 0
+          },
+          {
+            "text": "Synaptic and activity genes down \u2192 Arc, Pdyn, Adora2a",
+            "level": 0
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "paragraphs": [
+          {
+            "text": "Inside out model",
+            "level": 0
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide18_img1.png",
+        "width": 4862151,
+        "height": 3486000
+      },
+      {
+        "path": "lab-meeting-assets/slide18_img2.png",
+        "width": 1206974,
+        "height": 603126
+      },
+      {
+        "path": "lab-meeting-assets/slide18_img3.png",
+        "width": 794724,
+        "height": 794724
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 19,
+    "title": "Transcriptional remodeling across CNS cell types \n",
+    "content": [
+      {
+        "type": "text",
+        "paragraphs": [
+          {
+            "text": "Oligodendrocytes: ISR + glycolytic activation (Atf4, Aldoa, Mt2); myelin loss (Mbp, Mag, Cldn11).",
+            "level": 0
+          },
+          {
+            "text": "OPCs: Stress and ISR genes \u2191 (Hspa5, Gfap); maturation markers \u2193 (Olig2, Plp1, Mbp).",
+            "level": 0
+          },
+          {
+            "text": "Astrocytes: Oxidative-metal stress \u2191 (Gfap, Mt2); metabolic support \u2193 (Slc1a3, Gja1).",
+            "level": 0
+          },
+          {
+            "text": "Microglia: Homeostatic markers \u2193 (P2ry12, Siglech); MHC + stress genes \u2191 (B2m, H2-D1).",
+            "level": 0
+          },
+          {
+            "text": "Neurons (MSNs): Stress genes \u2191 (Hspa5, Aldoa, Mt2); synaptic identity \u2193 (Adora2a, Pdyn).",
+            "level": 0
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "paragraphs": [
+          {
+            "text": "Inside out model",
+            "level": 0
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide19_img1.png",
+        "width": 1206974,
+        "height": 603126
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 20,
+    "title": "Regional comparison: summary statistics for glia\n",
+    "content": [],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide20_img1.png",
+        "width": 833825,
+        "height": 833825
+      },
+      {
+        "path": "lab-meeting-assets/slide20_img2.png",
+        "width": 762350,
+        "height": 762350
+      },
+      {
+        "path": "lab-meeting-assets/slide20_img3.png",
+        "width": 2012257,
+        "height": 3820975
+      },
+      {
+        "path": "lab-meeting-assets/slide20_img4.png",
+        "width": 2066929,
+        "height": 3820974
+      },
+      {
+        "path": "lab-meeting-assets/slide20_img5.png",
+        "width": 2026697,
+        "height": 3820975
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 21,
+    "title": "",
+    "content": [],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide21_img1.png",
+        "width": 2835876,
+        "height": 2835876
+      },
+      {
+        "path": "lab-meeting-assets/slide21_img2.png",
+        "width": 1206974,
+        "height": 603126
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 22,
+    "title": "metamitoMicS (crappy name\u2026)",
+    "content": [
+      {
+        "type": "text",
+        "paragraphs": [
+          {
+            "text": "The idea is to uncover the cell type-specific changes in metabolic and mitochondrial programs during neuroinflammation",
+            "level": 0
+          },
+          {
+            "text": "Leverage the Xenium data from RRMap and oligo-mtDSB",
+            "level": 0
+          },
+          {
+            "text": "Run DVP with Rosenberger lab",
+            "level": 0
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide22_img1.png",
+        "width": 1218025,
+        "height": 1218025
+      },
+      {
+        "path": "lab-meeting-assets/slide22_img2.png",
+        "width": 1206974,
+        "height": 603126
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 23,
+    "title": "",
+    "content": [],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide23_img1.png",
+        "width": 6323077,
+        "height": 4405773
+      },
+      {
+        "path": "lab-meeting-assets/slide23_img2.png",
+        "width": 1218025,
+        "height": 1218025
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 24,
+    "title": "Cell type\u2013specific metabolic and mitochondrial remodeling during chronic and relapsing neuroinflammation\n\n",
+    "content": [
+      {
+        "type": "text",
+        "paragraphs": [
+          {
+            "text": "Outside in model",
+            "level": 0
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide24_img1.png",
+        "width": 6470349,
+        "height": 3174250
+      },
+      {
+        "path": "lab-meeting-assets/slide24_img2.png",
+        "width": 1206974,
+        "height": 603126
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 25,
+    "title": "Cell type\u2013specific metabolic and mitochondrial remodeling during chronic and relapsing neuroinflammation\n",
+    "content": [
+      {
+        "type": "text",
+        "paragraphs": [
+          {
+            "text": "Outside in model",
+            "level": 0
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide25_img1.png",
+        "width": 5418876,
+        "height": 2792275
+      },
+      {
+        "path": "lab-meeting-assets/slide25_img2.png",
+        "width": 1206974,
+        "height": 603126
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 26,
+    "title": "Cell-type\u2013specific metabolic rewiring near lesions (vs PLP CFA)",
+    "content": [
+      {
+        "type": "text",
+        "paragraphs": [
+          {
+            "text": "Outside in model",
+            "level": 0
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide26_img1.png",
+        "width": 1670875,
+        "height": 1769874
+      },
+      {
+        "path": "lab-meeting-assets/slide26_img2.png",
+        "width": 3500726,
+        "height": 1685400
+      },
+      {
+        "path": "lab-meeting-assets/slide26_img3.png",
+        "width": 5026793,
+        "height": 3638556
+      },
+      {
+        "path": "lab-meeting-assets/slide26_img4.png",
+        "width": 1206974,
+        "height": 603126
+      },
+      {
+        "path": "lab-meeting-assets/slide26_img5.png",
+        "width": 732550,
+        "height": 431450
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 27,
+    "title": "DVP",
+    "content": [
+      {
+        "type": "text",
+        "paragraphs": [
+          {
+            "text": "Difficult to get cellular resolution: makes data very noisy",
+            "level": 0
+          },
+          {
+            "text": "We are aiming to get cell type resolution stratified by lesion distance of:",
+            "level": 0
+          },
+          {
+            "text": "Oligos",
+            "level": 0
+          },
+          {
+            "text": "Astros",
+            "level": 0
+          },
+          {
+            "text": "Microglia",
+            "level": 0
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide27_img1.png",
+        "width": 1218025,
+        "height": 1218025
+      },
+      {
+        "path": "lab-meeting-assets/slide27_img2.png",
+        "width": 1206974,
+        "height": 603126
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 28,
+    "title": "",
+    "content": [],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide28_img1.png",
+        "width": 2714826,
+        "height": 1809925
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 29,
+    "title": "ST-BRICHOS",
+    "content": [
+      {
+        "type": "text",
+        "paragraphs": [
+          {
+            "text": "Collaboration with Janne Johansson from KI Huddinge",
+            "level": 0
+          },
+          {
+            "text": "Collaboration started before my time in GCB lab",
+            "level": 0
+          },
+          {
+            "text": "ST data from mouse brain sections treated with Brichos",
+            "level": 0
+          },
+          {
+            "text": "Brichos, a molecular chaperone has been shown to breaks the catalytic cycle that generates toxic A\u03b2 oligomers",
+            "level": 0
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide29_img1.png",
+        "width": 1346373,
+        "height": 897600
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 30,
+    "title": "AppNLGF mice",
+    "content": [
+      {
+        "type": "text",
+        "paragraphs": [
+          {
+            "text": "Knock-in model of Alzheimer\u2019s disease that express humanized amyloid precursor protein (APP) at endogenous levels",
+            "level": 0
+          },
+          {
+            "text": "Exhibit amyloidosis with cortical plaques from 2 months",
+            "level": 0
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide30_img1.png",
+        "width": 1346373,
+        "height": 897600
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 31,
+    "title": "Experimental setup \n",
+    "content": [
+      {
+        "type": "text",
+        "paragraphs": [
+          {
+            "text": "6 AppNLGF hemispheres",
+            "level": 0
+          },
+          {
+            "text": "3 BRICHOS treated AppNLGF hemispheres",
+            "level": 0
+          },
+          {
+            "text": "1 WT mice",
+            "level": 0
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide31_img1.png",
+        "width": 1346373,
+        "height": 897600
+      },
+      {
+        "path": "lab-meeting-assets/slide31_img2.png",
+        "width": 5041635,
+        "height": 3820975
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 32,
+    "title": "Tissue wide downregulation of PIG expression",
+    "content": [],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide32_img1.png",
+        "width": 1346373,
+        "height": 897600
+      },
+      {
+        "path": "lab-meeting-assets/slide32_img2.png",
+        "width": 8247574,
+        "height": 1814275
+      },
+      {
+        "path": "lab-meeting-assets/slide32_img3.png",
+        "width": 2670024,
+        "height": 1034825
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 33,
+    "title": "Tissue wide downregulation of PIG expression",
+    "content": [],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide33_img1.png",
+        "width": 1346373,
+        "height": 897600
+      },
+      {
+        "path": "lab-meeting-assets/slide33_img2.png",
+        "width": 3702424,
+        "height": 2629251
+      },
+      {
+        "path": "lab-meeting-assets/slide33_img3.png",
+        "width": 3596170,
+        "height": 2553800
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 34,
+    "title": "Elevated PIG expression in the interface between CNS parenchyma and CSF",
+    "content": [],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide34_img1.png",
+        "width": 1346373,
+        "height": 897600
+      },
+      {
+        "path": "lab-meeting-assets/slide34_img2.png",
+        "width": 4160316,
+        "height": 3820975
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 35,
+    "title": "Region dependent reduction in PIG expression in Brichos treated mice",
+    "content": [],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide35_img1.png",
+        "width": 1346373,
+        "height": 897600
+      },
+      {
+        "path": "lab-meeting-assets/slide35_img2.png",
+        "width": 5953999,
+        "height": 3569150
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 36,
+    "title": "",
+    "content": [],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide36_img1.png",
+        "width": 2912077,
+        "height": 2622625
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 37,
+    "title": "KaroSpace",
+    "content": [
+      {
+        "type": "text",
+        "paragraphs": [
+          {
+            "text": "Create a light weight spatial viewer that is primarily spatial focused",
+            "level": 0
+          },
+          {
+            "text": "Created with a mix of claude code and codex",
+            "level": 0
+          },
+          {
+            "text": "The idea is to submit a Application Note to the journal of Bioinformatics",
+            "level": 0
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide37_img1.png",
+        "width": 1111501,
+        "height": 1001026
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 38,
+    "title": "",
+    "content": [],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide38_img1.png",
+        "width": 2951101,
+        "height": 2657800
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 39,
+    "title": "",
+    "content": [],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide39_img1.png",
+        "width": 3125924,
+        "height": 3125924
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 40,
+    "title": "CellCharter",
+    "content": [],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide40_img1.png",
+        "width": 1055949,
+        "height": 1055949
+      },
+      {
+        "path": "lab-meeting-assets/slide40_img2.png",
+        "width": 8839204,
+        "height": 2680247
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 41,
+    "title": "MANA",
+    "content": [
+      {
+        "type": "text",
+        "paragraphs": [
+          {
+            "text": "It generalizes CellCharter\u2019s neighborhood aggregation by adding distance-aware weighting within hop layers, so nearer cells contribute more than farther cells:",
+            "level": 0
+          },
+          {
+            "text": "Create scVI embedding",
+            "level": 0
+          },
+          {
+            "text": "Build neighbor graph",
+            "level": 0
+          },
+          {
+            "text": "Aggregate neighbors at \u201chop\u201d intervals computing mean embedding",
+            "level": 0
+          },
+          {
+            "text": "GMM or other clustering",
+            "level": 0
+          },
+          {
+            "text": "Two-level weighting:",
+            "level": 0
+          },
+          {
+            "text": "Hop-level decay (hop_decay^h)",
+            "level": 0
+          },
+          {
+            "text": "Distance-based kernel within each hop (e.g., gaussian, exponential, inverse)",
+            "level": 0
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide41_img1.png",
+        "width": 1055949,
+        "height": 1055949
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  },
+  {
+    "number": 42,
+    "title": "Acknowledgements",
+    "content": [],
+    "images": [
+      {
+        "path": "lab-meeting-assets/slide42_img1.png",
+        "width": 2777603,
+        "height": 1878799
+      },
+      {
+        "path": "lab-meeting-assets/slide42_img2.png",
+        "width": 1302140,
+        "height": 1350913
+      },
+      {
+        "path": "lab-meeting-assets/slide42_img3.png",
+        "width": 950931,
+        "height": 1694738
+      },
+      {
+        "path": "lab-meeting-assets/slide42_img4.png",
+        "width": 1246325,
+        "height": 1447341
+      },
+      {
+        "path": "lab-meeting-assets/slide42_img5.png",
+        "width": 1002972,
+        "height": 1447350
+      },
+      {
+        "path": "lab-meeting-assets/slide42_img6.png",
+        "width": 1179160,
+        "height": 1566425
+      },
+      {
+        "path": "lab-meeting-assets/slide42_img7.png",
+        "width": 1206974,
+        "height": 603126
+      },
+      {
+        "path": "lab-meeting-assets/slide42_img8.jpg",
+        "width": 3153900,
+        "height": 1878800
+      },
+      {
+        "path": "lab-meeting-assets/slide42_img9.png",
+        "width": 1793148,
+        "height": 735375
+      },
+      {
+        "path": "lab-meeting-assets/slide42_img10.png",
+        "width": 1600475,
+        "height": 836800
+      }
+    ],
+    "notes": "",
+    "layout": "TITLE_AND_BODY"
+  }
+]
